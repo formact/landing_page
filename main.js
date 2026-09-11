@@ -631,12 +631,13 @@ function initCleanHeroTitleGlider() {
   if (!heroTitle || !siteHeader) return;
 
   function setupAnimation() {
+    const slot = document.getElementById('hero-title-slot');
     heroTitle.style.position = 'relative';
     heroTitle.style.top = 'auto';
     heroTitle.style.left = 'auto';
     heroTitle.style.transform = 'none';
 
-    const rect = heroTitle.getBoundingClientRect();
+    const rect = slot ? slot.getBoundingClientRect() : heroTitle.getBoundingClientRect();
     const startLeft = rect.left;
     const startTop = rect.top;
 
