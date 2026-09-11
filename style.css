@@ -3410,7 +3410,7 @@ button {
 }
 
 .specs-download-col {
-  max-width: clamp(380px, 40vw, 560px);
+  max-width: clamp(540px, 60vw, 820px);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -3642,7 +3642,7 @@ button {
 }
 
 .specs-table-grid th.col-potato .head-title {
-  color: #facc15;
+  color: #fbbf24;
 }
 
 .specs-table-grid th.col-min .head-title {
@@ -3650,12 +3650,13 @@ button {
 }
 
 .specs-table-grid th.col-rec .head-title {
-  color: var(--corrosive-green, #33f266);
+  color: #38bdf8;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
 }
 
 .specs-table-grid td.lbl-comp {
-  color: #64748b;
-  font-weight: 600;
+  color: #a0aec0;
+  font-weight: 700;
   width: 110px;
 }
 
@@ -4210,40 +4211,42 @@ button {
   flex-direction: column;
 }
 
-/* Multi-Platform Download Cards Grid */
+/* Multi-Platform Download Cards Grid - Horizontal Row Layout */
 .specs-dl-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
   width: 100%;
 }
 
 .specs-dl-card {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding: 12px 18px;
-  background: rgba(3, 7, 14, 0.85);
+  padding: 14px 14px;
+  background: rgba(3, 7, 14, 0.88);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 4px;
+  border-radius: 6px;
   text-decoration: none;
   backdrop-filter: blur(12px);
   transition: all 0.3s ease;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  min-width: 0;
 }
 
 .specs-dl-card:hover {
   border-color: var(--cyan-primary, #00e5ff);
-  background: rgba(0, 229, 255, 0.06);
-  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
-  transform: translateY(-2px);
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 24px rgba(0, 229, 255, 0.35);
+  transform: translateY(-3px);
 }
 
 .dl-card-os {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .dl-os-icon {
@@ -4251,8 +4254,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
   background: rgba(0, 229, 255, 0.08);
   border: 1px solid rgba(0, 229, 255, 0.25);
   border-radius: 4px;
@@ -4269,37 +4273,44 @@ button {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .dl-os-name {
   font-family: var(--font-mono, monospace);
-  font-size: clamp(12px, 0.8vw, 14px);
-  font-weight: 700;
+  font-size: clamp(11px, 0.75vw, 13px);
+  font-weight: 800;
   color: #ffffff;
   letter-spacing: 0.08em;
 }
 
 .dl-os-meta {
   font-family: var(--font-mono, monospace);
-  font-size: clamp(10px, 0.6vw, 11.5px);
-  color: #64748b;
-  letter-spacing: 0.06em;
+  font-size: clamp(9px, 0.55vw, 10.5px);
+  color: #94a3b8;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dl-card-action {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--cyan-primary, #00e5ff);
   font-family: var(--font-mono, monospace);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   transition: all 0.3s ease;
 }
 
 .dl-btn-txt {
-  color: #a0aec0;
+  color: #94a3b8;
   transition: color 0.3s ease;
 }
 
@@ -4310,6 +4321,12 @@ button {
 .specs-dl-card:hover .dl-card-action svg {
   transform: translateY(2px);
   color: var(--cyan-primary, #00e5ff);
+}
+
+@media (max-width: 768px) {
+  .specs-dl-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Sub-Footer Row */
