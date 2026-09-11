@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>FORMACT — 5v5 Asymmetric Cyber Warfare | Official AAA Game Site</title>
+  <meta name="description" content="FORMACT is a groundbreaking competitive multiplayer AAA title combining high-octane 3D arena combat with real-time in-game software engineering. 1 Fighter + 4 Specialists.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,10 90,85 10,85' fill='%2300E5FF'/></svg>">
+  <script type="module" crossorigin src="/assets/index-DyIJfjrf.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D871nzVA.css">
+</head>
+<body>
+
+  <!-- Ambient Particle Layer -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- ==========================================
+       SITE HEADER NAVIGATION
+       ========================================== -->
+  <header class="site-header" id="site-header">
+    <a href="#hero" class="brand-logo" id="header-brand-logo">
+      FORM<span class="logo-caret">∧</span>CT
+    </a>
+
+    <nav class="nav-menu" aria-label="Main Navigation">
+      <ul class="nav-links">
+        <li class="nav-item"><a href="#hero">WORLD</a></li>
+        <li class="nav-item"><a href="#duality">COMBAT</a></li>
+        <li class="nav-item"><a href="#roles">ROLES</a></li>
+        <li class="nav-item"><a href="#forge">FORGE</a></li>
+        <li class="nav-item"><a href="#sanctuary">ARENA</a></li>
+        <li class="nav-item"><a href="#specs">SPECS</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions">
+      <!-- Web Audio SFX Toggle -->
+      <button class="audio-toggle-btn active" id="audio-toggle-btn" title="Toggle UI Sound Effects" aria-label="Toggle Sound Effects">
+        <span class="audio-pulse"></span>
+        <span id="audio-label">SFX: ON</span>
+      </button>
+
+      <!-- Wishlist Action with line -->
+      <button class="nav-wishlist-btn" id="header-wishlist-btn">
+        <span>WISHLIST</span>
+        <span class="wishlist-line"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================
+         SECTION 1: CINEMATIC HERO (Matching hero-section.png)
+         ========================================== -->
+    <section class="hero-section" id="hero">
+      <div class="hero-backdrop" id="hero-backdrop"></div>
+      <div class="hero-overlay"></div>
+
+      <!-- Main Left Hero Content -->
+      <div class="hero-content">
+        <div class="hero-pretitle">
+          <span>TWO MACHINES.</span>
+          <span>ONE TRUTH.</span>
+          <span>NO MERCY.</span>
+        </div>
+
+        <h1 class="hero-title">
+          FORM<span class="hero-caret">∧</span>CT
+        </h1>
+
+        <div class="hero-subtitle">
+          <span>PRECISION</span>
+          <span class="bullet">•</span>
+          <span>ADAPTATION</span>
+          <span class="bullet">•</span>
+          <span>SURVIVAL</span>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-watch-trailer" id="btn-watch-trailer">
+            <span class="play-icon">▷</span>
+            <span>WATCH TRAILER</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Side Verticals & Badges -->
+      <div class="hero-right-label">
+        <span>MORE</span>
+        <span>THAN</span>
+        <span>HUMAN</span>
+        <div class="label-dash"></div>
+      </div>
+
+      <div class="hero-scroll-ticker">
+        <span>S C R O L L</span>
+        <div class="scroll-track"></div>
+      </div>
+
+      <!-- Bottom Bar of Hero -->
+      <div class="hero-footer-bar">
+        <div class="hero-bottom-tagline">
+          A NEW KIND OF DUEL
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 2: THE ASYMMETRIC DUALITY (Matching section2.png)
+         ========================================== -->
+    <section class="section-duality" id="duality">
+      <div class="duality-grid">
+        
+        <!-- ================= LEFT COLUMN: THE ARENA FIGHTER ================= -->
+        <div class="duality-fighter-col">
+          <!-- Top Left Headline -->
+          <div class="fighter-top-copy">
+            <span class="section-eyebrow">THE ARENA FIGHTER</span>
+            <h2 class="section-heading-big">
+              <span>EXECUTE</span>
+              <span class="dim">ADAPT</span>
+              <span>SURVIVE</span>
+            </h2>
+          </div>
+
+          <!-- Bottom Left HUD (HP, Stamina, F1-F4 Tactical Calls) -->
+          <div class="hud-tactical-box">
+            <div class="hud-vitals-row">
+              <div class="hud-stat-line">
+                <span class="hud-label">HP</span>
+                <div class="hud-bar-container">
+                  <div class="hud-bar-fill" style="width: 78%;"></div>
+                </div>
+                <span id="hp-val" class="hud-val">78</span>
+              </div>
+              <div class="hud-stat-line">
+                <span class="hud-label">STAMINA</span>
+                <div class="stamina-segments">
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                  <div class="stamina-segment"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- F1 - F4 Tactical Request Cards -->
+            <div class="tactical-keys-grid">
+              <button class="tactical-btn" data-key="F1" title="Request Swift Weapon">
+                <span class="f-key">F1</span>
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 20 L19 5" />
+                    <path d="M12 20 L21 11" opacity="0.6" />
+                    <path d="M8 8 L16 16" opacity="0.4" />
+                  </svg>
+                </span>
+                <span class="btn-label">OFFENSE</span>
+              </button>
+              <button class="tactical-btn" data-key="F2" title="Request Barrier Shield">
+                <span class="f-key">F2</span>
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2 L20 6 V12 C20 17 12 21 12 21 C12 21 4 17 4 12 V6 Z" />
+                  </svg>
+                </span>
+                <span class="btn-label">DEFENSE</span>
+              </button>
+              <button class="tactical-btn" data-key="F3" title="Request Utility Boost">
+                <span class="f-key">F3</span>
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="8" />
+                    <path d="M12 8 V16 M8 12 H16" />
+                  </svg>
+                </span>
+                <span class="btn-label">UTILITY</span>
+              </button>
+              <button class="tactical-btn" data-key="F4" title="Request Ultimate Overcharge">
+                <span class="f-key">F4</span>
+                <span class="btn-icon">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3 L21 19 H3 Z" />
+                    <path d="M12 9 L17 17 H7 Z" opacity="0.7" />
+                  </svg>
+                </span>
+                <span class="btn-label">ULTIMATE</span>
+              </button>
+            </div>
+
+            <div class="tactical-footer-tag">
+              <div>TACTICAL REQUESTS</div>
+              <div class="sub">SEND. ADAPT. FIGHT.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= CENTER COLUMN: TELEMETRY STREAM ================= -->
+        <div class="duality-telemetry-col">
+          <!-- Central Glowing Energy Stream SVG -->
+          <svg class="telemetry-stream-svg" viewBox="0 0 240 850" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="streamGradCyan" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.15"/>
+                <stop offset="25%" stop-color="#00e5ff" stop-opacity="0.95"/>
+                <stop offset="50%" stop-color="#38bdf8" stop-opacity="1"/>
+                <stop offset="75%" stop-color="#00e5ff" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.15"/>
+              </linearGradient>
+              <linearGradient id="streamGradOrange" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff7043" stop-opacity="0.15"/>
+                <stop offset="25%" stop-color="#ff7043" stop-opacity="0.95"/>
+                <stop offset="50%" stop-color="#fb923c" stop-opacity="1"/>
+                <stop offset="75%" stop-color="#ff7043" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#ff7043" stop-opacity="0.15"/>
+              </linearGradient>
+              <filter id="glowCyan" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="3.5" result="blur1" />
+                <feGaussianBlur stdDeviation="1.2" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glowOrange" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="3.5" result="blur1" />
+                <feGaussianBlur stdDeviation="1.2" result="blur2" />
+                <feMerge>
+                  <feMergeNode in="blur1" />
+                  <feMergeNode in="blur2" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            <!-- Left Braided Neon Cyan Strands -->
+            <path d="M 105 0 C 65 180, 45 380, 100 500 C 125 560, 55 720, 105 850" stroke="url(#streamGradCyan)" stroke-width="2.6" fill="none" filter="url(#glowCyan)"/>
+            <path d="M 112 0 C 80 190, 60 370, 110 500 C 132 570, 75 710, 112 850" stroke="#00e5ff" stroke-width="1.2" fill="none" opacity="0.85"/>
+            <path d="M 118 0 C 90 210, 75 350, 115 500 C 142 590, 90 700, 118 850" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity="0.65"/>
+
+            <!-- Right Braided Molten Orange Strands -->
+            <path d="M 135 0 C 175 180, 195 380, 140 500 C 115 560, 185 720, 135 850" stroke="url(#streamGradOrange)" stroke-width="2.6" fill="none" filter="url(#glowOrange)"/>
+            <path d="M 128 0 C 160 190, 180 370, 130 500 C 108 570, 165 710, 128 850" stroke="#ff7043" stroke-width="1.2" fill="none" opacity="0.85"/>
+            <path d="M 122 0 C 150 210, 165 350, 125 500 C 98 590, 150 700, 122 850" stroke="#fb923c" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity="0.65"/>
+          </svg>
+
+          <!-- Telemetry Hex Cards -->
+          <div class="telemetry-cards">
+            <!-- Upper Card: Player Data -->
+            <div class="cyber-link-card cyan-hex">
+              <div class="cyber-card-header">
+                <span>PLAYER DATA</span>
+                <span>→</span>
+              </div>
+              <ul class="cyber-card-list">
+                <li>Position</li>
+                <li>Health</li>
+                <li>Enemy State</li>
+                <li>Tactical Request (<span id="tele-req">F1-F4</span>)</li>
+              </ul>
+            </div>
+
+            <!-- Lower Card: New Abilities -->
+            <div class="cyber-link-card orange-hex">
+              <div class="cyber-card-header">
+                <span>← NEW ABILITIES</span>
+              </div>
+              <ul class="cyber-card-list">
+                <li>Code Updates</li>
+                <li>Ability Parameters</li>
+                <li>3D Asset Preview</li>
+                <li>Deployment (Live)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= RIGHT COLUMN: DEVELOPER WORKSHOP ================= -->
+        <div class="duality-dev-col">
+          <!-- Top Row: Heading -->
+          <div class="dev-top-row">
+            <div class="dev-heading-box">
+              <span class="section-eyebrow" style="color: var(--thermal-orange);">THE DEVELOPER WORKSHOP</span>
+              <h2 class="section-heading-big">
+                <span>CODE</span>
+                <span class="dim">CREATE</span>
+                <span>EMPOWER</span>
+              </h2>
+            </div>
+          </div>
+
+          <!-- Middle Row: Dual Floating Monitor Station (IDE + 3D Holographic Arm) -->
+          <div class="dev-station-row">
+            <!-- Left Screen: IDE Code Window -->
+            <div class="dev-ide-card">
+              <div class="ide-header">
+                <span class="ide-tab-label">// Ability: Phase Strike</span>
+              </div>
+              <div class="ide-body-wrap">
+                <div class="ide-gutter">
+                  <span>21</span>
+                  <span>22</span>
+                  <span>23</span>
+                  <span>24</span>
+                  <span>25</span>
+                  <span>26</span>
+                  <span>27</span>
+                  <span>28</span>
+                  <span>29</span>
+                  <span>30</span>
+                </div>
+                <pre class="ide-code-block"><code><span class="code-comment">// Ability: Phase Strike</span>
+<span class="code-type">void</span> <span class="code-fn">ExecutePhaseStrike</span>() {
+  <span class="code-keyword">if</span> (player.state == READY) {
+    <span class="code-type">float</span> dashDist = <span class="code-num">8.0f</span>;
+    Vector3 dir = player.<span class="code-fn">GetDirection</span>();
+    player.<span class="code-fn">Dash</span>(dir, dashDist);
+    <span class="code-fn">SpawnVFX</span>(<span class="code-str">"PhaseTrail"</span>);
+    <span class="code-fn">ApplyDamage</span>(<span class="code-num">1.5f</span>);
+  }
+}</code></pre>
+              </div>
+              <div class="ide-status-footer">
+                <span class="code-comment">// Compiling...</span>
+                <span class="success">☑ Build successful. Deploy to arena?</span>
+              </div>
+            </div>
+
+            <!-- Right Screen: 3D Arm Hologram Monitor -->
+            <div class="dev-arm-card">
+              <div class="arm-tabs-bar">
+                <span class="arm-tab active">MODEL</span>
+                <span class="arm-tab">ANIMATION</span>
+                <span class="arm-tab">VFX</span>
+                <span class="arm-tab">DEPLOY</span>
+              </div>
+              <div class="arm-preview-content">
+                <img src="/assets/phase_arm_3d-Cm_fsg66.png" alt="Phase Strike v2.1 3D Gauntlet">
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Seated Developers Banner -->
+          <div class="dev-bottom-row">
+            <div class="workshop-devs-preview">
+              <img src="/assets/devs_clean-Qics0Zok.png" alt="Developer Workshop Squad" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 3: THE 5 OPERATIVE ROLES (Matching section3.png)
+         ========================================== -->
+    <section class="section-roles" id="roles">
+      <div class="roles-stage">
+        <!-- Middle Main Layer -->
+        <div class="roles-main-body">
+          
+          <!-- Left Column: Title, Copy, CTA -->
+          <div class="roles-left-col">
+            <div class="roles-title-box">
+              <h2 class="section-heading-big">
+                <span>DIFFERENT</span>
+                <span>MINDS</span>
+                <span class="dim">ONE VICTORY.</span>
+              </h2>
+
+              <div class="roles-desc-bullets">
+                <span>Five roles. One synchronized force.</span>
+                <span>Whether you fight or build,</span>
+                <span>every contribution changes</span>
+                <span>the outcome.</span>
+                <div class="roles-dash-sm"></div>
+              </div>
+
+              <button class="btn-explore-roles" id="btn-explore-roles">
+                <span>EXPLORE ROLES</span>
+                <span class="arrow">→</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Center Tagline (anchored near fighter's hip in the background) -->
+          <div class="roles-fighter-callout">
+            <span class="callout-code" id="callout-code">OP-01</span>
+            <span class="callout-title" id="callout-title">THE FIGHTER</span>
+            <span class="callout-sub" id="callout-sub">EXECUTE. SURVIVE. EVOLVE.</span>
+          </div>
+
+          <!-- Right Column: The Big Role Overview Card -->
+          <div class="roles-overview-card">
+            
+            <!-- Top Row of Card: Info & Stats on Left, In-game Preview on Right -->
+            <div class="card-top-row">
+              <div class="card-info-side">
+                <span class="card-eyebrow">ROLE OVERVIEW</span>
+                <h3 class="card-role-title" id="role-title">THE FIGHTER</h3>
+                <p class="card-role-desc" id="role-desc">
+                  You are the spearhead. Execute moves, survive, and request real-time upgrades from your team.
+                </p>
+
+                <!-- Stat Bars -->
+                <div class="card-stat-meters">
+                  <div class="card-stat-row">
+                    <span class="stat-lbl">DAMAGE</span>
+                    <div class="stat-bar-track">
+                      <div class="stat-bar-fill" id="stat-bar-damage" style="width: 88%;"></div>
+                    </div>
+                    <span class="stat-val" id="stat-num-damage">88</span>
+                  </div>
+                  <div class="card-stat-row">
+                    <span class="stat-lbl">RANGE</span>
+                    <div class="stat-bar-track">
+                      <div class="stat-bar-fill" id="stat-bar-range" style="width: 52%;"></div>
+                    </div>
+                    <span class="stat-val" id="stat-num-range">52</span>
+                  </div>
+                  <div class="card-stat-row">
+                    <span class="stat-lbl">COOLDOWN</span>
+                    <div class="stat-bar-track">
+                      <div class="stat-bar-fill" id="stat-bar-cooldown" style="width: 61%;"></div>
+                    </div>
+                    <span class="stat-val" id="stat-num-cooldown">61</span>
+                  </div>
+                  <div class="card-stat-row">
+                    <span class="stat-lbl">UTILITY</span>
+                    <div class="stat-bar-track">
+                      <div class="stat-bar-fill" id="stat-bar-utility" style="width: 43%;"></div>
+                    </div>
+                    <span class="stat-val" id="stat-num-utility">43</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right: Video Preview Thumbnail & Counter -->
+              <div class="card-preview-side">
+                <div class="card-role-counter" id="role-counter">01 / 05</div>
+                <div class="ingame-thumb-wrap" id="btn-play-role-preview" title="Play Gameplay Clip">
+                  <img src="/assets/ingame_preview-ZKWITuz4.png" alt="In-Game Preview">
+                  <div class="ingame-play-btn">
+                    <span>▶</span>
+                  </div>
+                </div>
+                <span class="ingame-thumb-label">IN-GAME PREVIEW</span>
+              </div>
+            </div>
+
+            <!-- Middle Tabs: Live Code vs Tactical Requests -->
+            <div class="card-mid-tabs">
+              <button class="card-tab-btn active">
+                <span>LIVE CODE (TEAM INPUT)</span>
+                <span class="tab-line"></span>
+              </button>
+              <button class="card-tab-btn">
+                <span>TACTICAL REQUESTS (F1-F4)</span>
+              </button>
+            </div>
+
+            <!-- Bottom Row of Card: Code Editor on Left, Ability Preview on Right -->
+            <div class="card-bottom-row">
+              
+              <!-- Left Code Editor -->
+              <div class="card-code-panel">
+                <div class="code-gutter">
+                  <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                </div>
+                <div class="code-content-wrap">
+                  <pre class="role-code-pre"><code id="role-code-content"><span class="code-comment">// New ability injected in real-time</span>
+<span class="code-keyword">function</span> <span class="code-fn">PhaseStrike</span>() {
+  <span class="code-type">let</span> dash = <span class="code-fn">getPlayerVelocity</span>();
+  <span class="code-type">let</span> direction = <span class="code-fn">getInputDirection</span>();
+  <span class="code-fn">createAfterImage</span>(dash, <span class="code-num">0.3</span>);
+  <span class="code-fn">applyDamage</span>(<span class="code-num">1.5</span>);
+  <span class="code-fn">setCooldown</span>(<span class="code-num">12</span>);
+}</code></pre>
+                  <div class="code-compiling-line">
+                    <span class="compile-icon">⟳</span>
+                    <span class="compile-text">// Compiling... Success.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Ability Preview Card -->
+              <div class="card-ability-panel">
+                <div class="ability-header">
+                  <span>ABILITY PREVIEW</span>
+                </div>
+                <div class="ability-img-wrap">
+                  <img src="/assets/ability_preview-CcS7j-Q7.png" alt="Ability Visualizer" id="ability-preview-img">
+                </div>
+                <div class="ability-footer">
+                  <span class="ability-title" id="role-ability-name">PHASE STRIKE v2.1</span>
+                  <span class="ability-status">
+                    <span>DEPLOYED</span>
+                    <span class="status-dot">●</span>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Bottom Row: Operative Thumbnails Carousel & Right Tagline -->
+        <div class="roles-bottom-strip">
+          
+          <!-- 5 Operatives Carousel -->
+          <div class="operatives-carousel-wrap">
+            <button class="carousel-nav-btn prev" id="carousel-prev" aria-label="Previous Operative">
+              <span>‹</span>
+            </button>
+            <div class="operatives-cards-track">
+              <div class="op-card-item active" data-role="0">
+                <img src="/assets/op1_card-CT5lc1u8.png" alt="OP-01 FIGHTER">
+              </div>
+              <div class="op-card-item" data-role="1">
+                <img src="/assets/op2_card-CN7JFNOY.png" alt="OP-02 WEAPONS">
+              </div>
+              <div class="op-card-item" data-role="2">
+                <img src="/assets/op3_card-J-1Y8zJx.png" alt="OP-03 ABILITY">
+              </div>
+              <div class="op-card-item" data-role="3">
+                <img src="/assets/op4_card-B8LeInQ_.png" alt="OP-04 DEFENSE">
+              </div>
+              <div class="op-card-item" data-role="4">
+                <img src="/assets/op5_card-9l3EQ0TV.png" alt="OP-05 SYSTEMS ARCHITECT">
+              </div>
+            </div>
+            <button class="carousel-nav-btn next" id="carousel-next" aria-label="Next Operative">
+              <span>›</span>
+            </button>
+          </div>
+
+          <!-- Right Tagline -->
+          <div class="roles-right-tagline">
+            <span>BUILD</span>
+            <span>ADAPT</span>
+            <span>DOMINATE</span>
+            <div class="tagline-dash"></div>
+          </div>
+
+        </div>
+
+        <!-- Very Bottom Ticker / Brand Footer -->
+        <div class="roles-footer-bar">
+          <div class="footer-left-brand">
+            <span class="brand-name">FORM<span class="caret">∧</span>CT</span>
+          </div>
+          <div class="footer-right-tag">
+            <span>A NEW KIND OF VICTORY.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 4: FORGE IN THE BROWSER (Matching section4.png)
+         ========================================== -->
+    <section class="section-forge" id="forge">
+      <div class="forge-stage">
+        
+        <!-- Main Forge Body: Left Column + Right Workspace -->
+        <div class="forge-main-body">
+          
+          <!-- Left Column: Title, Subtext, 3 Badges, Bottom Text -->
+          <div class="forge-left-col">
+            <div class="forge-title-box">
+              <div class="forge-eyebrow-line">
+                <span class="forge-num-badge">04</span>
+                <span class="forge-eyebrow-dash"></span>
+                <span class="section-eyebrow">FORGE IN THE BROWSER</span>
+              </div>
+
+              <h2 class="section-heading-big">
+                <span>CODE</span>
+                <span>TWEAK</span>
+                <span class="dim">DEPLOY</span>
+              </h2>
+
+              <div class="forge-desc-bullets">
+                <span>Real changes. Real visuals.</span>
+                <span>Feel the impact.</span>
+                <span>This is not a concept.</span>
+                <span>This is FORMACT.</span>
+              </div>
+            </div>
+
+            <div class="forge-divider-line"></div>
+
+            <!-- 3 Feature Badges -->
+            <div class="forge-features-list">
+              <div class="forge-feature-item">
+                <div class="forge-feat-icon">
+                  <span>&lt;/&gt;</span>
+                </div>
+                <div class="forge-feat-info">
+                  <span class="feat-title">EDIT PARAMETERS</span>
+                  <span class="feat-sub">Tune the numbers.</span>
+                </div>
+              </div>
+
+              <div class="forge-feature-item">
+                <div class="forge-feat-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 2 L20 7 L20 17 L12 22 L4 17 L4 7 Z" />
+                    <path d="M12 22 V12 M12 12 L20 7 M12 12 L4 7" />
+                  </svg>
+                </div>
+                <div class="forge-feat-info">
+                  <span class="feat-title">SEE IT COME ALIVE</span>
+                  <span class="feat-sub">Real-time 3D rendering.</span>
+                </div>
+              </div>
+
+              <div class="forge-feature-item">
+                <div class="forge-feat-icon">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M13 2 L3 14 H12 L11 22 L21 10 H12 L13 2 Z" />
+                  </svg>
+                </div>
+                <div class="forge-feat-info">
+                  <span class="feat-title">DEPLOY TO YOUR TEAM</span>
+                  <span class="feat-sub">Give them the edge.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="forge-divider-line"></div>
+
+            <!-- Bottom Left Tagline -->
+            <div class="forge-bottom-left-tag">
+              <span>SAME CODE.</span>
+              <span>DIFFERENT OUTCOMES.</span>
+            </div>
+
+            <div class="forge-divider-line"></div>
+          </div>
+
+          <!-- Right Workspace: Top Cards (Editor + 3D Viewport) + Middle Stats + Bottom Banner -->
+          <div class="forge-workspace-col">
+            
+            <!-- Upper Split: Code Editor Card on Left, 3D Render on Right -->
+            <div class="forge-upper-row">
+              
+              <!-- Code Editor Card with REAL Interactive Editor -->
+              <div class="forge-code-card">
+                <div class="forge-card-tabbar">
+                  <div class="forge-tabs-group" role="tablist">
+                    <button class="forge-tab-btn active" data-file="weapon" role="tab" aria-selected="true">WEAPON.BLD<span class="tab-glow-line"></span></button>
+                    <button class="forge-tab-btn" data-file="abilities" role="tab" aria-selected="false">ABILITIES.BLD</button>
+                    <button class="forge-tab-btn" data-file="defense" role="tab" aria-selected="false">DEFENSE.BLD</button>
+                    <button class="forge-tab-btn add" title="New file" aria-label="Add file">+</button>
+                  </div>
+                  <div class="forge-editor-actions">
+                    <button class="forge-editor-run-btn" id="forge-run-btn" title="Run / Compile Code">
+                      <span>▶</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="forge-editor-inner">
+                  <div class="forge-editor-gutter" id="forge-gutter"></div>
+                  <div class="forge-editor-wrap">
+                    <pre class="forge-code-highlight" id="forge-code-highlight" aria-hidden="true"><code id="forge-code-content"></code></pre>
+                    <textarea class="forge-code-textarea" id="forge-code-textarea" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Interactive Code Editor"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3D Render Viewport Card -->
+              <div class="forge-render-card">
+                <div class="render-header-bar">
+                  <span class="render-lbl-left">REAL-TIME RENDER</span>
+                  <span class="render-lbl-right">WEBGL // PROCEDURAL</span>
+                </div>
+
+                <!-- 3D Viewport Body: Center Hammer + Right Variants Column -->
+                <div class="render-body-wrap">
+                  
+                  <!-- Center Viewport (Full Hammer scene with base pedestal) -->
+                  <div class="render-viewport-center" id="forge-viewport-center">
+                    <canvas id="forge-3d-canvas" class="forge-3d-canvas"></canvas>
+                    <img src="/assets/hammer_viewport_clean-D4NaJ3FR.png" alt="Arc Maul 3D Render" id="forge-hammer-img" class="forge-hammer-img cyan">
+                    <div id="forge-3d-loader" class="forge-3d-loader">
+                      <div class="loader-spinner"></div>
+                      <span class="loader-text">LOADING 3D MODEL...</span>
+                    </div>
+                    <div class="render-bottom-nav">
+                      <div class="nav-item"><span>⚡</span> DRAG TO ROTATE</div>
+                      <div class="nav-item"><span>🔍</span> SCROLL TO ZOOM</div>
+                      <div class="nav-item"><span>⚙</span> FULLSCREEN</div>
+                    </div>
+                  </div>
+
+                  <!-- Right Variants Column -->
+                  <div class="render-variants-col">
+                    <span class="variants-heading">VARIANTS</span>
+                    <div class="variant-item-card active" data-color="cyan">
+                      <div class="variant-img-wrap">
+                        <img src="/assets/variant_cyan-CeMbMZXQ.png" alt="Cyan Variant">
+                      </div>
+                      <span class="variant-name">CYAN</span>
+                    </div>
+                    <div class="variant-item-card" data-color="orange">
+                      <div class="variant-img-wrap">
+                        <img src="/assets/variant_orange-BEMZ8OOb.png" alt="Orange Variant">
+                      </div>
+                      <span class="variant-name">ORANGE</span>
+                    </div>
+                    <div class="variant-item-card" data-color="frost">
+                      <div class="variant-img-wrap">
+                        <img src="/assets/variant_frost-Cdz6KZFa.png" alt="Frost Variant">
+                      </div>
+                      <span class="variant-name">FROST</span>
+                    </div>
+                    <div class="variant-item-card" data-color="green">
+                      <div class="variant-img-wrap">
+                        <img src="/assets/variant_green-6qUVz4zr.png" alt="Green Variant">
+                      </div>
+                      <span class="variant-name">GREEN</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Middle Row: 4 Stat Meters + Big Forge Button -->
+            <div class="forge-stats-action-row">
+              <div class="forge-stat-blocks-grid">
+                
+                <div class="forge-stat-block">
+                  <span class="stat-tag">DAMAGE</span>
+                  <span class="stat-number" id="forge-num-damage">85</span>
+                  <div class="stat-line-track">
+                    <div class="stat-line-bar damage" id="forge-bar-damage" style="width: 85%;"></div>
+                  </div>
+                </div>
+
+                <div class="forge-stat-block">
+                  <span class="stat-tag">RANGE</span>
+                  <span class="stat-number" id="forge-num-range">3.2</span>
+                  <div class="stat-line-track">
+                    <div class="stat-line-bar range" id="forge-bar-range" style="width: 64%;"></div>
+                  </div>
+                </div>
+
+                <div class="forge-stat-block">
+                  <span class="stat-tag">COOLDOWN</span>
+                  <span class="stat-number" id="forge-num-cooldown">1.4</span>
+                  <div class="stat-line-track">
+                    <div class="stat-line-bar cooldown" id="forge-bar-cooldown" style="width: 46%;"></div>
+                  </div>
+                </div>
+
+                <div class="forge-stat-block">
+                  <span class="stat-tag">WEIGHT</span>
+                  <span class="stat-number" id="forge-num-weight">12.0</span>
+                  <div class="stat-line-track">
+                    <div class="stat-line-bar weight" id="forge-bar-weight" style="width: 48%;"></div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Forge & Deploy CTA -->
+              <button class="btn-forge-action" id="btn-forge-action">
+                <span class="bolt">⚡</span>
+                <span class="btn-text">FORGE &amp; DEPLOY</span>
+                <span class="arrow">→</span>
+              </button>
+            </div>
+
+            <!-- Bottom Deploy Banner -->
+            <div class="forge-deploy-banner" id="forge-deploy-banner">
+              <div class="banner-left-side">
+                <div class="deploy-check-circle">
+                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </div>
+                <div class="deploy-text-content">
+                  <h4 class="deploy-headline">DEPLOYED TO TEAM FIGHTER!</h4>
+                  <p class="deploy-subline">Compilation successful. Your weapon is now live in the arena.</p>
+                </div>
+              </div>
+
+              <div class="banner-right-side">
+                <div class="banner-fighter-img">
+                  <img src="/assets/team_fighter_banner-pOhte2EE.png" alt="Team Fighter Combat">
+                </div>
+                <div class="banner-fighter-quote">
+                  <span class="quote-text">"NEW TOOLS. NEW WINS."</span>
+                  <span class="quote-author">— TEAM FIGHTER</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Very Bottom Bar -->
+        <div class="forge-footer-bar">
+          <div class="footer-left-brand">
+            <span class="brand-name">FORM<span class="caret">∧</span>CT</span>
+            <span class="brand-sub">HUMAN INTELLIGENCE. MACHINE POTENTIAL.</span>
+          </div>
+          <div class="footer-right-tag">
+            <span>CODE TODAY. A STRONGER TOMORROW.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: THE SANCTUARY CORE ARENA (Matching section5.png)
+         ========================================== -->
+    <section class="section-sanctuary" id="sanctuary">
+      <div class="sanctuary-backdrop" id="sanctuary-backdrop"></div>
+      <div class="sanctuary-overlay"></div>
+
+      <div class="sanctuary-body">
+        
+        <!-- Left Column: Title, Desc, Action, Thumbnails, Coords -->
+        <div class="sanctuary-left-col">
+          <div class="sanctuary-eyebrow-line">
+            <span class="sanctuary-num-badge">05</span>
+            <span class="sanctuary-eyebrow-dash"></span>
+            <span class="section-eyebrow">THE SANCTUARY CORE ARENA</span>
+          </div>
+
+          <h2 class="sanctuary-title-big">
+            <span>HIGHER</span>
+            <span>BIGGER</span>
+            <span>CLEANER</span>
+            <span class="dim">NO LIMITS.</span>
+          </h2>
+
+          <div class="sanctuary-divider-line"></div>
+
+          <p class="sanctuary-desc">
+            A low-orbit arena where minds and machines collide. The Sanctuary is more than a battleground - it's a test of evolution.
+          </p>
+
+          <div class="sanctuary-action">
+            <a href="#specs" class="btn-sanctuary-explore" id="btn-sanctuary-explore">
+              <span>EXPLORE THE SANCTUARY</span>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+
+          <div class="sanctuary-thumbnails-row">
+            <div class="sanctuary-thumb-item active" data-bg="section5_background.png">
+              <img src="/assets/section4_background-Bnv7RsQr.png" alt="Sanctuary Deck">
+            </div>
+            <div class="sanctuary-thumb-item" data-bg="assets/sanctuary_clean.png">
+              <img src="/assets/sanctuary_clean-DNEChijr.png" alt="Duel Colosseum">
+            </div>
+            <div class="sanctuary-thumb-item" data-bg="assets/footer_earth_clean.png">
+              <img src="/assets/footer_earth_clean-DH-2PglB.png" alt="Orbital Outlook">
+            </div>
+          </div>
+
+          <div class="sanctuary-coords-block">
+            <span class="coords-title">ORBITAL PLATFORM</span>
+            <span class="coords-val">0.00° N   0.00° E</span>
+            <span class="coords-sub">LOW EARTH ORBIT</span>
+          </div>
+        </div>
+
+        <!-- Right Column: Slogan Stack -->
+        <div class="sanctuary-right-col">
+          <div class="sanctuary-slogan-stack">
+            <span>MACHINES</span>
+            <span>BUILD</span>
+            <span>FASTER.</span>
+            <span class="spacer"></span>
+            <span>HUMANS</span>
+            <span>AIM HIGHER.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bar -->
+      <div class="sanctuary-footer-bar">
+        <div class="sanctuary-footer-left">
+          <span class="brand-logo-txt">FORM<span class="logo-caret">∧</span>CT</span>
+          <span class="brand-sub-txt">HUMAN INTELLIGENCE. MACHINE POTENTIAL.</span>
+        </div>
+        <div class="sanctuary-footer-center">
+          <span>SAME PLANET. A HIGHER ARENA.</span>
+        </div>
+        <div class="sanctuary-footer-right">
+          <span class="dash">—</span>
+          <span>PLAY A BRIGHTER TOMORROW.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 6: SYSTEM SPECS & PLAYTEST (Matching section6.png)
+         ========================================== -->
+    <section class="section-specs" id="specs">
+      <div class="specs-backdrop" id="specs-backdrop"></div>
+      <div class="specs-overlay"></div>
+
+      <div class="specs-main-body">
+        
+        <!-- Top Hero Split: Left Title & Download Card, Right Slogan Stack -->
+        <div class="specs-top-row">
+          
+          <!-- Left Column -->
+          <div class="specs-download-col">
+            <div class="specs-eyebrow-line">
+              <span class="specs-num-badge">06</span>
+              <span class="specs-eyebrow-dash"></span>
+              <span class="section-eyebrow">GET IN THE ARENA</span>
+            </div>
+
+            <h2 class="specs-title-big">
+              <span>DOWNLOAD</span>
+              <span>THE PLAYTEST</span>
+            </h2>
+
+            <p class="specs-sub-desc">
+              Join the fight. Test new systems.<br>Help shape FORMACT.
+            </p>
+
+            <!-- Large Download Card Box -->
+            <a href="FORMACT_Playtest_Setup_v1.0.zip" download class="specs-dl-box" id="btn-download-pkg">
+              <div class="dl-box-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+              </div>
+              <div class="dl-box-info">
+                <span class="dl-filename">FORMACT_Playtest_Setup_v1.0.zip</span>
+                <span class="dl-meta">~ 4.8 GB &nbsp;|&nbsp; Standalone Package</span>
+              </div>
+              <div class="dl-box-arrow">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 5v14M5 12l7 7 7-7" />
+                </svg>
+              </div>
+            </a>
+
+            <span class="dl-note">No launcher required. Just download, extract, and play.</span>
+          </div>
+
+          <!-- Right Column: Slogan Stack -->
+          <div class="specs-slogan-col">
+            <div class="specs-slogan-stack">
+              <span>SAME</span>
+              <span>MINDS.</span>
+              <span>DIFFERENT</span>
+              <span>ROLES.</span>
+              <span class="spacer"></span>
+              <span>ONE</span>
+              <span>ARENA.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Middle Card: SYSTEM REQUIREMENTS Matrix -->
+        <div class="specs-req-card">
+          <div class="req-header-bar">
+            <div class="req-header-left">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <span>SYSTEM REQUIREMENTS</span>
+            </div>
+            <div class="req-header-right">
+              <span>PLAY YOUR WAY. —</span>
+            </div>
+          </div>
+
+          <div class="req-body-split">
+            <!-- Specs Table on Left -->
+            <div class="req-table-wrap">
+              <table class="specs-table-grid">
+                <thead>
+                  <tr>
+                    <th class="col-comp">COMPONENT</th>
+                    <th class="col-potato">
+                      <span class="head-title">POTATO-PC MODE</span>
+                      <span class="head-sub">(INTEGRATED FRIENDLY)</span>
+                    </th>
+                    <th class="col-min">
+                      <span class="head-title">MINIMUM</span>
+                      <span class="head-sub">(PLAYABLE)</span>
+                    </th>
+                    <th class="col-rec">
+                      <span class="head-title">RECOMMENDED</span>
+                      <span class="head-sub">(BEST EXPERIENCE)</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="lbl-comp">OS</td>
+                    <td class="val-potato">Windows 10 (64-bit)</td>
+                    <td class="val-min">Windows 10 (64-bit)</td>
+                    <td class="val-rec">Windows 10 (64-bit)</td>
+                  </tr>
+                  <tr>
+                    <td class="lbl-comp">CPU</td>
+                    <td class="val-potato">Intel Core i3 (Any Gen)</td>
+                    <td class="val-min">Intel Core i5-8400 / AMD Ryzen 5 2600</td>
+                    <td class="val-rec">Intel Core i7-10700 / AMD Ryzen 7 5700X</td>
+                  </tr>
+                  <tr>
+                    <td class="lbl-comp">GPU</td>
+                    <td class="val-potato">Intel UHD 620 (Integrated)</td>
+                    <td class="val-min highlight-cyan">GTX 1050 Ti / RX 570 (4GB)</td>
+                    <td class="val-rec highlight-cyan">RTX 3060 / RX 6700 XT (8GB)</td>
+                  </tr>
+                  <tr>
+                    <td class="lbl-comp">RAM</td>
+                    <td class="val-potato">8 GB</td>
+                    <td class="val-min highlight-cyan">16 GB</td>
+                    <td class="val-rec">16 GB+</td>
+                  </tr>
+                  <tr>
+                    <td class="lbl-comp">Storage</td>
+                    <td class="val-potato">8 GB (HDD/SSD)</td>
+                    <td class="val-min highlight-cyan">20 GB (SSD recommended)</td>
+                    <td class="val-rec">20 GB (SSD)</td>
+                  </tr>
+                  <tr>
+                    <td class="lbl-comp">Target FPS</td>
+                    <td class="val-potato">30-45 FPS (720p, Low)</td>
+                    <td class="val-min highlight-cyan">60 FPS (1080p, Medium)</td>
+                    <td class="val-rec">120 FPS (1440p, High)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Early Playtest Callout Card on Right -->
+            <div class="req-side-card">
+              <div class="req-op-img-wrap">
+                <img src="/assets/playtest_operative-CLlsxCoE.png" alt="Operative Helmet">
+              </div>
+              <div class="req-side-info">
+                <span class="side-tagline">EARLY PLAYTEST</span>
+                <h3 class="side-title">
+                  <span>SMALLER</span>
+                  <span>BUILD.</span>
+                  <span>BIGGER</span>
+                  <span>TOMORROW.</span>
+                </h3>
+                <div class="side-dash">—</div>
+                <p class="side-sub">Be part of the journey.<br>Play. Feedback. Evolve.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Card: JOIN THE COMMUNITY -->
+        <div class="specs-community-card">
+          <div class="comm-header-bar">
+            <div class="comm-header-left">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <span>JOIN THE COMMUNITY</span>
+            </div>
+            <div class="comm-header-right">
+              <span>DISCUSS. SHARE. BUILD TOGETHER. —</span>
+            </div>
+          </div>
+
+          <div class="comm-cards-grid">
+            
+            <!-- Discord Card -->
+            <a href="https://discord.gg" target="_blank" rel="noopener" class="comm-item-btn discord">
+              <div class="comm-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                </svg>
+              </div>
+              <div class="comm-text">
+                <span class="comm-sub">JOIN OUR</span>
+                <span class="comm-title">DISCORD <span class="arrow">→</span></span>
+                <span class="comm-desc">Chat with devs &amp; players</span>
+              </div>
+            </a>
+
+            <!-- Steam Card -->
+            <a href="https://store.steampowered.com" target="_blank" rel="noopener" class="comm-item-btn steam">
+              <div class="comm-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.48 3.67 10.1 8.66 11.53l3.52-4.88a3.67 3.67 0 0 1-1.31-2.77c0-2.03 1.65-3.68 3.68-3.68s3.68 1.65 3.68 3.68-1.65 3.68-3.68 3.68c-.68 0-1.32-.19-1.87-.51l-4.78 3.47A11.96 11.96 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z" />
+                </svg>
+              </div>
+              <div class="comm-text">
+                <span class="comm-sub">WISHLIST ON</span>
+                <span class="comm-title">STEAM <span class="arrow">→</span></span>
+                <span class="comm-desc">Support the game</span>
+              </div>
+            </a>
+
+            <!-- Reddit Card -->
+            <a href="https://reddit.com" target="_blank" rel="noopener" class="comm-item-btn reddit">
+              <div class="comm-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.196-.491.93 0 1.685.756 1.685 1.686 0 .61-.326 1.144-.813 1.442.02.193.033.39.033.589 0 2.997-3.476 5.428-7.762 5.428-4.286 0-7.762-2.431-7.762-5.428 0-.199.013-.396.033-.589a1.68 1.68 0 0 1-.813-1.442c0-.93.755-1.686 1.685-1.686.467 0 .889.182 1.196.491 1.194-.856 2.85-1.418 4.674-1.488l.942-4.412 3.2.673c.074-.474.48-.838.975-.838z" />
+                </svg>
+              </div>
+              <div class="comm-text">
+                <span class="comm-sub">JOIN THE</span>
+                <span class="comm-title">REDDIT <span class="arrow">→</span></span>
+                <span class="comm-desc">Discuss strategies &amp; ideas</span>
+              </div>
+            </a>
+
+            <!-- GitHub Card -->
+            <a href="https://github.com" target="_blank" rel="noopener" class="comm-item-btn github">
+              <div class="comm-icon-wrap">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+              </div>
+              <div class="comm-text">
+                <span class="comm-sub">VIEW ON</span>
+                <span class="comm-title">GITHUB <span class="arrow">→</span></span>
+                <span class="comm-desc">Tools, mods &amp; open source</span>
+              </div>
+            </a>
+
+            <!-- Quote Box Card on Right -->
+            <div class="comm-quote-card">
+              <span class="quote-text">"GREAT GAMES ARE BUILT TOGETHER.."</span>
+              <span class="quote-author">— FORMACT TEAM</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Bar -->
+      <div class="specs-footer-bar">
+        <div class="specs-footer-left">
+          <span class="brand-logo-txt">FORM<span class="logo-caret">∧</span>CT</span>
+          <span class="brand-sub-txt">HUMAN INTELLIGENCE. MACHINE POTENTIAL.</span>
+        </div>
+        <div class="specs-footer-right">
+          <span class="dash">—</span>
+          <span>PLAYTEST TODAY. A BRIGHTER TOMORROW.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================
+       SITE FOOTER (Matching fotoor.png with footor_background.png)
+       ========================================== -->
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-backdrop" id="footer-backdrop"></div>
+    <div class="footer-overlay"></div>
+
+    <div class="footer-container">
+      
+      <!-- Top Row: Left Brand Info, Right Newsletter Signup -->
+      <div class="footer-top-row">
+        
+        <!-- Left Brand Col -->
+        <div class="footer-brand-col">
+          <h2 class="footer-brand-logo">FORM<span class="logo-caret">∧</span>CT</h2>
+          <span class="footer-brand-tagline">SAME MINDS. A HIGHER ARENA.</span>
+          <div class="footer-brand-dash">—</div>
+          <p class="footer-brand-desc">
+            A new kind of battlefield.<br>
+            Where code empowers combat, and<br>
+            humans and machines evolve together.
+          </p>
+          <div class="footer-brand-pills">
+            <span>CODE</span> <span class="sep">/</span>
+            <span>FIGHT</span> <span class="sep">/</span>
+            <span>ADAPT</span> <span class="sep">/</span>
+            <span>REPEAT</span>
+          </div>
+        </div>
+
+        <!-- Right Newsletter Col -->
+        <div class="footer-newsletter-col">
+          <h3 class="newsletter-title">STAY IN THE LOOP</h3>
+          <p class="newsletter-sub">Get the latest updates, playtest invites, dev logs, and community highlights.</p>
+          
+          <form class="newsletter-form" id="newsletter-form" onsubmit="event.preventDefault();">
+            <div class="newsletter-input-group">
+              <input type="email" class="newsletter-input" placeholder="Enter your email" required aria-label="Email for newsletter">
+              <button type="submit" class="newsletter-submit-btn" aria-label="Subscribe to newsletter">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+            <label class="newsletter-checkbox-label">
+              <input type="checkbox" class="newsletter-checkbox" required>
+              <span class="checkbox-text">I agree to receive updates about FORMACT. No spam. Just good stuff.</span>
+            </label>
+          </form>
+        </div>
+
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <!-- Middle Navigation Grid (4 Link Cols + 1 Callout Col) -->
+      <div class="footer-nav-grid">
+        
+        <!-- Col 1: GAME -->
+        <div class="footer-nav-col">
+          <h4 class="nav-col-title">GAME</h4>
+          <ul class="footer-links-list">
+            <li><a href="#hero">Overview</a></li>
+            <li><a href="#duality">Gameplay</a></li>
+            <li><a href="#roles">Teams &amp; Roles</a></li>
+            <li><a href="#sanctuary">The Arena</a></li>
+            <li><a href="#forge">Technology</a></li>
+            <li><a href="#hero">Media</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 2: COMMUNITY -->
+        <div class="footer-nav-col">
+          <h4 class="nav-col-title">COMMUNITY</h4>
+          <ul class="footer-links-list">
+            <li><a href="https://discord.gg" target="_blank" rel="noopener">Discord <span class="ext-icon">↗</span></a></li>
+            <li><a href="https://reddit.com" target="_blank" rel="noopener">Reddit <span class="ext-icon">↗</span></a></li>
+            <li><a href="https://store.steampowered.com" target="_blank" rel="noopener">Steam Wishlist <span class="ext-icon">↗</span></a></li>
+            <li><a href="https://github.com" target="_blank" rel="noopener">GitHub <span class="ext-icon">↗</span></a></li>
+            <li><a href="#specs">Forums</a></li>
+            <li><a href="#specs">Playtest</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: SUPPORT -->
+        <div class="footer-nav-col">
+          <h4 class="nav-col-title">SUPPORT</h4>
+          <ul class="footer-links-list">
+            <li><a href="#specs">System Requirements</a></li>
+            <li><a href="#specs">Installation Guide</a></li>
+            <li><a href="#hero">FAQ</a></li>
+            <li><a href="https://github.com" target="_blank" rel="noopener">Report a Bug</a></li>
+            <li><a href="#specs">Contact</a></li>
+            <li><a href="#specs">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: LEGAL -->
+        <div class="footer-nav-col">
+          <h4 class="nav-col-title">LEGAL</h4>
+          <ul class="footer-links-list">
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Cookie Settings</a></li>
+            <li><a href="#">Licenses</a></li>
+            <li><a href="#">Attributions</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 5: Right Callout Block -->
+        <div class="footer-callout-col">
+          <div class="footer-callout-dash">—</div>
+          <div class="footer-callout-stack">
+            <span>BUILT</span>
+            <span>BY PLAYERS.</span>
+            <span>FOR HIGHER</span>
+            <span>POSSIBILITIES.</span>
+          </div>
+          <div class="footer-callout-dash">—</div>
+        </div>
+
+      </div>
+
+      <!-- Sub-Footer Row: Social Icons on Left, Reticle Tagline on Right -->
+      <div class="footer-sub-row">
+        
+        <div class="footer-social-block">
+          <div class="social-icons-list">
+            <!-- Discord -->
+            <a href="https://discord.gg" target="_blank" rel="noopener" aria-label="Discord">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028z"/>
+              </svg>
+            </a>
+            <!-- Steam -->
+            <a href="https://store.steampowered.com" target="_blank" rel="noopener" aria-label="Steam">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.48 3.67 10.1 8.66 11.53l3.52-4.88a3.67 3.67 0 0 1-1.31-2.77c0-2.03 1.65-3.68 3.68-3.68s3.68 1.65 3.68 3.68-1.65 3.68-3.68 3.68c-.68 0-1.32-.19-1.87-.51l-4.78 3.47A11.96 11.96 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>
+              </svg>
+            </a>
+            <!-- Reddit -->
+            <a href="https://reddit.com" target="_blank" rel="noopener" aria-label="Reddit">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.196-.491.93 0 1.685.756 1.685 1.686 0 .61-.326 1.144-.813 1.442.02.193.033.39.033.589 0 2.997-3.476 5.428-7.762 5.428-4.286 0-7.762-2.431-7.762-5.428 0-.199.013-.396.033-.589a1.68 1.68 0 0 1-.813-1.442c0-.93.755-1.686 1.685-1.686.467 0 .889.182 1.196.491 1.194-.856 2.85-1.418 4.674-1.488l.942-4.412 3.2.673c.074-.474.48-.838.975-.838z"/>
+              </svg>
+            </a>
+            <!-- GitHub -->
+            <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+              </svg>
+            </a>
+            <!-- X (Twitter) -->
+            <a href="https://x.com" target="_blank" rel="noopener" aria-label="X">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+            <!-- YouTube -->
+            <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+          </div>
+          <span class="social-tagline">DIFFERENT ROLES. ONE VICTORY.</span>
+        </div>
+
+        <div class="footer-reticle-block">
+          <div class="reticle-icon">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="8"/>
+              <circle cx="12" cy="12" r="3"/>
+              <line x1="12" y1="1" x2="12" y2="4"/>
+              <line x1="12" y1="20" x2="12" y2="23"/>
+              <line x1="1" y1="12" x2="4" y2="12"/>
+              <line x1="20" y1="12" x2="23" y2="12"/>
+            </svg>
+          </div>
+          <div class="reticle-text">
+            <span>HUMAN INTELLIGENCE.</span>
+            <span>MACHINE POTENTIAL.</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Spacing block showing artwork in middle -->
+      <div class="footer-artwork-spacer"></div>
+
+      <!-- Bottom Bar: Copyright on Left, Tagline on Right -->
+      <div class="footer-bottom-bar">
+        <span class="copyright-txt">© 2025 FORMACT. ALL RIGHTS RESERVED.</span>
+        <span class="bottom-tagline">A BRIGHTER TOMORROW. // TOGETHER.</span>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ==========================================
+       CINEMATIC TRAILER MODAL
+       ========================================== -->
+  <div class="trailer-modal" id="trailer-modal" role="dialog" aria-modal="true" aria-label="FORMACT Cinematic Trailer">
+    <div class="trailer-modal-dialog">
+      <button class="btn-close-modal" id="close-trailer-modal" aria-label="Close Video Trailer">✕</button>
+      <video id="trailer-video" controls preload="metadata" playsinline>
+        <source src="trailer.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
+  </div>
+
+</body>
+</html>
