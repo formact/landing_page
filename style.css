@@ -4210,6 +4210,108 @@ button {
   flex-direction: column;
 }
 
+/* Multi-Platform Download Cards Grid */
+.specs-dl-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  width: 100%;
+}
+
+.specs-dl-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(3, 7, 14, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  text-decoration: none;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.specs-dl-card:hover {
+  border-color: var(--cyan-primary, #00e5ff);
+  background: rgba(0, 229, 255, 0.06);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.dl-card-os {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.dl-os-icon {
+  color: var(--cyan-primary, #00e5ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.specs-dl-card:hover .dl-os-icon {
+  background: var(--cyan-primary, #00e5ff);
+  color: #03070e;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+}
+
+.dl-os-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dl-os-name {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(12px, 0.8vw, 14px);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+}
+
+.dl-os-meta {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(10px, 0.6vw, 11.5px);
+  color: #64748b;
+  letter-spacing: 0.06em;
+}
+
+.dl-card-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cyan-primary, #00e5ff);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+}
+
+.dl-btn-txt {
+  color: #a0aec0;
+  transition: color 0.3s ease;
+}
+
+.specs-dl-card:hover .dl-btn-txt {
+  color: #ffffff;
+}
+
+.specs-dl-card:hover .dl-card-action svg {
+  transform: translateY(2px);
+  color: var(--cyan-primary, #00e5ff);
+}
+
 /* Sub-Footer Row */
 .footer-sub-row {
   display: flex;
