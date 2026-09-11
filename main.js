@@ -622,83 +622,88 @@ squad.<span class="code-fn">fillEnergyReservoir</span>(<span class="code-num">1.
 function initCleanHeroTitleGlider() {
   const heroTitle = document.getElementById('hero-title');
   const siteHeader = document.getElementById('site-header');
+  const slot = document.getElementById('hero-title-slot');
   const pretitle = document.querySelector('.hero-pretitle');
   const subtitle = document.querySelector('.hero-subtitle');
   const actions = document.querySelector('.hero-actions');
   const rightLabel = document.querySelector('.hero-right-label');
   const scrollTicker = document.querySelector('.hero-scroll-ticker');
 
-  if (!heroTitle || !siteHeader) return;
+  if (!heroTitle || !siteHeader || !slot) return;
 
-  function setupAnimation() {
-    const slot = document.getElementById('hero-title-slot');
+  // Initial natural relative layout
+  heroTitle.style.position = 'relative';
+  heroTitle.style.top = 'auto';
+  heroTitle.style.left = 'auto';
+  heroTitle.style.transform = 'none';
+  heroTitle.style.margin = '0';
+  heroTitle.style.zIndex = '1001';
+
+  let startLeft = 0;
+  let startTop = 0;
+  const targetLeft = 48;
+  const targetTop = 18;
+  const targetScale = 0.32;
+
+  function measurePositions() {
     heroTitle.style.position = 'relative';
-    heroTitle.style.top = 'auto';
-    heroTitle.style.left = 'auto';
     heroTitle.style.transform = 'none';
-
-    const rect = slot ? slot.getBoundingClientRect() : heroTitle.getBoundingClientRect();
-    const startLeft = rect.left;
-    const startTop = rect.top;
-
-    const headerStyle = window.getComputedStyle(siteHeader);
-    const targetLeft = parseFloat(headerStyle.paddingLeft) || 48;
-    const targetTop = 18;
-
-    heroTitle.style.position = 'fixed';
-    heroTitle.style.top = `${targetTop}px`;
-    heroTitle.style.left = `${targetLeft}px`;
-    heroTitle.style.transformOrigin = 'left top';
-    heroTitle.style.zIndex = '1001';
-    heroTitle.style.margin = '0';
-    heroTitle.style.pointerEvents = 'auto';
-
-    const deltaX = startLeft - targetLeft;
-    const deltaY = startTop - targetTop;
-    const targetScale = 0.32;
-
-    gsap.set(heroTitle, {
-      x: deltaX,
-      y: deltaY,
-      scale: 1,
-      opacity: 1
-    });
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#hero',
-        start: 'top top',
-        end: '55% top',
-        scrub: 0.5,
-        onUpdate: (self) => {
-          if (self.progress > 0.4) {
-            siteHeader.classList.add('scrolled');
-          } else {
-            siteHeader.classList.remove('scrolled');
-          }
-        }
-      }
-    });
-
-    const surrounding = [pretitle, subtitle, actions, rightLabel, scrollTicker].filter(Boolean);
-    tl.to(surrounding, {
-      opacity: 0,
-      y: -12,
-      duration: 0.25,
-      ease: 'power1.out'
-    }, 0);
-
-    tl.to(heroTitle, {
-      x: 0,
-      y: 0,
-      scale: targetScale,
-      duration: 0.75,
-      ease: 'power2.inOut'
-    }, 0.08);
+    const rect = slot.getBoundingClientRect();
+    startLeft = rect.left;
+    startTop = rect.top + window.scrollY;
   }
 
-  requestAnimationFrame(() => {
-    setupAnimation();
+  measurePositions();
+  window.addEventListener('resize', measurePositions);
+
+  const surrounding = [pretitle, subtitle, actions, rightLabel, scrollTicker].filter(Boolean);
+
+  ScrollTrigger.create({
+    trigger: '#hero',
+    start: 'top top',
+    end: '60% top',
+    scrub: 0.2,
+    onUpdate: (self) => {
+      const p = self.progress;
+
+      if (p <= 0.001) {
+        // At exact top of page: 100% natural relative position in Hero Section
+        heroTitle.style.position = 'relative';
+        heroTitle.style.top = 'auto';
+        heroTitle.style.left = 'auto';
+        heroTitle.style.transform = 'none';
+        siteHeader.classList.remove('scrolled');
+        gsap.set(surrounding, { opacity: 1, y: 0 });
+      } else {
+        // When scrolling down: fixed positioning gliding smoothly to header top-left (48px, 18px)
+        heroTitle.style.position = 'fixed';
+        heroTitle.style.top = `${targetTop}px`;
+        heroTitle.style.left = `${targetLeft}px`;
+        heroTitle.style.transformOrigin = 'left top';
+
+        // Interpolate position from start (slot) to target (header)
+        const currentDeltaX = (1 - p) * (startLeft - targetLeft);
+        const currentDeltaY = (1 - p) * (startTop - window.scrollY - targetTop);
+        const currentScale = 1 - p * (1 - targetScale);
+
+        gsap.set(heroTitle, {
+          x: currentDeltaX,
+          y: currentDeltaY,
+          scale: currentScale,
+          opacity: 1
+        });
+
+        // Fade out surrounding hero text as user scrolls
+        const surroundingOpacity = Math.max(0, 1 - p * 2.5);
+        gsap.set(surrounding, { opacity: surroundingOpacity, y: -12 * p });
+
+        if (p > 0.4) {
+          siteHeader.classList.add('scrolled');
+        } else {
+          siteHeader.classList.remove('scrolled');
+        }
+      }
+    }
   });
 }
 
