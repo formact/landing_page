@@ -621,9 +621,11 @@ squad.<span class="code-fn">fillEnergyReservoir</span>(<span class="code-num">1.
 
 function initSmoothScrollAndGSAP() {
   const lenis = new Lenis({
-    duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 1.8,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -8 * t)),
     smoothWheel: true,
+    wheelMultiplier: 0.85,
+    touchMultiplier: 1.5,
   });
 
   lenis.on('scroll', ScrollTrigger.update);
