@@ -619,15 +619,85 @@ squad.<span class="code-fn">fillEnergyReservoir</span>(<span class="code-num">1.
   }
 ];
 
-function initStickyHeader() {
+function initCleanHeroTitleGlider() {
+  const heroTitle = document.getElementById('hero-title');
   const siteHeader = document.getElementById('site-header');
-  if (!siteHeader) return;
+  const pretitle = document.querySelector('.hero-pretitle');
+  const subtitle = document.querySelector('.hero-subtitle');
+  const actions = document.querySelector('.hero-actions');
+  const rightLabel = document.querySelector('.hero-right-label');
+  const scrollTicker = document.querySelector('.hero-scroll-ticker');
 
-  ScrollTrigger.create({
-    trigger: '#hero',
-    start: '25% top',
-    onEnter: () => siteHeader.classList.add('scrolled'),
-    onLeaveBack: () => siteHeader.classList.remove('scrolled')
+  if (!heroTitle || !siteHeader) return;
+
+  function setupAnimation() {
+    heroTitle.style.position = 'relative';
+    heroTitle.style.top = 'auto';
+    heroTitle.style.left = 'auto';
+    heroTitle.style.transform = 'none';
+
+    const rect = heroTitle.getBoundingClientRect();
+    const startLeft = rect.left;
+    const startTop = rect.top;
+
+    const headerStyle = window.getComputedStyle(siteHeader);
+    const targetLeft = parseFloat(headerStyle.paddingLeft) || 48;
+    const targetTop = 18;
+
+    heroTitle.style.position = 'fixed';
+    heroTitle.style.top = `${targetTop}px`;
+    heroTitle.style.left = `${targetLeft}px`;
+    heroTitle.style.transformOrigin = 'left top';
+    heroTitle.style.zIndex = '1001';
+    heroTitle.style.margin = '0';
+    heroTitle.style.pointerEvents = 'auto';
+
+    const deltaX = startLeft - targetLeft;
+    const deltaY = startTop - targetTop;
+    const targetScale = 0.32;
+
+    gsap.set(heroTitle, {
+      x: deltaX,
+      y: deltaY,
+      scale: 1,
+      opacity: 1
+    });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: '55% top',
+        scrub: 0.5,
+        onUpdate: (self) => {
+          if (self.progress > 0.4) {
+            siteHeader.classList.add('scrolled');
+          } else {
+            siteHeader.classList.remove('scrolled');
+          }
+        }
+      }
+    });
+
+    const surrounding = [pretitle, subtitle, actions, rightLabel, scrollTicker].filter(Boolean);
+    tl.to(surrounding, {
+      opacity: 0,
+      y: -12,
+      duration: 0.25,
+      ease: 'power1.out'
+    }, 0);
+
+    tl.to(heroTitle, {
+      x: 0,
+      y: 0,
+      scale: targetScale,
+      duration: 0.75,
+      ease: 'power2.inOut'
+    }, 0.08);
+  }
+
+  requestAnimationFrame(() => {
+    setupAnimation();
   });
 }
 
@@ -648,7 +718,7 @@ function initSmoothScrollAndGSAP() {
 
   gsap.ticker.lagSmoothing(0);
 
-  initStickyHeader();
+  initCleanHeroTitleGlider();
 
   // --- Hero Section Animations ---
   gsap.from('.hero-pretitle span', {
