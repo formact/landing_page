@@ -619,6 +619,69 @@ squad.<span class="code-fn">fillEnergyReservoir</span>(<span class="code-num">1.
   }
 ];
 
+function initHeroTitleToNavbarAnimation() {
+  const heroTitle = document.getElementById('hero-title');
+  const siteHeader = document.getElementById('site-header');
+
+  if (!heroTitle || !siteHeader) return;
+
+  function createScrollTween() {
+    heroTitle.style.position = 'relative';
+    heroTitle.style.top = 'auto';
+    heroTitle.style.left = 'auto';
+    heroTitle.style.transform = 'none';
+
+    const rect = heroTitle.getBoundingClientRect();
+    const startLeft = rect.left;
+    const startTop = rect.top;
+
+    const headerStyle = window.getComputedStyle(siteHeader);
+    const targetLeft = parseFloat(headerStyle.paddingLeft) || 48;
+    const targetTop = 18;
+
+    heroTitle.style.position = 'fixed';
+    heroTitle.style.top = `${targetTop}px`;
+    heroTitle.style.left = `${targetLeft}px`;
+    heroTitle.style.transformOrigin = 'left top';
+    heroTitle.style.zIndex = '1001';
+    heroTitle.style.margin = '0';
+
+    const deltaX = startLeft - targetLeft;
+    const deltaY = startTop - targetTop;
+    const targetScale = 0.32;
+
+    gsap.set(heroTitle, {
+      x: deltaX,
+      y: deltaY,
+      scale: 1
+    });
+
+    gsap.to(heroTitle, {
+      x: 0,
+      y: 0,
+      scale: targetScale,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: '45% top',
+        scrub: 0.4,
+        onUpdate: (self) => {
+          if (self.progress > 0.35) {
+            siteHeader.classList.add('scrolled');
+          } else {
+            siteHeader.classList.remove('scrolled');
+          }
+        }
+      }
+    });
+  }
+
+  requestAnimationFrame(() => {
+    createScrollTween();
+  });
+}
+
 function initSmoothScrollAndGSAP() {
   const lenis = new Lenis({
     duration: 1.8,
@@ -645,14 +708,6 @@ function initSmoothScrollAndGSAP() {
     ease: 'power3.out'
   });
 
-  gsap.from('.hero-title', {
-    scale: 0.92,
-    opacity: 0,
-    duration: 1,
-    delay: 0.3,
-    ease: 'power3.out'
-  });
-
   gsap.from('.hero-subtitle span', {
     y: 20,
     opacity: 0,
@@ -669,6 +724,9 @@ function initSmoothScrollAndGSAP() {
     delay: 0.8,
     ease: 'power3.out'
   });
+
+  // --- Dynamic FORMACT Hero Title -> Navbar Gliding Scroll Animation ---
+  initHeroTitleToNavbarAnimation();
 
   gsap.to('#hero-backdrop', {
     yPercent: 20,

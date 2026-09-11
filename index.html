@@ -53,38 +53,9 @@
   <canvas id="ambient-canvas"></canvas>
 
   <!-- ==========================================
-       SITE HEADER NAVIGATION
+       SITE HEADER NAVIGATION (Dynamic Target)
        ========================================== -->
-  <header class="site-header" id="site-header">
-    <a href="#hero" class="brand-logo" id="header-brand-logo">
-      FORM<span class="logo-caret">∧</span>CT
-    </a>
-
-    <nav class="nav-menu" aria-label="Main Navigation">
-      <ul class="nav-links">
-        <li class="nav-item"><a href="#hero">WORLD</a></li>
-        <li class="nav-item"><a href="#duality">COMBAT</a></li>
-        <li class="nav-item"><a href="#roles">ROLES</a></li>
-        <li class="nav-item"><a href="#forge">FORGE</a></li>
-        <li class="nav-item"><a href="#sanctuary">ARENA</a></li>
-        <li class="nav-item"><a href="#specs">SPECS</a></li>
-      </ul>
-    </nav>
-
-    <div class="nav-actions">
-      <!-- Web Audio SFX Toggle -->
-      <button class="audio-toggle-btn active" id="audio-toggle-btn" title="Toggle UI Sound Effects" aria-label="Toggle Sound Effects">
-        <span class="audio-pulse"></span>
-        <span id="audio-label">SFX: ON</span>
-      </button>
-
-      <!-- Wishlist Action with line -->
-      <button class="nav-wishlist-btn" id="header-wishlist-btn">
-        <span>WISHLIST</span>
-        <span class="wishlist-line"></span>
-      </button>
-    </div>
-  </header>
+  <header class="site-header" id="site-header"></header>
 
   <main>
     <!-- ==========================================
@@ -102,9 +73,11 @@
           <span>NO MERCY.</span>
         </div>
 
-        <h1 class="hero-title">
-          FORM<span class="hero-caret">∧</span>CT
-        </h1>
+        <div class="hero-title-wrapper" id="hero-title-wrapper">
+          <h1 class="hero-title" id="hero-title">
+            FORM<span class="hero-caret">∧</span>CT
+          </h1>
+        </div>
 
         <div class="hero-subtitle">
           <span>PRECISION</span>
