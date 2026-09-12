@@ -1198,88 +1198,84 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  initCyberForgeCard();
+  initSpecialistCommandStation();
 });
 
-function initCyberForgeCard() {
-  const forgeCard = document.getElementById('dev-forge-card');
-  const tabs = document.querySelectorAll('.forge-tab');
-  const assetName = document.getElementById('forge-asset-name');
-  const rangeMeter = document.getElementById('forge-meter-range');
-  const rangeVal = document.getElementById('forge-val-range');
-  const damageMeter = document.getElementById('forge-meter-damage');
-  const damageVal = document.getElementById('forge-val-damage');
-  const footerStatus = document.getElementById('forge-footer-status');
-  const assetImg = document.getElementById('forge-asset-img');
+function initSpecialistCommandStation() {
+  const card = document.getElementById('specialist-command-card');
+  const pills = document.querySelectorAll('.cmd-pill');
+  const viewImg = document.getElementById('command-view-img');
+  const title = document.getElementById('hud-badge-title');
+  const sub = document.getElementById('hud-badge-sub');
+  const latency = document.getElementById('metric-latency');
+  const status = document.getElementById('metric-status');
+  const gates = document.getElementById('metric-gates');
+  const ticker = document.getElementById('command-ticker-txt');
 
-  if (!forgeCard) return;
+  if (!card) return;
 
-  const tabData = {
-    model: {
-      name: 'PHASE GAUNTLET v2.1',
-      rangeWidth: '82%',
-      rangeText: '8.0m',
-      damageWidth: '95%',
-      damageText: '1.5x',
-      status: '// REAL-TIME TELEMETRY COMPILATION'
+  const views = {
+    squad: {
+      img: 'assets/devs_clean.png',
+      title: 'SPECIALIST SQUAD WORKSHOP',
+      sub: 'LIVE TELEMETRY · 4 OPERATIVES ACTIVE',
+      latency: '12 ms',
+      status: '20 Hz OVERCLOCK',
+      gates: '14 AURA ONLINE',
+      ticker: '// TEAM SPECIALIST: REAL-TIME TETHERING OPERATIVE UPGRADES'
     },
-    animation: {
-      name: 'OVERCLOCK DASH v2.2',
-      rangeWidth: '94%',
-      rangeText: '12.5m',
-      damageWidth: '70%',
-      damageText: '1.2x',
-      status: '// HYPER-VELOCITY KINEMATIC STREAM'
+    forge: {
+      img: 'assets/hammer_viewport_clean.png',
+      title: 'LIVE WEAPON FORGE ENGINE',
+      sub: 'PARAMETER TUNING · ARENA READY',
+      latency: '8 ms',
+      status: '100% OVERCLOCK',
+      gates: 'SYNCHRONIZED',
+      ticker: '// FORGE ENGINE: REAL-TIME 3D WEAPON PARAMETER COMPILATION'
     },
-    vfx: {
-      name: 'PLASMA TRAIL BURST',
-      rangeWidth: '65%',
-      rangeText: '6.0m',
-      damageWidth: '100%',
-      damageText: '2.0x',
-      status: '// PARTICLE VOLUMETRICS LOADED'
-    },
-    deploy: {
-      name: 'LIVE ARENA LINK',
-      rangeWidth: '100%',
-      rangeText: 'UNLIMITED',
-      damageWidth: '100%',
-      damageText: 'MAX OVERCLOCK',
-      status: '// BUILD DEPLOYED TO FIGHTER ARENA ☑'
+    arena: {
+      img: 'assets/ingame_preview.png',
+      title: 'ARENA COMBAT TETHER',
+      sub: '5v5 ASYMMETRIC CYBER WARFARE FEED',
+      latency: '15 ms',
+      status: 'MATCH ACTIVE',
+      gates: 'FIGHTER LINKED',
+      ticker: '// LIVE ARENA STREAM: REAL-TIME FIGHTER & SPECIALIST COLLISION'
     }
   };
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
 
-      const key = tab.getAttribute('data-tab');
-      const data = tabData[key];
+      const key = pill.getAttribute('data-view');
+      const data = views[key];
       if (!data) return;
 
-      if (assetName) assetName.textContent = data.name;
-      if (rangeVal) rangeVal.textContent = data.rangeText;
-      if (rangeMeter) rangeMeter.style.width = data.rangeWidth;
-      if (damageVal) damageVal.textContent = data.damageText;
-      if (damageMeter) damageMeter.style.width = data.damageWidth;
-      if (footerStatus) footerStatus.textContent = data.status;
+      if (title) title.textContent = data.title;
+      if (sub) sub.textContent = data.sub;
+      if (latency) latency.textContent = data.latency;
+      if (status) status.textContent = data.status;
+      if (gates) gates.textContent = data.gates;
+      if (ticker) ticker.textContent = data.ticker;
 
-      if (assetImg) {
-        gsap.fromTo(assetImg, { opacity: 0.4, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.4)' });
+      if (viewImg) {
+        gsap.fromTo(viewImg, { opacity: 0.3, scale: 1.04 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'power2.out' });
+        viewImg.src = data.img;
       }
     });
   });
 
-  // 3D Tilt interaction on mouse move
-  forgeCard.addEventListener('mousemove', (e) => {
-    const rect = forgeCard.getBoundingClientRect();
+  // Mouse 3D perspective tilt
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    const rotateX = (-y / rect.height) * 10;
-    const rotateY = (x / rect.width) * 10;
+    const rotateX = (-y / rect.height) * 8;
+    const rotateY = (x / rect.width) * 8;
 
-    gsap.to(forgeCard, {
+    gsap.to(card, {
       rotateX: rotateX,
       rotateY: rotateY,
       duration: 0.4,
@@ -1288,8 +1284,8 @@ function initCyberForgeCard() {
     });
   });
 
-  forgeCard.addEventListener('mouseleave', () => {
-    gsap.to(forgeCard, {
+  card.addEventListener('mouseleave', () => {
+    gsap.to(card, {
       rotateX: 0,
       rotateY: 0,
       duration: 0.6,
@@ -1297,15 +1293,15 @@ function initCyberForgeCard() {
     });
   });
 
-  // GSAP Scroll reveal animation
-  gsap.from(forgeCard, {
+  // GSAP Scroll reveal
+  gsap.from(card, {
     y: 40,
-    rotateX: -8,
+    rotateY: 6,
     opacity: 0,
     duration: 1.1,
     ease: 'power3.out',
     scrollTrigger: {
-      trigger: forgeCard,
+      trigger: card,
       start: 'top 85%'
     }
   });

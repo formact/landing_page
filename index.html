@@ -264,90 +264,89 @@
 
         </div>
 
-        <!-- ================= RIGHT COLUMN: DEVELOPER WORKSHOP ================= -->
+        <!-- ================= RIGHT COLUMN: SPECIALIST COMMAND STATION ================= -->
         <div class="duality-dev-col">
+          
+          <!-- Top Row: Specialist Title & Live Status -->
+          <div class="specialist-top-row">
+            <div class="specialist-heading-box">
+              <span class="section-eyebrow">THE SPECIALIST COMMAND</span>
+              <h2 class="section-heading-big">
+                <span>CODE</span>
+                <span class="dim">CREATE</span>
+                <span>EMPOWER</span>
+              </h2>
+            </div>
+            <div class="specialist-status-badge">
+              <span class="status-pulse"></span>
+              <span class="status-text">4 SPECIALISTS CONNECTED</span>
+            </div>
+          </div>
 
-          <!-- Dashing Cyber Forge Card -->
-          <div class="dev-forge-card" id="dev-forge-card">
+          <!-- Main Showcase Screen: Specialist Command Workbench -->
+          <div class="specialist-command-card" id="specialist-command-card">
             
-            <!-- Top Header Bar with Live Telemetry Pulse -->
-            <div class="forge-card-header">
-              <div class="header-title-wrap">
-                <span class="forge-badge">LIVE FORGE</span>
-                <span class="forge-title">3D ARMAMENT WORKSHOP</span>
+            <!-- Cyber Monitor Bar -->
+            <div class="command-monitor-bar">
+              <div class="monitor-controls">
+                <span class="ctrl-dot red"></span>
+                <span class="ctrl-dot yellow"></span>
+                <span class="ctrl-dot green"></span>
+                <span class="monitor-title">// FORMACT_COMMAND_OS v4.2</span>
               </div>
-              <div class="header-status-wrap">
-                <span class="status-dot"></span>
-                <span class="status-txt">ONLINE · 240 FPS</span>
-              </div>
-            </div>
-
-            <!-- Main Hologram Viewport -->
-            <div class="forge-viewport">
               
-              <!-- Animated Background Hologram Grid & Scanline -->
-              <div class="viewport-holo-grid"></div>
-              <div class="viewport-scanline"></div>
-
-              <!-- Holographic Image Frame -->
-              <div class="viewport-image-wrap">
-                <img src="assets/phase_arm_3d.png" alt="Phase Strike v2.1 Gauntlet" id="forge-asset-img">
-              </div>
-
-              <!-- Live Interactive Overlay HUD Data Panel -->
-              <div class="viewport-hud-overlay">
-                <div class="hud-item">
-                  <span class="hud-lbl">SELECTED ASSET</span>
-                  <span class="hud-val highlight" id="forge-asset-name">PHASE GAUNTLET v2.1</span>
-                </div>
-                <div class="hud-item">
-                  <span class="hud-lbl">BURST RANGE</span>
-                  <div class="hud-meter-bar">
-                    <div class="hud-meter-fill" id="forge-meter-range" style="width: 82%;"></div>
-                  </div>
-                  <span class="hud-val" id="forge-val-range">8.0m</span>
-                </div>
-                <div class="hud-item">
-                  <span class="hud-lbl">DAMAGE OVERCLOCK</span>
-                  <div class="hud-meter-bar">
-                    <div class="hud-meter-fill orange" id="forge-meter-damage" style="width: 95%;"></div>
-                  </div>
-                  <span class="hud-val orange" id="forge-val-damage">1.5x</span>
-                </div>
-              </div>
-
-              <!-- Interactive Tab Bar at Bottom of Viewport -->
-              <div class="forge-tabs-bar">
-                <button class="forge-tab active" data-tab="model">
-                  <span class="tab-icon">◈</span> MODEL
+              <!-- Interactive View Switcher Tabs -->
+              <div class="command-pills">
+                <button class="cmd-pill active" data-view="squad">
+                  <span>[01] SQUAD CONTROL</span>
                 </button>
-                <button class="forge-tab" data-tab="animation">
-                  <span class="tab-icon">⚡</span> ANIMATION
+                <button class="cmd-pill" data-view="forge">
+                  <span>[02] WEAPON FORGE</span>
                 </button>
-                <button class="forge-tab" data-tab="vfx">
-                  <span class="tab-icon">✦</span> VFX
-                </button>
-                <button class="forge-tab" data-tab="deploy">
-                  <span class="tab-icon">▲</span> DEPLOY
+                <button class="cmd-pill" data-view="arena">
+                  <span>[03] ARENA FEED</span>
                 </button>
               </div>
-
             </div>
 
-            <!-- Card Footer Ticker -->
-            <div class="forge-card-footer">
-              <span id="forge-footer-status">// REAL-TIME TELEMETRY COMPILATION</span>
-              <span class="footer-link">STATUS: READY FOR ARENA →</span>
+            <!-- Full-Bleed Viewport Display Screen -->
+            <div class="command-screen">
+              <!-- Full-bleed Image Layer -->
+              <img src="assets/devs_clean.png" alt="Specialist Command Squad" id="command-view-img" class="view-img">
+              
+              <!-- Cyber Overlay Grids & Scanline -->
+              <div class="command-grid-overlay"></div>
+              <div class="command-scanline"></div>
+
+              <!-- Live Floating HUD Badge Overlay -->
+              <div class="command-hud-badge">
+                <div class="hud-badge-title" id="hud-badge-title">SPECIALIST SQUAD WORKSHOP</div>
+                <div class="hud-badge-sub" id="hud-badge-sub">LIVE TELEMETRY · 4 OPERATIVES ACTIVE</div>
+                <div class="hud-badge-metrics">
+                  <div class="metric-item">
+                    <span class="m-lbl">LATENCY</span>
+                    <span class="m-val" id="metric-latency">12 ms</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="m-lbl">TELEMETRY</span>
+                    <span class="m-val highlight" id="metric-status">20 Hz OVERCLOCK</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="m-lbl">SECURITY GATES</span>
+                    <span class="m-val green" id="metric-gates">14 AURA ONLINE</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Footer Status Ticker -->
+            <div class="command-footer-bar">
+              <span class="ticker-txt" id="command-ticker-txt">// TEAM SPECIALIST: REAL-TIME TETHERING OPERATIVE UPGRADES</span>
+              <span class="ticker-btn">SYSTEM READY ▲</span>
             </div>
 
           </div>
 
-          <!-- Bottom Row: Seated Developers Banner -->
-          <div class="dev-bottom-row">
-            <div class="workshop-devs-preview">
-              <img src="assets/devs_clean.png" alt="Developer Workshop Squad" loading="lazy">
-            </div>
-          </div>
         </div>
 
       </div>

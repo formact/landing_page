@@ -1287,17 +1287,55 @@ button {
   font-weight: 500;
 }
 
-/* Dashing Cyber Forge 3D Armament Suite */
-.dev-forge-card {
+/* Specialist Top Row */
+.specialist-top-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
   width: 100%;
-  background: linear-gradient(145deg, rgba(3, 7, 18, 0.95) 0%, rgba(8, 18, 36, 0.9) 100%);
+  margin-bottom: clamp(10px, 1.5vh, 18px);
+}
+
+.specialist-heading-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.specialist-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 229, 255, 0.08);
   border: 1px solid rgba(0, 229, 255, 0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--cyan-primary, #00e5ff);
+  letter-spacing: 0.12em;
+}
+
+.status-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 8px var(--cyan-primary, #00e5ff);
+  animation: pulse-dot 1.8s infinite ease-in-out;
+}
+
+/* Specialist Command Station Card */
+.specialist-command-card {
+  flex: 1;
+  width: 100%;
+  background: rgba(4, 9, 20, 0.95);
+  border: 1px solid rgba(0, 229, 255, 0.35);
   border-radius: 6px;
   overflow: hidden;
   backdrop-filter: blur(16px);
   box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.7),
-    0 0 32px rgba(0, 229, 255, 0.15),
     inset 0 0 20px rgba(0, 229, 255, 0.05);
   display: flex;
   flex-direction: column;
