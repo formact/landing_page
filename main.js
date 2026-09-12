@@ -773,29 +773,7 @@ function initSmoothScrollAndGSAP() {
 
   // --- Section 2 (Duality) Animations ---
   gsap.from('.duality-fighter-col', {
-    x: -60,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '#duality',
-      start: 'top 75%'
-    }
-  });
-
-  gsap.from('.duality-telemetry-col', {
-    scale: 0.9,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '#duality',
-      start: 'top 75%'
-    }
-  });
-
-  gsap.from('.duality-dev-col', {
-    x: 60,
+    y: 40,
     opacity: 0,
     duration: 1,
     ease: 'power3.out',

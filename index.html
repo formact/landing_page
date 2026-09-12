@@ -212,57 +212,7 @@
           </div>
         </div>
 
-        <!-- ================= CENTER COLUMN: TELEMETRY STREAM ================= -->
-        <div class="duality-telemetry-col">
-          <!-- Central Glowing Energy Stream SVG -->
-          <svg class="telemetry-stream-svg" viewBox="0 0 240 850" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="streamGradCyan" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.15"/>
-                <stop offset="25%" stop-color="#00e5ff" stop-opacity="0.95"/>
-                <stop offset="50%" stop-color="#38bdf8" stop-opacity="1"/>
-                <stop offset="75%" stop-color="#00e5ff" stop-opacity="0.95"/>
-                <stop offset="100%" stop-color="#00e5ff" stop-opacity="0.15"/>
-              </linearGradient>
-              <linearGradient id="streamGradOrange" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#ff7043" stop-opacity="0.15"/>
-                <stop offset="25%" stop-color="#ff7043" stop-opacity="0.95"/>
-                <stop offset="50%" stop-color="#fb923c" stop-opacity="1"/>
-                <stop offset="75%" stop-color="#ff7043" stop-opacity="0.95"/>
-                <stop offset="100%" stop-color="#ff7043" stop-opacity="0.15"/>
-              </linearGradient>
-              <filter id="glowCyan" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3.5" result="blur1" />
-                <feGaussianBlur stdDeviation="1.2" result="blur2" />
-                <feMerge>
-                  <feMergeNode in="blur1" />
-                  <feMergeNode in="blur2" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-              <filter id="glowOrange" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="3.5" result="blur1" />
-                <feGaussianBlur stdDeviation="1.2" result="blur2" />
-                <feMerge>
-                  <feMergeNode in="blur1" />
-                  <feMergeNode in="blur2" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
 
-            <!-- Left Braided Neon Cyan Strands -->
-            <path d="M 105 0 C 65 180, 45 380, 100 500 C 125 560, 55 720, 105 850" stroke="url(#streamGradCyan)" stroke-width="2.6" fill="none" filter="url(#glowCyan)"/>
-            <path d="M 112 0 C 80 190, 60 370, 110 500 C 132 570, 75 710, 112 850" stroke="#00e5ff" stroke-width="1.2" fill="none" opacity="0.85"/>
-            <path d="M 118 0 C 90 210, 75 350, 115 500 C 142 590, 90 700, 118 850" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity="0.65"/>
-
-            <!-- Right Braided Molten Orange Strands -->
-            <path d="M 135 0 C 175 180, 195 380, 140 500 C 115 560, 185 720, 135 850" stroke="url(#streamGradOrange)" stroke-width="2.6" fill="none" filter="url(#glowOrange)"/>
-            <path d="M 128 0 C 160 190, 180 370, 130 500 C 108 570, 165 710, 128 850" stroke="#ff7043" stroke-width="1.2" fill="none" opacity="0.85"/>
-            <path d="M 122 0 C 150 210, 165 350, 125 500 C 98 590, 150 700, 122 850" stroke="#fb923c" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity="0.65"/>
-          </svg>
-
-        </div>
 
 
 
