@@ -262,87 +262,15 @@
             <path d="M 122 0 C 150 210, 165 350, 125 500 C 98 590, 150 700, 122 850" stroke="#fb923c" stroke-width="1" stroke-dasharray="3 5" fill="none" opacity="0.65"/>
           </svg>
 
-          <!-- Telemetry Hex Cards -->
-          <div class="telemetry-cards">
-            <!-- Upper Card: Player Data -->
-            <div class="cyber-link-card cyan-hex">
-              <div class="cyber-card-header">
-                <span>PLAYER DATA</span>
-                <span>→</span>
-              </div>
-              <ul class="cyber-card-list">
-                <li>Position</li>
-                <li>Health</li>
-                <li>Enemy State</li>
-                <li>Tactical Request (<span id="tele-req">F1-F4</span>)</li>
-              </ul>
-            </div>
-
-            <!-- Lower Card: New Abilities -->
-            <div class="cyber-link-card orange-hex">
-              <div class="cyber-card-header">
-                <span>← NEW ABILITIES</span>
-              </div>
-              <ul class="cyber-card-list">
-                <li>Code Updates</li>
-                <li>Ability Parameters</li>
-                <li>3D Asset Preview</li>
-                <li>Deployment (Live)</li>
-              </ul>
-            </div>
-          </div>
         </div>
 
         <!-- ================= RIGHT COLUMN: DEVELOPER WORKSHOP ================= -->
         <div class="duality-dev-col">
-          <!-- Top Row: Heading -->
-          <div class="dev-top-row">
-            <div class="dev-heading-box">
-              <span class="section-eyebrow" style="color: var(--thermal-orange);">THE DEVELOPER WORKSHOP</span>
-              <h2 class="section-heading-big">
-                <span>CODE</span>
-                <span class="dim">CREATE</span>
-                <span>EMPOWER</span>
-              </h2>
-            </div>
-          </div>
+
 
           <!-- Middle Row: Dual Floating Monitor Station (IDE + 3D Holographic Arm) -->
           <div class="dev-station-row">
-            <!-- Left Screen: IDE Code Window -->
-            <div class="dev-ide-card">
-              <div class="ide-header">
-                <span class="ide-tab-label">// Ability: Phase Strike</span>
-              </div>
-              <div class="ide-body-wrap">
-                <div class="ide-gutter">
-                  <span>21</span>
-                  <span>22</span>
-                  <span>23</span>
-                  <span>24</span>
-                  <span>25</span>
-                  <span>26</span>
-                  <span>27</span>
-                  <span>28</span>
-                  <span>29</span>
-                  <span>30</span>
-                </div>
-                <pre class="ide-code-block"><code><span class="code-comment">// Ability: Phase Strike</span>
-<span class="code-type">void</span> <span class="code-fn">ExecutePhaseStrike</span>() {
-  <span class="code-keyword">if</span> (player.state == READY) {
-    <span class="code-type">float</span> dashDist = <span class="code-num">8.0f</span>;
-    Vector3 dir = player.<span class="code-fn">GetDirection</span>();
-    player.<span class="code-fn">Dash</span>(dir, dashDist);
-    <span class="code-fn">SpawnVFX</span>(<span class="code-str">"PhaseTrail"</span>);
-    <span class="code-fn">ApplyDamage</span>(<span class="code-num">1.5f</span>);
-  }
-}</code></pre>
-              </div>
-              <div class="ide-status-footer">
-                <span class="code-comment">// Compiling...</span>
-                <span class="success">☑ Build successful. Deploy to arena?</span>
-              </div>
-            </div>
+
 
             <!-- Right Screen: 3D Arm Hologram Monitor -->
             <div class="dev-arm-card">
