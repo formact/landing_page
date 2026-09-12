@@ -966,8 +966,8 @@ function setupRolesShowcase() {
     if (numC) numC.textContent = data.stats.cooldown;
     if (numU) numU.textContent = data.stats.utility;
 
-    gsap.fromTo('.roles-overview-card', 
-      { opacity: 0.85, scale: 0.99 }, 
+    gsap.fromTo('.roles-overview-card',
+      { opacity: 0.85, scale: 0.99 },
       { opacity: 1, scale: 1, duration: 0.35, ease: 'power2.out' }
     );
   }
@@ -1198,21 +1198,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  initSpecialistCommandStation();
 });
-
-function initSpecialistCommandStation() {
-  const squadShowcase = document.querySelector('.specialist-squad-showcase');
-  if (squadShowcase) {
-    gsap.from(squadShowcase, {
-      y: 35,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: squadShowcase,
-        start: 'top 85%'
-      }
-    });
-  }
-}
