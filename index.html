@@ -267,23 +267,79 @@
         <!-- ================= RIGHT COLUMN: DEVELOPER WORKSHOP ================= -->
         <div class="duality-dev-col">
 
-
-          <!-- Middle Row: Dual Floating Monitor Station (IDE + 3D Holographic Arm) -->
-          <div class="dev-station-row">
-
-
-            <!-- Right Screen: 3D Arm Hologram Monitor -->
-            <div class="dev-arm-card">
-              <div class="arm-tabs-bar">
-                <span class="arm-tab active">MODEL</span>
-                <span class="arm-tab">ANIMATION</span>
-                <span class="arm-tab">VFX</span>
-                <span class="arm-tab">DEPLOY</span>
+          <!-- Dashing Cyber Forge Card -->
+          <div class="dev-forge-card" id="dev-forge-card">
+            
+            <!-- Top Header Bar with Live Telemetry Pulse -->
+            <div class="forge-card-header">
+              <div class="header-title-wrap">
+                <span class="forge-badge">LIVE FORGE</span>
+                <span class="forge-title">3D ARMAMENT WORKSHOP</span>
               </div>
-              <div class="arm-preview-content">
-                <img src="assets/phase_arm_3d.png" alt="Phase Strike v2.1 3D Gauntlet">
+              <div class="header-status-wrap">
+                <span class="status-dot"></span>
+                <span class="status-txt">ONLINE · 240 FPS</span>
               </div>
             </div>
+
+            <!-- Main Hologram Viewport -->
+            <div class="forge-viewport">
+              
+              <!-- Animated Background Hologram Grid & Scanline -->
+              <div class="viewport-holo-grid"></div>
+              <div class="viewport-scanline"></div>
+
+              <!-- Holographic Image Frame -->
+              <div class="viewport-image-wrap">
+                <img src="assets/phase_arm_3d.png" alt="Phase Strike v2.1 Gauntlet" id="forge-asset-img">
+              </div>
+
+              <!-- Live Interactive Overlay HUD Data Panel -->
+              <div class="viewport-hud-overlay">
+                <div class="hud-item">
+                  <span class="hud-lbl">SELECTED ASSET</span>
+                  <span class="hud-val highlight" id="forge-asset-name">PHASE GAUNTLET v2.1</span>
+                </div>
+                <div class="hud-item">
+                  <span class="hud-lbl">BURST RANGE</span>
+                  <div class="hud-meter-bar">
+                    <div class="hud-meter-fill" id="forge-meter-range" style="width: 82%;"></div>
+                  </div>
+                  <span class="hud-val" id="forge-val-range">8.0m</span>
+                </div>
+                <div class="hud-item">
+                  <span class="hud-lbl">DAMAGE OVERCLOCK</span>
+                  <div class="hud-meter-bar">
+                    <div class="hud-meter-fill orange" id="forge-meter-damage" style="width: 95%;"></div>
+                  </div>
+                  <span class="hud-val orange" id="forge-val-damage">1.5x</span>
+                </div>
+              </div>
+
+              <!-- Interactive Tab Bar at Bottom of Viewport -->
+              <div class="forge-tabs-bar">
+                <button class="forge-tab active" data-tab="model">
+                  <span class="tab-icon">◈</span> MODEL
+                </button>
+                <button class="forge-tab" data-tab="animation">
+                  <span class="tab-icon">⚡</span> ANIMATION
+                </button>
+                <button class="forge-tab" data-tab="vfx">
+                  <span class="tab-icon">✦</span> VFX
+                </button>
+                <button class="forge-tab" data-tab="deploy">
+                  <span class="tab-icon">▲</span> DEPLOY
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Card Footer Ticker -->
+            <div class="forge-card-footer">
+              <span id="forge-footer-status">// REAL-TIME TELEMETRY COMPILATION</span>
+              <span class="footer-link">STATUS: READY FOR ARENA →</span>
+            </div>
+
           </div>
 
           <!-- Bottom Row: Seated Developers Banner -->

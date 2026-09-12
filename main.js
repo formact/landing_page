@@ -1197,4 +1197,116 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  initCyberForgeCard();
 });
+
+function initCyberForgeCard() {
+  const forgeCard = document.getElementById('dev-forge-card');
+  const tabs = document.querySelectorAll('.forge-tab');
+  const assetName = document.getElementById('forge-asset-name');
+  const rangeMeter = document.getElementById('forge-meter-range');
+  const rangeVal = document.getElementById('forge-val-range');
+  const damageMeter = document.getElementById('forge-meter-damage');
+  const damageVal = document.getElementById('forge-val-damage');
+  const footerStatus = document.getElementById('forge-footer-status');
+  const assetImg = document.getElementById('forge-asset-img');
+
+  if (!forgeCard) return;
+
+  const tabData = {
+    model: {
+      name: 'PHASE GAUNTLET v2.1',
+      rangeWidth: '82%',
+      rangeText: '8.0m',
+      damageWidth: '95%',
+      damageText: '1.5x',
+      status: '// REAL-TIME TELEMETRY COMPILATION'
+    },
+    animation: {
+      name: 'OVERCLOCK DASH v2.2',
+      rangeWidth: '94%',
+      rangeText: '12.5m',
+      damageWidth: '70%',
+      damageText: '1.2x',
+      status: '// HYPER-VELOCITY KINEMATIC STREAM'
+    },
+    vfx: {
+      name: 'PLASMA TRAIL BURST',
+      rangeWidth: '65%',
+      rangeText: '6.0m',
+      damageWidth: '100%',
+      damageText: '2.0x',
+      status: '// PARTICLE VOLUMETRICS LOADED'
+    },
+    deploy: {
+      name: 'LIVE ARENA LINK',
+      rangeWidth: '100%',
+      rangeText: 'UNLIMITED',
+      damageWidth: '100%',
+      damageText: 'MAX OVERCLOCK',
+      status: '// BUILD DEPLOYED TO FIGHTER ARENA ☑'
+    }
+  };
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const key = tab.getAttribute('data-tab');
+      const data = tabData[key];
+      if (!data) return;
+
+      if (assetName) assetName.textContent = data.name;
+      if (rangeVal) rangeVal.textContent = data.rangeText;
+      if (rangeMeter) rangeMeter.style.width = data.rangeWidth;
+      if (damageVal) damageVal.textContent = data.damageText;
+      if (damageMeter) damageMeter.style.width = data.damageWidth;
+      if (footerStatus) footerStatus.textContent = data.status;
+
+      if (assetImg) {
+        gsap.fromTo(assetImg, { opacity: 0.4, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.4, ease: 'back.out(1.4)' });
+      }
+    });
+  });
+
+  // 3D Tilt interaction on mouse move
+  forgeCard.addEventListener('mousemove', (e) => {
+    const rect = forgeCard.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rotateX = (-y / rect.height) * 10;
+    const rotateY = (x / rect.width) * 10;
+
+    gsap.to(forgeCard, {
+      rotateX: rotateX,
+      rotateY: rotateY,
+      duration: 0.4,
+      ease: 'power2.out',
+      transformPerspective: 1000
+    });
+  });
+
+  forgeCard.addEventListener('mouseleave', () => {
+    gsap.to(forgeCard, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+  });
+
+  // GSAP Scroll reveal animation
+  gsap.from(forgeCard, {
+    y: 40,
+    rotateX: -8,
+    opacity: 0,
+    duration: 1.1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: forgeCard,
+      start: 'top 85%'
+    }
+  });
+}
