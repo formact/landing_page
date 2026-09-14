@@ -212,9 +212,80 @@
           </div>
         </div>
 
+        <!-- ================= RIGHT COLUMN: HOLOGRAPHIC TACTICAL RADAR & TELEMETRY HUB ================= -->
+        <div class="duality-tactical-col">
+          <!-- Top Right Headline / Status -->
+          <div class="tactical-top-copy">
+            <div class="tactical-eyebrow-row">
+              <span class="pulse-indicator"></span>
+              <span class="section-eyebrow">LIVE COMBAT TELEMETRY</span>
+            </div>
+            <h3 class="tactical-heading">NEURAL LINK // ACTIVE</h3>
+          </div>
 
+          <!-- Central Holographic Circular Radar Scanner -->
+          <div class="tactical-radar-wrapper">
+            <div class="tactical-radar-ring">
+              <!-- Animated Scanning Sweep Laser Line -->
+              <div class="radar-sweep-line"></div>
+              <!-- Outer Ticks & Crosshair SVG -->
+              <svg class="radar-hud-svg" viewBox="0 0 200 200">
+                <circle cx="100" cy="100" r="95" stroke="rgba(0, 229, 255, 0.25)" stroke-width="1" fill="none" stroke-dasharray="4 6"/>
+                <circle cx="100" cy="100" r="70" stroke="rgba(0, 229, 255, 0.4)" stroke-width="1" fill="none"/>
+                <circle cx="100" cy="100" r="40" stroke="rgba(0, 229, 255, 0.2)" stroke-width="1" fill="none" stroke-dasharray="2 4"/>
+                <line x1="100" y1="5" x2="100" y2="195" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1"/>
+                <line x1="5" y1="100" x2="195" y2="100" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1"/>
+                <!-- Target Blips -->
+                <circle cx="128" cy="62" r="4" fill="#00e5ff" class="radar-blip blip-1"/>
+                <circle cx="72" cy="138" r="4" fill="#ff7043" class="radar-blip blip-2"/>
+              </svg>
+              <!-- Center Reticle Value -->
+              <div class="radar-center-info">
+                <span class="radar-stat-val" id="radar-sync-val">99.8%</span>
+                <span class="radar-stat-label">NEURAL SYNC</span>
+              </div>
+            </div>
 
+            <!-- Radar Metrics Stack -->
+            <div class="tactical-metrics-row">
+              <div class="metric-card">
+                <span class="m-label">LATENCY</span>
+                <span class="m-val" id="metric-latency">12ms</span>
+              </div>
+              <div class="metric-card">
+                <span class="m-label">COMBAT FREQ</span>
+                <span class="m-val">144 Hz</span>
+              </div>
+              <div class="metric-card">
+                <span class="m-label">TARGET LOCK</span>
+                <span class="m-val" id="metric-blips">02 HOSTILES</span>
+              </div>
+            </div>
+          </div>
 
+          <!-- Bottom Right Interactive Combat State Switcher -->
+          <div class="tactical-mode-box">
+            <span class="mode-box-title">TACTICAL OVERRIDE MODE</span>
+            <div class="mode-btn-group">
+              <button class="mode-btn active" data-mode="assault">
+                <span class="mode-dot"></span>
+                <span>ASSAULT</span>
+              </button>
+              <button class="mode-btn" data-mode="defensive">
+                <span class="mode-dot"></span>
+                <span>DEFENSE</span>
+              </button>
+              <button class="mode-btn" data-mode="overdrive">
+                <span class="mode-dot"></span>
+                <span>OVERDRIVE</span>
+              </button>
+            </div>
+            <div class="tactical-stream-feed" id="tactical-stream-feed">
+              <span class="feed-prefix">></span>
+              <span class="feed-text">UPLINK STABLE // COMBAT ARENA 01 READY</span>
+            </div>
+          </div>
+        </div>
 
       </div>
     </section>

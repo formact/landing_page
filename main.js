@@ -773,9 +773,21 @@ function initSmoothScrollAndGSAP() {
 
   // --- Section 2 (Duality) Animations ---
   gsap.from('.duality-fighter-col', {
-    y: 40,
+    x: -50,
     opacity: 0,
     duration: 1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '#duality',
+      start: 'top 75%'
+    }
+  });
+
+  gsap.from('.duality-tactical-col', {
+    x: 50,
+    opacity: 0,
+    duration: 1,
+    delay: 0.15,
     ease: 'power3.out',
     scrollTrigger: {
       trigger: '#duality',
@@ -1176,4 +1188,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  initTacticalRadarWidget();
 });
+
+function initTacticalRadarWidget() {
+  const modeBtns = document.querySelectorAll('.mode-btn');
+  const feedText = document.querySelector('#tactical-stream-feed .feed-text');
+  const syncVal = document.getElementById('radar-sync-val');
+  const latencyVal = document.getElementById('metric-latency');
+
+  if (!modeBtns.length) return;
+
+  const modeMessages = {
+    assault: 'ASSAULT MATRIX ACTIVE // CRIT +25%',
+    defensive: 'SHIELD BARRIER ACTIVE // DAMAGE REDUCTION 40%',
+    overdrive: 'NEURAL OVERDRIVE ACTIVE // RECHARGE SPEED 2.5X'
+  };
+
+  const syncValues = {
+    assault: '99.8%',
+    defensive: '98.5%',
+    overdrive: '100.0%'
+  };
+
+  const latencyValues = {
+    assault: '12ms',
+    defensive: '9ms',
+    overdrive: '5ms'
+  };
+
+  modeBtns.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      if (window.sfx) window.sfx.play('hover');
+    });
+    btn.addEventListener('click', () => {
+      const mode = btn.getAttribute('data-mode');
+      modeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (feedText && modeMessages[mode]) {
+        feedText.textContent = modeMessages[mode];
+      }
+      if (syncVal && syncValues[mode]) {
+        syncVal.textContent = syncValues[mode];
+      }
+      if (latencyVal && latencyValues[mode]) {
+        latencyVal.textContent = latencyValues[mode];
+      }
+      if (window.sfx) window.sfx.play('click');
+    });
+  });
+}

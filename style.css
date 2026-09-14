@@ -652,16 +652,299 @@ button {
 .duality-grid {
   position: relative;
   z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(300px, 420px);
+  gap: clamp(32px, 4vw, 80px);
+  justify-content: space-between;
+  align-items: stretch;
   width: 100%;
-  max-width: 540px;
+  max-width: 1280px;
   margin: 0 auto;
   height: 100%;
   max-height: 100%;
   box-sizing: border-box;
 }
+
+/* ================= RIGHT COLUMN: HOLOGRAPHIC TACTICAL RADAR ================= */
+.duality-tactical-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  max-height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  padding-bottom: 2px;
+}
+
+.tactical-top-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.tactical-eyebrow-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.pulse-indicator {
+  width: 7px;
+  height: 7px;
+  background: var(--cyan-primary, #00e5ff);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--cyan-primary, #00e5ff);
+  animation: pulseGlow 1.5s infinite alternate ease-in-out;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 16px var(--cyan-primary, #00e5ff); }
+}
+
+.tactical-top-copy .section-eyebrow {
+  font-family: var(--font-heading);
+  font-size: clamp(10px, 0.7vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.tactical-heading {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Radar Display Wrapper */
+.tactical-radar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: auto 0;
+}
+
+.tactical-radar-ring {
+  position: relative;
+  width: clamp(170px, 14vw, 220px);
+  height: clamp(170px, 14vw, 220px);
+  border-radius: 50%;
+  background: rgba(3, 7, 14, 0.7);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15), inset 0 0 25px rgba(0, 229, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.radar-hud-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.radar-sweep-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.9) 0%, rgba(0, 229, 255, 0) 100%);
+  transform-origin: left center;
+  animation: radarSweep 3.5s linear infinite;
+  box-shadow: 0 0 12px var(--cyan-primary, #00e5ff);
+}
+
+@keyframes radarSweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.radar-blip {
+  animation: blipPulse 2s infinite ease-in-out;
+}
+
+.blip-2 {
+  animation-delay: 1s;
+}
+
+@keyframes blipPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.radar-center-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.radar-stat-val {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 1.8vw, 32px);
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 0 14px rgba(0, 229, 255, 0.8);
+  line-height: 1;
+}
+
+.radar-stat-label {
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px, 0.55vw, 10.5px);
+  letter-spacing: 0.2em;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Radar Metrics Cards */
+.tactical-metrics-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+
+.metric-card {
+  flex: 1;
+  background: rgba(3, 7, 14, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.3s ease;
+}
+
+.metric-card:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+}
+
+.m-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.15em;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.m-val {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+/* Tactical Mode Box */
+.tactical-mode-box {
+  background: rgba(3, 7, 14, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 6px;
+  padding: 14px 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mode-box-title {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.mode-btn-group {
+  display: flex;
+  gap: 8px;
+}
+
+.mode-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  padding: 8px 6px;
+  color: #94a3b8;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.mode-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  transition: all 0.25s ease;
+}
+
+.mode-btn:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  color: #ffffff;
+}
+
+.mode-btn.active {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--cyan-primary, #00e5ff);
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+}
+
+.mode-btn.active .mode-dot {
+  background: var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 8px var(--cyan-primary, #00e5ff);
+}
+
+.tactical-stream-feed {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: #00e5ff;
+  background: rgba(0, 229, 255, 0.05);
+  padding: 6px 10px;
+  border-radius: 3px;
+  border-left: 2px solid var(--cyan-primary, #00e5ff);
+}
+
+.feed-prefix {
+  font-weight: 800;
+}
+
 
 /* ================= LEFT COLUMN: THE ARENA FIGHTER ================= */
 .duality-fighter-col {
