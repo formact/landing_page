@@ -663,16 +663,30 @@
     <!-- ==========================================
          SECTION 5: THE SANCTUARY CORE ARENA (Matching section5.png)
          ========================================== -->
+    <!-- ==========================================
+         SECTION 5: THE SANCTUARY CORE ARENA — PINNED SCROLL-JACKING WORLDS
+         ========================================== -->
     <section class="section-sanctuary" id="sanctuary">
-      <div class="sanctuary-backdrop" id="sanctuary-backdrop"></div>
+      <!-- Multi-World Backdrop Layers for Crossfading -->
+      <div class="sanctuary-backdrop-container">
+        <div class="sanctuary-backdrop-layer active" data-world="0" style="background-image: url('section5_background.png');"></div>
+        <div class="sanctuary-backdrop-layer" data-world="1" style="background-image: url('section2_background.png');"></div>
+        <div class="sanctuary-backdrop-layer" data-world="2" style="background-image: url('section3_background.png');"></div>
+        <div class="sanctuary-backdrop-layer" data-world="3" style="background-image: url('section6_background.png');"></div>
+      </div>
       <div class="sanctuary-overlay"></div>
 
       <div class="sanctuary-body">
         
         <!-- Left Column: Title, Desc, Action, Thumbnails, Coords -->
         <div class="sanctuary-left-col">
+          <div class="sanctuary-eyebrow-line">
+            <span class="sanctuary-num-badge" id="sanctuary-world-index">WORLD 01 / 04</span>
+            <span class="sanctuary-eyebrow-dash"></span>
+            <span class="sanctuary-eyebrow-text" id="sanctuary-eyebrow">WORLD DISCOVERY // ARENA SPECS</span>
+          </div>
 
-          <h2 class="sanctuary-title-big">
+          <h2 class="sanctuary-title-big" id="sanctuary-title">
             <span>HIGHER</span>
             <span>BIGGER</span>
             <span>CLEANER</span>
@@ -681,39 +695,90 @@
 
           <div class="sanctuary-divider-line"></div>
 
-          <p class="sanctuary-desc">
+          <p class="sanctuary-desc" id="sanctuary-desc">
             A low-orbit arena where minds and machines collide. The Sanctuary is more than a battleground - it's a test of evolution.
           </p>
 
           <div class="sanctuary-action">
             <a href="#specs" class="btn-sanctuary-explore" id="btn-sanctuary-explore">
-              <span>EXPLORE THE SANCTUARY</span>
+              <span>EXPLORE ARENA SPECS</span>
               <span class="arrow">→</span>
             </a>
           </div>
 
-          <div class="sanctuary-thumbnails-row">
-            <div class="sanctuary-thumb-item active" data-bg="section5_background.png">
-              <img src="section5_background.png" alt="Sanctuary Deck">
+          <!-- 4 World Interactive Thumbnails -->
+          <div class="sanctuary-thumbnails-row" id="sanctuary-thumbs">
+            <div class="sanctuary-thumb-item active" data-world="0" title="World 01: Orbital Platform">
+              <img src="section5_background.png" alt="Orbital Platform">
+              <span class="thumb-lbl">ORBITAL</span>
             </div>
-            <div class="sanctuary-thumb-item" data-bg="assets/sanctuary_clean.png">
-              <img src="assets/sanctuary_clean.png" alt="Duel Colosseum">
+            <div class="sanctuary-thumb-item" data-world="1" title="World 02: Cybernetic Core">
+              <img src="section2_background.png" alt="Cybernetic Core">
+              <span class="thumb-lbl">CYBER GRID</span>
             </div>
-            <div class="sanctuary-thumb-item" data-bg="assets/footer_earth_clean.png">
-              <img src="assets/footer_earth_clean.png" alt="Orbital Outlook">
+            <div class="sanctuary-thumb-item" data-world="2" title="World 03: Strato-Dome">
+              <img src="section3_background.png" alt="Strato-Dome Outlook">
+              <span class="thumb-lbl">STRATO-DOME</span>
+            </div>
+            <div class="sanctuary-thumb-item" data-world="3" title="World 04: Void Citadel">
+              <img src="section6_background.png" alt="Void Citadel Arena">
+              <span class="thumb-lbl">VOID CITADEL</span>
             </div>
           </div>
 
-          <div class="sanctuary-coords-block">
-            <span class="coords-title">ORBITAL PLATFORM</span>
-            <span class="coords-val">0.00° N   0.00° E</span>
-            <span class="coords-sub">LOW EARTH ORBIT</span>
+          <div class="sanctuary-coords-block" id="sanctuary-coords">
+            <span class="coords-title" id="coords-title">ORBITAL PLATFORM</span>
+            <span class="coords-val" id="coords-val">0.00° N   0.00° E</span>
+            <span class="coords-sub" id="coords-sub">LOW EARTH ORBIT // ALTITUDE: 420 KM</span>
           </div>
         </div>
 
-        <!-- Right Column: Slogan Stack -->
+        <!-- Right Column: Vertical Scroll Progress & Telemetry Slogan Stack -->
         <div class="sanctuary-right-col">
-          <div class="sanctuary-slogan-stack">
+          
+          <!-- Dynamic Step Progress Tracker -->
+          <div class="world-progress-widget">
+            <div class="progress-bar-vertical">
+              <div class="progress-bar-fill" id="world-progress-fill"></div>
+            </div>
+            <div class="progress-steps">
+              <button class="step-dot active" data-world="0">
+                <span class="step-num">01</span>
+                <span class="step-name">ORBITAL PLATFORM</span>
+              </button>
+              <button class="step-dot" data-world="1">
+                <span class="step-num">02</span>
+                <span class="step-name">CYBERNETIC GRID</span>
+              </button>
+              <button class="step-dot" data-world="2">
+                <span class="step-num">03</span>
+                <span class="step-name">STRATO-DOME</span>
+              </button>
+              <button class="step-dot" data-world="3">
+                <span class="step-num">04</span>
+                <span class="step-name">VOID CITADEL</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Telemetry Stats Box -->
+          <div class="sanctuary-telemetry-box" id="sanctuary-telemetry">
+            <div class="telem-row">
+              <span class="t-lbl">ENVIRONMENT</span>
+              <span class="t-val" id="telem-env">ZERO-G VACUUM</span>
+            </div>
+            <div class="telem-row">
+              <span class="t-lbl">TACTICAL HARDPOINTS</span>
+              <span class="t-val" id="telem-hardpoints">08 ACTIVE NODES</span>
+            </div>
+            <div class="telem-row">
+              <span class="t-lbl">NEURAL SYNC RATIO</span>
+              <span class="t-val highlight" id="telem-sync">99.8% STABLE</span>
+            </div>
+          </div>
+
+          <!-- Dynamic Slogan Stack -->
+          <div class="sanctuary-slogan-stack" id="sanctuary-slogan">
             <span>MACHINES</span>
             <span>BUILD</span>
             <span>FASTER.</span>
@@ -728,10 +793,11 @@
       <!-- Footer Bar -->
       <div class="sanctuary-footer-bar">
         <div class="sanctuary-footer-left">
+          <span class="brand-logo-txt">FORM<span class="logo-caret">∧</span>CT</span>
           <span class="brand-sub-txt">HUMAN INTELLIGENCE. MACHINE POTENTIAL.</span>
         </div>
         <div class="sanctuary-footer-center">
-          <span>SAME PLANET. A HIGHER ARENA.</span>
+          <span id="sanctuary-footer-status">WORLD 01 OF 04 — SCROLL TO DISCOVER ARENAS</span>
         </div>
         <div class="sanctuary-footer-right">
           <span class="dash">—</span>

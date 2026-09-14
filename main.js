@@ -1170,26 +1170,181 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  // Section 5: Sanctuary Thumbnail Background Switcher
-  const sanctuaryThumbs = document.querySelectorAll('.sanctuary-thumb-item');
-  const sanctuaryBackdrop = document.getElementById('sanctuary-backdrop');
-
-  sanctuaryThumbs.forEach(thumb => {
-    thumb.addEventListener('mouseenter', () => sfx.play('hover'));
-    thumb.addEventListener('click', () => {
-      sfx.play('click');
-      sanctuaryThumbs.forEach(t => t.classList.remove('active'));
-      thumb.classList.add('active');
-
-      const bg = thumb.getAttribute('data-bg');
-      if (sanctuaryBackdrop && bg) {
-        sanctuaryBackdrop.style.backgroundImage = `url('${bg}')`;
-      }
-    });
-  });
+  // Section 5: Pinned Scroll-Jacking Worlds Showcase
+  initSanctuaryScrollJacking();
 
   initTacticalRadarWidget();
 });
+
+// ==========================================================================
+// 8. SANCTUARY PINNED SCROLL-JACKING WORLDS SHOWCASE
+// ==========================================================================
+function initSanctuaryScrollJacking() {
+  const sanctuarySec = document.getElementById('sanctuary');
+  if (!sanctuarySec) return;
+
+  const WORLDS_DATA = [
+    {
+      index: "WORLD 01 / 04",
+      eyebrow: "WORLD DISCOVERY // ORBITAL ARENA",
+      titleHtml: `<span>HIGHER</span><span>BIGGER</span><span>CLEANER</span><span class="dim">NO LIMITS.</span>`,
+      desc: "A low-orbit arena where minds and machines collide. The Sanctuary is more than a battleground - it's a test of evolution.",
+      coordsTitle: "ORBITAL PLATFORM",
+      coordsVal: "0.00° N   0.00° E",
+      coordsSub: "LOW EARTH ORBIT // ALTITUDE: 420 KM",
+      env: "ZERO-G VACUUM",
+      hardpoints: "08 ACTIVE NODES",
+      sync: "99.8% STABLE",
+      sloganHtml: `<span>MACHINES</span><span>BUILD</span><span>FASTER.</span><span class="spacer"></span><span>HUMANS</span><span>AIM HIGHER.</span>`,
+      status: "WORLD 01 OF 04 — ORBITAL PLATFORM ARENA"
+    },
+    {
+      index: "WORLD 02 / 04",
+      eyebrow: "WORLD DISCOVERY // CYBERNETIC GRID",
+      titleHtml: `<span>NEON</span><span>MATRIX</span><span>GRID</span><span class="dim">DUEL COLOSSEUM.</span>`,
+      desc: "Dense vertical skyscrapers interwoven with tactical hardpoints. Code the grid in real-time to alter combat sightlines.",
+      coordsTitle: "SUB-LEVEL GRID 04",
+      coordsVal: "34.12° N   118.24° W",
+      coordsSub: "NEON CORE // ALTITUDE: 12 M",
+      env: "GRID ATMOSPHERE",
+      hardpoints: "12 ACTIVE NODES",
+      sync: "98.4% STABLE",
+      sloganHtml: `<span>REWRITE</span><span>THE CITY.</span><span class="spacer"></span><span>OVERRIDE</span><span>THE GRID.</span>`,
+      status: "WORLD 02 OF 04 — CYBERNETIC CORE GRID"
+    },
+    {
+      index: "WORLD 03 / 04",
+      eyebrow: "WORLD DISCOVERY // STRATO-DOME",
+      titleHtml: `<span>STRATO-DOME</span><span>MESOSPHERE</span><span>OUTLOOK</span><span class="dim">ZERO GRAVITY.</span>`,
+      desc: "High-altitude combat in dynamic zero-G pockets. Adapt weapon kinetics on the fly as wind vectors and gravity fields shift.",
+      coordsTitle: "MESOSPHERE APEX",
+      coordsVal: "78.45° N   15.68° E",
+      coordsSub: "APEX DOME // ALTITUDE: 85 KM",
+      env: "SYNTHETIC AIR",
+      hardpoints: "06 DYNAMIC ZONES",
+      sync: "99.2% STABLE",
+      sloganHtml: `<span>NO GRAVITY</span><span>LIMITS.</span><span class="spacer"></span><span>ADAPT</span><span>OR FALL.</span>`,
+      status: "WORLD 03 OF 04 — STRATO-DOME MESOSPHERE"
+    },
+    {
+      index: "WORLD 04 / 04",
+      eyebrow: "WORLD DISCOVERY // VOID CITADEL",
+      titleHtml: `<span>VOID</span><span>CITADEL</span><span>CORE</span><span class="dim">FINAL DUEL.</span>`,
+      desc: "The ultimate arena. Unrestricted operative abilities and raw neural bandwidth. Only synchronized units claim dominance.",
+      coordsTitle: "UNCHARTERED SECTOR",
+      coordsVal: "99.99° N   99.99° E",
+      coordsSub: "DEEP SPACE // ALTITUDE: UNBOUND",
+      env: "DEEP SPACE VOID",
+      hardpoints: "UNRESTRICTED",
+      sync: "100.0% OVERDRIVE",
+      sloganHtml: `<span>ONE TRUTH.</span><span class="spacer"></span><span>NO MERCY.</span><span>VICTORY.</span>`,
+      status: "WORLD 04 OF 04 — VOID CITADEL FINAL DUEL"
+    }
+  ];
+
+  const backdropLayers = document.querySelectorAll('.sanctuary-backdrop-layer');
+  const indexEl = document.getElementById('sanctuary-world-index');
+  const eyebrowEl = document.getElementById('sanctuary-eyebrow');
+  const titleEl = document.getElementById('sanctuary-title');
+  const descEl = document.getElementById('sanctuary-desc');
+  const coordsTitleEl = document.getElementById('coords-title');
+  const coordsValEl = document.getElementById('coords-val');
+  const coordsSubEl = document.getElementById('coords-sub');
+  const envEl = document.getElementById('telem-env');
+  const hardpointsEl = document.getElementById('telem-hardpoints');
+  const syncEl = document.getElementById('telem-sync');
+  const sloganEl = document.getElementById('sanctuary-slogan');
+  const statusEl = document.getElementById('sanctuary-footer-status');
+  const progressFill = document.getElementById('world-progress-fill');
+  const stepDots = document.querySelectorAll('.step-dot');
+  const thumbItems = document.querySelectorAll('.sanctuary-thumb-item');
+
+  let currentWorld = -1;
+
+  function updateWorldContent(worldIdx) {
+    if (currentWorld === worldIdx) return;
+    currentWorld = worldIdx;
+
+    const data = WORLDS_DATA[worldIdx];
+    if (!data) return;
+
+    // 1. Backdrop layer crossfade
+    backdropLayers.forEach((layer, i) => {
+      if (i === worldIdx) {
+        layer.classList.add('active');
+      } else {
+        layer.classList.remove('active');
+      }
+    });
+
+    // 2. Active Indicators
+    stepDots.forEach((dot, i) => dot.classList.toggle('active', i === worldIdx));
+    thumbItems.forEach((thumb, i) => thumb.classList.toggle('active', i === worldIdx));
+    if (progressFill) progressFill.style.height = `${((worldIdx + 1) / 4) * 100}%`;
+
+    // 3. Text & Stats Update
+    if (indexEl) indexEl.textContent = data.index;
+    if (eyebrowEl) eyebrowEl.textContent = data.eyebrow;
+    if (descEl) descEl.textContent = data.desc;
+    if (coordsTitleEl) coordsTitleEl.textContent = data.coordsTitle;
+    if (coordsValEl) coordsValEl.textContent = data.coordsVal;
+    if (coordsSubEl) coordsSubEl.textContent = data.coordsSub;
+    if (envEl) envEl.textContent = data.env;
+    if (hardpointsEl) hardpointsEl.textContent = data.hardpoints;
+    if (syncEl) syncEl.textContent = data.sync;
+    if (sloganEl) sloganEl.innerHTML = data.sloganHtml;
+    if (statusEl) statusEl.textContent = data.status;
+
+    if (titleEl) {
+      titleEl.innerHTML = data.titleHtml;
+      gsap.fromTo(titleEl.children, 
+        { opacity: 0, y: 12 }, 
+        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }
+      );
+    }
+  }
+
+  // GSAP ScrollTrigger Pinned Timeline
+  const st = ScrollTrigger.create({
+    trigger: sanctuarySec,
+    start: 'top top',
+    end: '+=300%',
+    pin: true,
+    pinSpacing: true,
+    scrub: 0.5,
+    onUpdate: (self) => {
+      const progress = self.progress;
+      const activeIdx = Math.min(3, Math.floor(progress * 4));
+      updateWorldContent(activeIdx);
+    }
+  });
+
+  // Initial update
+  updateWorldContent(0);
+
+  // Click handlers on Step Dots & Thumbnails for direct navigation
+  const navigateToWorld = (worldIdx) => {
+    if (window.sfx) window.sfx.play('click');
+    const start = st.start;
+    const end = st.end;
+    const targetScroll = start + (worldIdx / 3) * (end - start);
+
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  };
+
+  stepDots.forEach((dot, i) => {
+    dot.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
+    dot.addEventListener('click', () => navigateToWorld(i));
+  });
+
+  thumbItems.forEach((thumb, i) => {
+    thumb.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
+    thumb.addEventListener('click', () => navigateToWorld(i));
+  });
+}
 
 function initTacticalRadarWidget() {
   const modeBtns = document.querySelectorAll('.mode-btn');
