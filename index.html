@@ -915,8 +915,18 @@
 
         </div>
 
-        <!-- Middle Card: SYSTEM REQUIREMENTS Matrix -->
-        <div class="specs-req-card">
+        <!-- Middle Card: SYSTEM REQUIREMENTS & HARDWARE PRESETS — REDESIGNED -->
+        <div class="specs-req-card" id="specs-req-card" data-active-preset="1">
+
+          <!-- Animated scan-line overlay -->
+          <div class="req-scanlines" aria-hidden="true"></div>
+          <!-- Corner bracket accents -->
+          <div class="req-corner req-corner--tl" aria-hidden="true"></div>
+          <div class="req-corner req-corner--tr" aria-hidden="true"></div>
+          <div class="req-corner req-corner--bl" aria-hidden="true"></div>
+          <div class="req-corner req-corner--br" aria-hidden="true"></div>
+
+          <!-- Header Bar -->
           <div class="req-header-bar">
             <div class="req-header-left">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
@@ -924,79 +934,187 @@
                 <line x1="8" y1="21" x2="16" y2="21" />
                 <line x1="12" y1="17" x2="12" y2="21" />
               </svg>
-              <span>SYSTEM REQUIREMENTS</span>
+              <span>SYSTEM REQUIREMENTS // HARDWARE PRESETS</span>
             </div>
             <div class="req-header-right">
-              <span>PLAY YOUR WAY. —</span>
+              <span class="pulse-indicator"></span>
+              <span id="req-active-preset-tag">PRESET: MINIMUM (1080P)</span>
             </div>
           </div>
 
+          <!-- Tier Power Bar (animated on preset change) -->
+          <div class="req-tier-bar" id="req-tier-bar" aria-hidden="true">
+            <div class="tier-segment" data-tier="0"></div>
+            <div class="tier-segment" data-tier="1"></div>
+            <div class="tier-segment" data-tier="2"></div>
+            <div class="tier-segment" data-tier="3"></div>
+          </div>
+
+          <!-- Preset Switcher Tabs Bar -->
+          <div class="req-tabs-row" role="tablist">
+            <button class="req-preset-tab" data-preset="0" role="tab" aria-selected="false" id="req-tab-0">
+              <span class="tab-badge amber">720P</span>
+              <span class="tab-title">POTATO-PC</span>
+              <span class="tab-fps">30-45 FPS</span>
+            </button>
+            <button class="req-preset-tab active" data-preset="1" role="tab" aria-selected="true" id="req-tab-1">
+              <span class="tab-badge cyan">1080P</span>
+              <span class="tab-title">MINIMUM</span>
+              <span class="tab-fps">60 FPS</span>
+            </button>
+            <button class="req-preset-tab" data-preset="2" role="tab" aria-selected="false" id="req-tab-2">
+              <span class="tab-badge green">1440P</span>
+              <span class="tab-title">RECOMMENDED</span>
+              <span class="tab-fps">120 FPS</span>
+            </button>
+            <button class="req-preset-tab" data-preset="3" role="tab" aria-selected="false" id="req-tab-3">
+              <span class="tab-badge crimson">4K ULTRA</span>
+              <span class="tab-title">CYBER ULTRA</span>
+              <span class="tab-fps">144+ FPS</span>
+            </button>
+          </div>
+
           <div class="req-body-split">
-            <!-- Specs Table on Left -->
-            <div class="req-table-wrap">
-              <table class="specs-table-grid">
-                <thead>
-                  <tr>
-                    <th class="col-comp">COMPONENT</th>
-                    <th class="col-potato">
-                      <span class="head-title">POTATO-PC MODE</span>
-                      <span class="head-sub">(INTEGRATED FRIENDLY)</span>
-                    </th>
-                    <th class="col-min">
-                      <span class="head-title">MINIMUM</span>
-                      <span class="head-sub">(PLAYABLE)</span>
-                    </th>
-                    <th class="col-rec">
-                      <span class="head-title">RECOMMENDED</span>
-                      <span class="head-sub">(BEST EXPERIENCE)</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="lbl-comp">OS</td>
-                    <td class="val-potato">Windows 10 (64-bit)</td>
-                    <td class="val-min">Windows 10 (64-bit)</td>
-                    <td class="val-rec">Windows 10 (64-bit)</td>
-                  </tr>
-                  <tr>
-                    <td class="lbl-comp">CPU</td>
-                    <td class="val-potato">Intel Core i3 (Any Gen)</td>
-                    <td class="val-min">Intel Core i5-8400 / AMD Ryzen 5 2600</td>
-                    <td class="val-rec">Intel Core i7-10700 / AMD Ryzen 7 5700X</td>
-                  </tr>
-                  <tr>
-                    <td class="lbl-comp">GPU</td>
-                    <td class="val-potato">Intel UHD 620 (Integrated)</td>
-                    <td class="val-min highlight-cyan">GTX 1050 Ti / RX 570 (4GB)</td>
-                    <td class="val-rec highlight-cyan">RTX 3060 / RX 6700 XT (8GB)</td>
-                  </tr>
-                  <tr>
-                    <td class="lbl-comp">RAM</td>
-                    <td class="val-potato">8 GB</td>
-                    <td class="val-min highlight-cyan">16 GB</td>
-                    <td class="val-rec">16 GB+</td>
-                  </tr>
-                  <tr>
-                    <td class="lbl-comp">Storage</td>
-                    <td class="val-potato">8 GB (HDD/SSD)</td>
-                    <td class="val-min highlight-cyan">20 GB (SSD recommended)</td>
-                    <td class="val-rec">20 GB (SSD)</td>
-                  </tr>
-                  <tr>
-                    <td class="lbl-comp">Target FPS</td>
-                    <td class="val-potato">30-45 FPS (720p, Low)</td>
-                    <td class="val-min highlight-cyan">60 FPS (1080p, Medium)</td>
-                    <td class="val-rec">120 FPS (1440p, High)</td>
-                  </tr>
-                </tbody>
-              </table>
+            <!-- Left: Staggered Spec Cards & Performance Gauge -->
+            <div class="req-main-content">
+              
+              <!-- Hardware Spec Grid -->
+              <div class="req-spec-cards-grid" id="req-spec-cards-grid">
+                
+                <div class="spec-card-item" data-spec="cpu">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">⚡</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">PROCESSOR (CPU)</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value" id="spec-val-cpu">Intel Core i5-8400 / AMD Ryzen 5 2600</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-cpu">6 Cores @ 2.80GHz or better</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+                <div class="spec-card-item" data-spec="gpu">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">🎮</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">GRAPHICS CARD (GPU)</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value highlight-cyan" id="spec-val-gpu">GTX 1050 Ti / RX 570 (4GB)</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-gpu">DirectX 12 API / Vulkan 1.3</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+                <div class="spec-card-item" data-spec="ram">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">💾</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">MEMORY (RAM)</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value highlight-cyan" id="spec-val-ram">16 GB DDR4</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-ram">Dual-Channel Recommended</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+                <div class="spec-card-item" data-spec="storage">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">💽</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">STORAGE</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value highlight-cyan" id="spec-val-storage">20 GB SSD</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-storage">SSD Recommended for fast loading</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+                <div class="spec-card-item" data-spec="os">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">🖥️</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">OPERATING SYSTEM</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value" id="spec-val-os">Windows 10 / Linux 64-bit</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-os">Requires 64-bit architecture</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+                <div class="spec-card-item" data-spec="fps">
+                  <div class="spec-icon-wrap">
+                    <span class="spec-icon">🎯</span>
+                    <div class="spec-icon-ring"></div>
+                  </div>
+                  <div class="spec-details">
+                    <span class="spec-label">TARGET PERFORMANCE</span>
+                    <span class="spec-value-wrap">
+                      <span class="spec-value highlight-green" id="spec-val-fps">60 FPS @ 1080p Medium</span>
+                    </span>
+                    <span class="spec-sub" id="spec-sub-fps">V-Sync Supported / Low Latency</span>
+                  </div>
+                  <div class="spec-card-glow"></div>
+                </div>
+
+              </div>
+
+              <!-- Performance Visualizer Gauge Bar -->
+              <div class="req-gauge-wrapper">
+                <div class="gauge-header-row">
+                  <div class="gauge-label-group">
+                    <span class="gauge-title">FRAME RATE PERFORMANCE GAUGE</span>
+                    <span class="gauge-status" id="gauge-target-txt">TARGET: 60 FPS STABLE</span>
+                  </div>
+                  <div class="gauge-fps-display">
+                    <span class="gauge-number" id="gauge-fps-num">60</span>
+                    <span class="gauge-unit">FPS</span>
+                  </div>
+                </div>
+
+                <div class="gauge-track">
+                  <!-- Tick marks -->
+                  <div class="gauge-ticks" aria-hidden="true">
+                    <span class="gauge-tick" style="left:25%"></span>
+                    <span class="gauge-tick" style="left:50%"></span>
+                    <span class="gauge-tick" style="left:75%"></span>
+                  </div>
+                  <div class="gauge-fill" id="gauge-fill-bar" style="width: 60%;">
+                    <div class="gauge-glow-tip"></div>
+                  </div>
+                </div>
+                <div class="gauge-tick-labels" aria-hidden="true">
+                  <span>LOW</span><span>MED</span><span>HIGH</span><span>ULTRA</span>
+                </div>
+
+                <div class="gauge-footer-metrics">
+                  <span class="g-metric">RENDER LATENCY: <strong id="gauge-latency-val">12 ms</strong></span>
+                  <span class="g-metric">ESTIMATED VRAM: <strong id="gauge-vram-val">3.4 GB</strong></span>
+                  <span class="g-metric">NET FREQUENCY: <strong>144 Hz TICK</strong></span>
+                </div>
+              </div>
+
             </div>
 
             <!-- Early Playtest Callout Card on Right -->
             <div class="req-side-card">
               <div class="req-op-img-wrap">
                 <img src="assets/playtest_operative.png" alt="Operative Helmet">
+                <div class="req-op-img-overlay"></div>
               </div>
               <div class="req-side-info">
                 <span class="side-tagline">EARLY PLAYTEST</span>
