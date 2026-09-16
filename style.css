@@ -5627,3 +5627,558 @@ button {
   box-shadow: 0 0 12px rgba(0, 229, 255, 0.5) !important;
   transform: scale(1.1) !important;
 }
+
+/* ==========================================================================
+   GLOBAL SMOOTH SCROLL ACCELERATION & HARDWARE OPTIMIZATIONS
+   ========================================================================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* GPU Hardware Acceleration on Core Stages */
+.section-duality,
+.section-roles,
+.section-forge,
+.section-sanctuary,
+.section-specs,
+.site-footer {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   PERSISTENT SLEEK SITE HEADER NAVIGATION (Matching section6.png)
+   ========================================================================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height, 60px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  background: rgba(3, 7, 14, 0.82);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.site-header.at-top {
+  background: rgba(3, 7, 14, 0.4);
+  border-bottom-color: rgba(255, 255, 255, 0.04);
+  box-shadow: none;
+}
+
+.site-header-inner {
+  width: 100%;
+  max-width: 1720px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 3.5vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav-brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.nav-brand-txt {
+  font-family: var(--font-heading, 'Orbitron', sans-serif);
+  font-size: 15px;
+  font-weight: 900;
+  letter-spacing: 0.28em;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.nav-brand-txt .logo-caret {
+  color: var(--cyan-primary, #00e5ff);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.2vw, 36px);
+}
+
+.nav-link {
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(10px, 0.72vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #94a3b8;
+  text-decoration: none;
+  text-transform: uppercase;
+  position: relative;
+  padding: 6px 0;
+  transition: color 0.25s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+}
+
+.nav-right-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.2vw, 16px);
+  flex-shrink: 0;
+}
+
+.nav-wishlist-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 4px;
+  color: #ffffff;
+  font-family: var(--font-heading, sans-serif);
+  font-size: clamp(9.5px, 0.65vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.nav-wishlist-btn:hover {
+  background: var(--cyan-primary, #00e5ff);
+  color: #03070e;
+  border-color: var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.nav-wishlist-btn .ext-dash {
+  color: var(--cyan-primary, #00e5ff);
+}
+.nav-wishlist-btn:hover .ext-dash {
+  color: #03070e;
+}
+
+/* ==========================================================================
+   PORTAL EFFECT GATEWAY (Slider Revolution Portal Style)
+   ========================================================================== */
+@keyframes portal-spin-outer {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes portal-spin-reverse {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+
+@keyframes portal-vortex-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.9;
+    filter: drop-shadow(0 0 35px rgba(0, 229, 255, 0.8));
+  }
+}
+
+@keyframes portal-shockwave-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 1;
+    border-width: 4px;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.8);
+    opacity: 0;
+    border-width: 1px;
+  }
+}
+
+@keyframes portal-rays-rotate {
+  0%   { transform: translate(-50%, -50%) rotate(0deg); opacity: 0.3; }
+  50%  { opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) rotate(180deg); opacity: 0.3; }
+}
+
+/* Dimensional Portal Container */
+.sanctuary-portal-gate {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(280px, 32vw, 460px);
+  height: clamp(280px, 32vw, 460px);
+  pointer-events: none;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+/* Outer High-Tech Rotating HUD Ring */
+.portal-ring-outer {
+  position: absolute;
+  inset: 0;
+  animation: portal-spin-outer 40s linear infinite;
+  transition: transform 0.8s ease;
+}
+
+.portal-ring-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Mid Electric Pulse Ring */
+.portal-ring-mid {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 229, 255, 0.5);
+  box-shadow:
+    0 0 25px rgba(0, 229, 255, 0.4),
+    inset 0 0 25px rgba(0, 229, 255, 0.3);
+  animation: portal-spin-reverse 24s linear infinite;
+}
+
+/* Inner Dotted Concentric Ring */
+.portal-ring-inner {
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  border: 1px dashed rgba(251, 191, 36, 0.6);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.35);
+  animation: portal-spin-outer 16s linear infinite;
+}
+
+/* Dimensional Vortex Core Glow */
+.portal-vortex-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70%;
+  height: 70%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.28) 0%, rgba(139, 92, 246, 0.16) 45%, transparent 72%);
+  animation: portal-vortex-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Hyperspace Radial Warp Rays */
+.portal-hyperspace-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  height: 140%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgba(0, 229, 255, 0.12) 0deg 4deg, transparent 4deg 16deg);
+  mask-image: radial-gradient(circle, black 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);
+  animation: portal-rays-rotate 12s linear infinite;
+  opacity: 0.35;
+  transition: opacity 0.4s ease;
+}
+
+/* Expanding Energy Shockwave (triggers on warp) */
+.portal-shockwave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%) scale(0.6);
+  border-radius: 50%;
+  border: 2px solid var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 35px var(--cyan-primary, #00e5ff), inset 0 0 35px var(--cyan-primary, #00e5ff);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Portal Center HUD Readout */
+.portal-center-hud {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+  z-index: 6;
+  text-align: center;
+}
+
+.portal-status-badge {
+  font-family: var(--font-mono, monospace);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--cyan-primary, #00e5ff);
+  background: rgba(3, 7, 14, 0.85);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  padding: 3px 8px;
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+  text-transform: uppercase;
+}
+
+.portal-coords-txt {
+  font-family: var(--font-mono, monospace);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+}
+
+/* Active Portal Warp Animation State */
+.sanctuary-portal-gate.warping .portal-shockwave {
+  animation: portal-shockwave-burst 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sanctuary-portal-gate.warping .portal-ring-outer {
+  animation: portal-spin-outer 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sanctuary-portal-gate.warping .portal-hyperspace-rays {
+  opacity: 0.95;
+}
+
+.sanctuary-portal-gate.warping .portal-vortex-glow {
+  filter: drop-shadow(0 0 50px rgba(0, 229, 255, 1));
+}
+
+/* Backdrop layers during portal transition */
+.sanctuary-backdrop-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  will-change: clip-path, transform, opacity;
+}
+
+.sanctuary-backdrop-layer.active {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   REDESIGNED STUDIO SIGNATURE ("Created By AFTER 3 AM Studios")
+   ========================================================================== */
+.footer-creator-showcase {
+  text-align: center;
+  margin: clamp(28px, 4.5vh, 56px) 0 clamp(16px, 2.5vh, 32px);
+  padding: clamp(20px, 3.5vh, 40px) 16px;
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.studio-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 14px;
+}
+
+.studio-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #00e5ff;
+  box-shadow: 0 0 10px #00e5ff;
+}
+
+.studio-role-tag {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(9px, 0.65vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.studio-ops-id {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(9px, 0.65vw, 11px);
+  color: var(--cyan-primary, #00e5ff);
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+
+.studio-main-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.studio-created-by {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(10px, 0.7vw, 12.5px);
+  letter-spacing: 0.38em;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.creator-high-title {
+  font-family: var(--font-display, 'Cinzel Decorative', 'Rajdhani', sans-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: clamp(0.06em, 0.14vw, 0.16em);
+  line-height: 1.05;
+  margin: 4px 0 6px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, #d1f7ff 25%, #00e5ff 60%, #38bdf8 85%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.5)) drop-shadow(0 0 70px rgba(0, 229, 255, 0.25));
+  transition: transform 0.4s ease, filter 0.4s ease;
+  user-select: none;
+  cursor: default;
+}
+
+.creator-high-title:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 50px rgba(0, 229, 255, 0.8)) drop-shadow(0 0 100px rgba(0, 229, 255, 0.4));
+}
+
+.studio-crest-accent {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin: 6px 0 12px;
+}
+
+.crest-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.4), transparent);
+}
+
+.crest-glyph {
+  font-family: var(--font-mono, monospace);
+  font-size: 9.5px;
+  letter-spacing: 0.25em;
+  color: var(--cyan-primary, #00e5ff);
+  font-weight: 700;
+}
+
+.studio-tagline {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(9px, 0.62vw, 11px);
+  letter-spacing: 0.22em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+
+.creator-meta-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(8.5px, 0.58vw, 10.5px);
+  color: #64748b;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.creator-meta-pills .dot {
+  color: var(--cyan-primary, #00e5ff);
+  font-size: 12px;
+}
+
+/* Clean Footer Brand Logo size so it never looks oversized */
+.footer-brand-logo {
+  font-family: var(--font-heading, 'Orbitron', sans-serif);
+  font-size: clamp(22px, 2.2vw, 32px);
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: #ffffff;
+  margin: 0 0 6px 0;
+}
+
+@media (max-width: 768px) {
+  .site-header-inner {
+    padding: 0 16px;
+  }
+  .nav-links {
+    display: none; /* Hide navigation links on small mobile screens */
+  }
+  .creator-high-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+  }
+}
+

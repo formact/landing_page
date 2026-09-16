@@ -619,104 +619,104 @@ squad.<span class="code-fn">fillEnergyReservoir</span>(<span class="code-num">1.
   }
 ];
 
-function initCleanHeroTitleGlider() {
+function initHeroParallaxAndHeader(lenis) {
   const heroTitle = document.getElementById('hero-title');
   const siteHeader = document.getElementById('site-header');
-  const slot = document.getElementById('hero-title-slot');
-  const pretitle = document.querySelector('.hero-pretitle');
-  const subtitle = document.querySelector('.hero-subtitle');
-  const actions = document.querySelector('.hero-actions');
-  const rightLabel = document.querySelector('.hero-right-label');
-  const scrollTicker = document.querySelector('.hero-scroll-ticker');
 
-  if (!heroTitle || !siteHeader || !slot) return;
-
-  // Initial natural relative layout
-  heroTitle.style.position = 'relative';
-  heroTitle.style.top = 'auto';
-  heroTitle.style.left = 'auto';
-  heroTitle.style.transform = 'none';
-  heroTitle.style.margin = '0';
-  heroTitle.style.zIndex = '1001';
-
-  let startLeft = 0;
-  let startTop = 0;
-  const targetLeft = 48;
-  const targetTop = 18;
-  const targetScale = 0.32;
-
-  function measurePositions() {
+  // Parallax fade for Hero Title inside Hero Section (never floats fixed across site)
+  if (heroTitle) {
     heroTitle.style.position = 'relative';
     heroTitle.style.transform = 'none';
-    const rect = slot.getBoundingClientRect();
-    startLeft = rect.left;
-    startTop = rect.top + window.scrollY;
+    heroTitle.style.top = 'auto';
+    heroTitle.style.left = 'auto';
+    heroTitle.style.zIndex = '10';
+
+    gsap.to(heroTitle, {
+      y: -40,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: '25% top',
+        end: '85% top',
+        scrub: true
+      }
+    });
   }
 
-  measurePositions();
-  window.addEventListener('resize', measurePositions);
-
-  const surrounding = [pretitle, subtitle, actions, rightLabel, scrollTicker].filter(Boolean);
-
-  ScrollTrigger.create({
-    trigger: '#hero',
-    start: 'top top',
-    end: '60% top',
-    scrub: 0.2,
-    onUpdate: (self) => {
-      const p = self.progress;
-
-      if (p <= 0.001) {
-        // At exact top of page: 100% natural relative position in Hero Section
-        heroTitle.style.position = 'relative';
-        heroTitle.style.top = 'auto';
-        heroTitle.style.left = 'auto';
-        heroTitle.style.transform = 'none';
-        siteHeader.classList.remove('scrolled');
-        gsap.set(surrounding, { opacity: 1, y: 0 });
+  // Smooth Header Navigation state & active section tracker
+  if (siteHeader) {
+    const updateHeaderState = () => {
+      const scrollY = window.scrollY || window.pageYOffset;
+      if (scrollY < 60) {
+        siteHeader.classList.add('at-top');
       } else {
-        // When scrolling down: fixed positioning gliding smoothly to header top-left (48px, 18px)
-        heroTitle.style.position = 'fixed';
-        heroTitle.style.top = `${targetTop}px`;
-        heroTitle.style.left = `${targetLeft}px`;
-        heroTitle.style.transformOrigin = 'left top';
+        siteHeader.classList.remove('at-top');
+      }
+    };
+    updateHeaderState();
+    window.addEventListener('scroll', updateHeaderState, { passive: true });
 
-        // Interpolate position from start (slot) to target (header)
-        const currentDeltaX = (1 - p) * (startLeft - targetLeft);
-        const currentDeltaY = (1 - p) * (startTop - window.scrollY - targetTop);
-        const currentScale = 1 - p * (1 - targetScale);
+    // Active navigation link highlight on scroll
+    const sections = ['hero', 'duality', 'roles', 'forge', 'sanctuary', 'specs'];
+    const navLinks = document.querySelectorAll('.nav-link');
+    sections.forEach(id => {
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      ScrollTrigger.create({
+        trigger: sec,
+        start: 'top 40%',
+        end: 'bottom 40%',
+        onEnter: () => setActiveNav(id),
+        onEnterBack: () => setActiveNav(id)
+      });
+    });
 
-        gsap.set(heroTitle, {
-          x: currentDeltaX,
-          y: currentDeltaY,
-          scale: currentScale,
-          opacity: 1
-        });
+    function setActiveNav(id) {
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        const match = href === '#' + id || (id === 'hero' && href === '#hero');
+        link.classList.toggle('active', match);
+      });
+    }
+  }
 
-        // Fade out surrounding hero text as user scrolls
-        const surroundingOpacity = Math.max(0, 1 - p * 2.5);
-        gsap.set(surrounding, { opacity: surroundingOpacity, y: -12 * p });
-
-        if (p > 0.4) {
-          siteHeader.classList.add('scrolled');
+  // Smooth Lenis Scroll for all internal anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        if (window.sfx) window.sfx.play('hover');
+        if (lenis) {
+          lenis.scrollTo(targetEl, { offset: -20, duration: 1.2 });
         } else {
-          siteHeader.classList.remove('scrolled');
+          targetEl.scrollIntoView({ behavior: 'smooth' });
         }
       }
-    }
+    });
   });
 }
 
 function initSmoothScrollAndGSAP() {
   const lenis = new Lenis({
-    duration: 1.8,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -8 * t)),
+    duration: 1.15,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: 'vertical',
+    gestureOrientation: 'vertical',
     smoothWheel: true,
-    wheelMultiplier: 0.85,
-    touchMultiplier: 1.5,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 1.6,
+    infinite: false,
   });
 
-  lenis.on('scroll', ScrollTrigger.update);
+  window.lenis = lenis;
+
+  lenis.on('scroll', () => {
+    ScrollTrigger.update();
+  });
 
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
@@ -724,8 +724,7 @@ function initSmoothScrollAndGSAP() {
 
   gsap.ticker.lagSmoothing(0);
 
-  initCleanHeroTitleGlider();
-
+  initHeroParallaxAndHeader(lenis);
   // --- Hero Section Animations ---
   gsap.from('.hero-pretitle span', {
     y: 30,
@@ -1261,29 +1260,87 @@ function initSanctuaryScrollJacking() {
   const thumbItems = document.querySelectorAll('.sanctuary-thumb-item');
 
   let currentWorld = -1;
+  const portalGate = document.getElementById('sanctuary-portal-gate');
+  const portalCoordsDisplay = document.getElementById('portal-coords-display');
 
   function updateWorldContent(worldIdx) {
     if (currentWorld === worldIdx) return;
+    const prevWorld = currentWorld;
     currentWorld = worldIdx;
 
     const data = WORLDS_DATA[worldIdx];
     if (!data) return;
 
-    // 1. Backdrop layer crossfade
+    // Trigger Portal Effect Gateway Warp
+    if (portalGate) {
+      portalGate.classList.remove('warping');
+      void portalGate.offsetWidth; // Force reflow to retrigger animation
+      portalGate.classList.add('warping');
+      setTimeout(() => portalGate.classList.remove('warping'), 1000);
+    }
+
+    if (portalCoordsDisplay) {
+      portalCoordsDisplay.textContent = data.coordsTitle + ' • ' + data.coordsSub;
+    }
+
+    // Portal Zoom & Reveal for Backdrop Layers (Slider Revolution Portal Effect)
     backdropLayers.forEach((layer, i) => {
       if (i === worldIdx) {
+        layer.style.zIndex = '3';
         layer.classList.add('active');
+
+        // Circular Portal Reveal Zoom from Center
+        gsap.fromTo(layer, 
+          { 
+            clipPath: 'circle(0% at 50% 50%)',
+            scale: 1.42,
+            filter: 'brightness(1.6) contrast(1.15)',
+            opacity: 1
+          },
+          { 
+            clipPath: 'circle(150% at 50% 50%)',
+            scale: 1.0,
+            filter: 'brightness(1.0) contrast(1.0)',
+            duration: 1.05,
+            ease: 'power3.out',
+            onComplete: () => {
+              layer.style.clipPath = '';
+            }
+          }
+        );
+      } else if (i === prevWorld) {
+        layer.style.zIndex = '2';
+        gsap.to(layer, {
+          scale: 0.9,
+          opacity: 0,
+          filter: 'blur(8px)',
+          duration: 0.85,
+          ease: 'power2.inOut',
+          onComplete: () => {
+            layer.classList.remove('active');
+            layer.style.zIndex = '1';
+            layer.style.filter = '';
+            layer.style.scale = '1';
+          }
+        });
       } else {
+        layer.style.zIndex = '1';
         layer.classList.remove('active');
+        layer.style.opacity = '0';
       }
     });
 
-    // 2. Active Indicators
+    // Audio SFX on portal warp
+    if (prevWorld !== -1 && window.sfx) {
+      window.sfx.play('compile');
+    }
+
+    // Active Indicators
     stepDots.forEach((dot, i) => dot.classList.toggle('active', i === worldIdx));
     thumbItems.forEach((thumb, i) => thumb.classList.toggle('active', i === worldIdx));
     if (progressFill) progressFill.style.height = `${((worldIdx + 1) / 4) * 100}%`;
 
-    // 3. Text & Stats Update
+    // Text & Stats Update with Stagger HUD reveal
     if (indexEl) indexEl.textContent = data.index;
     if (eyebrowEl) eyebrowEl.textContent = data.eyebrow;
     if (descEl) descEl.textContent = data.desc;
@@ -1299,8 +1356,8 @@ function initSanctuaryScrollJacking() {
     if (titleEl) {
       titleEl.innerHTML = data.titleHtml;
       gsap.fromTo(titleEl.children, 
-        { opacity: 0, y: 12 }, 
-        { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: 'power2.out' }
+        { opacity: 0, y: 14, filter: 'blur(4px)' }, 
+        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.45, stagger: 0.06, ease: 'power2.out' }
       );
     }
   }
@@ -1330,10 +1387,14 @@ function initSanctuaryScrollJacking() {
     const end = st.end;
     const targetScroll = start + (worldIdx / 3) * (end - start);
 
-    window.scrollTo({
-      top: targetScroll,
-      behavior: 'smooth'
-    });
+    if (window.lenis) {
+      window.lenis.scrollTo(targetScroll, { duration: 1.1 });
+    } else {
+      window.scrollTo({
+        top: targetScroll,
+        behavior: 'smooth'
+      });
+    }
   };
 
   stepDots.forEach((dot, i) => {
