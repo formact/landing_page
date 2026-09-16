@@ -915,12 +915,10 @@
 
         </div>
 
-        <!-- Middle Card: SYSTEM REQUIREMENTS & HARDWARE PRESETS — REDESIGNED -->
-        <div class="specs-req-card" id="specs-req-card" data-active-preset="1">
+        <!-- Middle Card: SYSTEM REQUIREMENTS MATRIX (Matching section6.png) -->
+        <div class="specs-req-card" id="specs-req-card" data-focused-col="min">
 
-          <!-- Animated scan-line overlay -->
-          <div class="req-scanlines" aria-hidden="true"></div>
-          <!-- Corner bracket accents -->
+          <!-- Sleek Corner Bracket Accents -->
           <div class="req-corner req-corner--tl" aria-hidden="true"></div>
           <div class="req-corner req-corner--tr" aria-hidden="true"></div>
           <div class="req-corner req-corner--bl" aria-hidden="true"></div>
@@ -934,190 +932,142 @@
                 <line x1="8" y1="21" x2="16" y2="21" />
                 <line x1="12" y1="17" x2="12" y2="21" />
               </svg>
-              <span>SYSTEM REQUIREMENTS // HARDWARE PRESETS</span>
+              <span>SYSTEM REQUIREMENTS</span>
             </div>
+
+            <!-- Interactive Tier Quick-Focus Pills -->
+            <div class="req-tier-pills" role="tablist" aria-label="Hardware Tiers">
+              <button class="tier-pill" data-col="all" role="tab" aria-selected="false">ALL TIERS</button>
+              <button class="tier-pill tier-amber" data-col="potato" role="tab" aria-selected="false">POTATO-PC</button>
+              <button class="tier-pill tier-cyan active" data-col="min" role="tab" aria-selected="true">MINIMUM</button>
+              <button class="tier-pill tier-green" data-col="rec" role="tab" aria-selected="false">RECOMMENDED</button>
+            </div>
+
             <div class="req-header-right">
-              <span class="pulse-indicator"></span>
-              <span id="req-active-preset-tag">PRESET: MINIMUM (1080P)</span>
+              <button class="btn-rig-scanner" id="btn-rig-scanner" type="button" title="Detect your browser GPU and benchmark against FORMACT requirements">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+                <span>SCAN MY PC RIG</span>
+              </button>
+              <span class="play-way-txt">PLAY YOUR WAY. —</span>
             </div>
           </div>
 
-          <!-- Tier Power Bar (animated on preset change) -->
-          <div class="req-tier-bar" id="req-tier-bar" aria-hidden="true">
-            <div class="tier-segment" data-tier="0"></div>
-            <div class="tier-segment" data-tier="1"></div>
-            <div class="tier-segment" data-tier="2"></div>
-            <div class="tier-segment" data-tier="3"></div>
-          </div>
-
-          <!-- Preset Switcher Tabs Bar -->
-          <div class="req-tabs-row" role="tablist">
-            <button class="req-preset-tab" data-preset="0" role="tab" aria-selected="false" id="req-tab-0">
-              <span class="tab-badge amber">720P</span>
-              <span class="tab-title">POTATO-PC</span>
-              <span class="tab-fps">30-45 FPS</span>
-            </button>
-            <button class="req-preset-tab active" data-preset="1" role="tab" aria-selected="true" id="req-tab-1">
-              <span class="tab-badge cyan">1080P</span>
-              <span class="tab-title">MINIMUM</span>
-              <span class="tab-fps">60 FPS</span>
-            </button>
-            <button class="req-preset-tab" data-preset="2" role="tab" aria-selected="false" id="req-tab-2">
-              <span class="tab-badge green">1440P</span>
-              <span class="tab-title">RECOMMENDED</span>
-              <span class="tab-fps">120 FPS</span>
-            </button>
-            <button class="req-preset-tab" data-preset="3" role="tab" aria-selected="false" id="req-tab-3">
-              <span class="tab-badge crimson">4K ULTRA</span>
-              <span class="tab-title">CYBER ULTRA</span>
-              <span class="tab-fps">144+ FPS</span>
-            </button>
+          <!-- Live Hardware Scanner Output Banner -->
+          <div class="rig-scan-banner" id="rig-scan-banner" aria-live="polite">
+            <div class="scan-laser-beam"></div>
+            <div class="scan-banner-content">
+              <span class="scan-status-icon">⚡</span>
+              <div class="scan-info">
+                <span class="scan-title" id="scan-rig-title">HARDWARE SCAN READY</span>
+                <span class="scan-detail" id="scan-rig-detail">Click &quot;SCAN MY PC RIG&quot; to test your current system specs against FORMACT targets.</span>
+              </div>
+              <span class="scan-badge" id="scan-rig-badge">BENCHMARK HUD</span>
+            </div>
           </div>
 
           <div class="req-body-split">
-            <!-- Left: Staggered Spec Cards & Performance Gauge -->
-            <div class="req-main-content">
-              
-              <!-- Hardware Spec Grid -->
-              <div class="req-spec-cards-grid" id="req-spec-cards-grid">
-                
-                <div class="spec-card-item" data-spec="cpu">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">⚡</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">PROCESSOR (CPU)</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value" id="spec-val-cpu">Intel Core i5-8400 / AMD Ryzen 5 2600</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-cpu">6 Cores @ 2.80GHz or better</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
-                </div>
+            <!-- Left: Comparison Table Grid -->
+            <div class="req-table-wrapper">
+              <table class="specs-matrix-table" id="specs-matrix-table">
+                <thead>
+                  <tr>
+                    <th class="col-comp">COMPONENT</th>
+                    <th class="col-potato" data-col="potato">
+                      <div class="th-content">
+                        <span class="th-title-amber">POTATO-PC MODE</span>
+                        <span class="th-sub">(INTEGRATED FRIENDLY)</span>
+                        <span class="th-badge-amber">720P // 30-45 FPS</span>
+                      </div>
+                    </th>
+                    <th class="col-min featured" data-col="min">
+                      <div class="th-content">
+                        <span class="th-featured-tag">TARGET SPEC</span>
+                        <span class="th-title-cyan">MINIMUM</span>
+                        <span class="th-sub">(PLAYABLE)</span>
+                        <span class="th-badge-cyan">1080P // 60 FPS</span>
+                      </div>
+                    </th>
+                    <th class="col-rec" data-col="rec">
+                      <div class="th-content">
+                        <span class="th-title-green">RECOMMENDED</span>
+                        <span class="th-sub">(BEST EXPERIENCE)</span>
+                        <span class="th-badge-green">1440P // 120 FPS</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="spec-row" data-row="os">
+                    <td class="col-comp"><span class="comp-icon">🖥️</span><span class="comp-name">OS</span></td>
+                    <td class="col-potato" data-col="potato">Windows 10 (64-bit)</td>
+                    <td class="col-min featured" data-col="min">Windows 10 (64-bit)</td>
+                    <td class="col-rec" data-col="rec">Windows 10 / 11 (64-bit)</td>
+                  </tr>
+                  <tr class="spec-row" data-row="cpu">
+                    <td class="col-comp"><span class="comp-icon">⚡</span><span class="comp-name">CPU</span></td>
+                    <td class="col-potato" data-col="potato">Intel Core i3 (Any Gen)</td>
+                    <td class="col-min featured" data-col="min">Intel Core i5-8400 / AMD Ryzen 5 2600</td>
+                    <td class="col-rec" data-col="rec">Intel Core i5-10700 / AMD Ryzen 7 5700X</td>
+                  </tr>
+                  <tr class="spec-row" data-row="gpu">
+                    <td class="col-comp"><span class="comp-icon">🎮</span><span class="comp-name">GPU</span></td>
+                    <td class="col-potato" data-col="potato">Intel UHD 620 (Integrated)</td>
+                    <td class="col-min featured" data-col="min"><span class="val-highlight cyan">GTX 1050 Ti / RX 570 (4GB)</span></td>
+                    <td class="col-rec" data-col="rec"><span class="val-highlight green">RTX 3060 / RX 6700 XT (8GB)</span></td>
+                  </tr>
+                  <tr class="spec-row" data-row="ram">
+                    <td class="col-comp"><span class="comp-icon">💾</span><span class="comp-name">RAM</span></td>
+                    <td class="col-potato" data-col="potato">8 GB</td>
+                    <td class="col-min featured" data-col="min"><span class="val-highlight cyan">16 GB</span></td>
+                    <td class="col-rec" data-col="rec"><span class="val-highlight green">16 GB+</span></td>
+                  </tr>
+                  <tr class="spec-row" data-row="storage">
+                    <td class="col-comp"><span class="comp-icon">💽</span><span class="comp-name">Storage</span></td>
+                    <td class="col-potato" data-col="potato">8 GB (HDD/SSD)</td>
+                    <td class="col-min featured" data-col="min"><span class="val-highlight cyan">20 GB (SSD recommended)</span></td>
+                    <td class="col-rec" data-col="rec"><span class="val-highlight green">20 GB (NVMe SSD)</span></td>
+                  </tr>
+                  <tr class="spec-row" data-row="fps">
+                    <td class="col-comp"><span class="comp-icon">🎯</span><span class="comp-name">Target FPS</span></td>
+                    <td class="col-potato" data-col="potato">30-45 FPS (720p, Low)</td>
+                    <td class="col-min featured" data-col="min"><span class="val-highlight cyan">60 FPS (1080p, Medium)</span></td>
+                    <td class="col-rec" data-col="rec"><span class="val-highlight green">120 FPS (1440p, High)</span></td>
+                  </tr>
+                </tbody>
+              </table>
 
-                <div class="spec-card-item" data-spec="gpu">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">🎮</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">GRAPHICS CARD (GPU)</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value highlight-cyan" id="spec-val-gpu">GTX 1050 Ti / RX 570 (4GB)</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-gpu">DirectX 12 API / Vulkan 1.3</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
+              <!-- Performance Summary Bar -->
+              <div class="req-matrix-footer">
+                <div class="req-perf-metric">
+                  <span class="m-dot cyan"></span>
+                  <span class="m-label">ENGINE API:</span>
+                  <span class="m-val">Vulkan 1.3 / DirectX 12 Agility</span>
                 </div>
-
-                <div class="spec-card-item" data-spec="ram">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">💾</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">MEMORY (RAM)</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value highlight-cyan" id="spec-val-ram">16 GB DDR4</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-ram">Dual-Channel Recommended</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
+                <div class="req-perf-metric">
+                  <span class="m-dot green"></span>
+                  <span class="m-label">NETWORK TICK:</span>
+                  <span class="m-val">144 Hz Sub-Tick Prediction</span>
                 </div>
-
-                <div class="spec-card-item" data-spec="storage">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">💽</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">STORAGE</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value highlight-cyan" id="spec-val-storage">20 GB SSD</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-storage">SSD Recommended for fast loading</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
-                </div>
-
-                <div class="spec-card-item" data-spec="os">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">🖥️</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">OPERATING SYSTEM</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value" id="spec-val-os">Windows 10 / Linux 64-bit</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-os">Requires 64-bit architecture</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
-                </div>
-
-                <div class="spec-card-item" data-spec="fps">
-                  <div class="spec-icon-wrap">
-                    <span class="spec-icon">🎯</span>
-                    <div class="spec-icon-ring"></div>
-                  </div>
-                  <div class="spec-details">
-                    <span class="spec-label">TARGET PERFORMANCE</span>
-                    <span class="spec-value-wrap">
-                      <span class="spec-value highlight-green" id="spec-val-fps">60 FPS @ 1080p Medium</span>
-                    </span>
-                    <span class="spec-sub" id="spec-sub-fps">V-Sync Supported / Low Latency</span>
-                  </div>
-                  <div class="spec-card-glow"></div>
-                </div>
-
-              </div>
-
-              <!-- Performance Visualizer Gauge Bar -->
-              <div class="req-gauge-wrapper">
-                <div class="gauge-header-row">
-                  <div class="gauge-label-group">
-                    <span class="gauge-title">FRAME RATE PERFORMANCE GAUGE</span>
-                    <span class="gauge-status" id="gauge-target-txt">TARGET: 60 FPS STABLE</span>
-                  </div>
-                  <div class="gauge-fps-display">
-                    <span class="gauge-number" id="gauge-fps-num">60</span>
-                    <span class="gauge-unit">FPS</span>
-                  </div>
-                </div>
-
-                <div class="gauge-track">
-                  <!-- Tick marks -->
-                  <div class="gauge-ticks" aria-hidden="true">
-                    <span class="gauge-tick" style="left:25%"></span>
-                    <span class="gauge-tick" style="left:50%"></span>
-                    <span class="gauge-tick" style="left:75%"></span>
-                  </div>
-                  <div class="gauge-fill" id="gauge-fill-bar" style="width: 60%;">
-                    <div class="gauge-glow-tip"></div>
-                  </div>
-                </div>
-                <div class="gauge-tick-labels" aria-hidden="true">
-                  <span>LOW</span><span>MED</span><span>HIGH</span><span>ULTRA</span>
-                </div>
-
-                <div class="gauge-footer-metrics">
-                  <span class="g-metric">RENDER LATENCY: <strong id="gauge-latency-val">12 ms</strong></span>
-                  <span class="g-metric">ESTIMATED VRAM: <strong id="gauge-vram-val">3.4 GB</strong></span>
-                  <span class="g-metric">NET FREQUENCY: <strong>144 Hz TICK</strong></span>
+                <div class="req-perf-metric">
+                  <span class="m-dot amber"></span>
+                  <span class="m-label">SCALING:</span>
+                  <span class="m-val">DLSS 3.5 / FSR 3 / XeSS Active</span>
                 </div>
               </div>
-
             </div>
 
-            <!-- Early Playtest Callout Card on Right -->
-            <div class="req-side-card">
+            <!-- Right: Early Playtest Callout Card (Matching section6.png) -->
+            <div class="req-side-card" id="req-side-card">
               <div class="req-op-img-wrap">
-                <img src="assets/playtest_operative.png" alt="Operative Helmet">
+                <img src="assets/playtest_operative.png" alt="Operative Helmet with Glowing Visor">
+                <div class="req-op-reticle-ring"></div>
                 <div class="req-op-img-overlay"></div>
+                <div class="req-op-scan-badge">TACTICAL HUD ONLINE</div>
               </div>
               <div class="req-side-info">
-                <span class="side-tagline">EARLY PLAYTEST</span>
+                <span class="side-tagline">EARLY PLAYTEST // PHASE 1</span>
                 <h3 class="side-title">
                   <span>SMALLER</span>
                   <span>BUILD.</span>
@@ -1126,10 +1076,20 @@
                 </h3>
                 <div class="side-dash">—</div>
                 <p class="side-sub">Be part of the journey.<br>Play. Feedback. Evolve.</p>
+                
+                <div class="side-action-box">
+                  <a href="#hero" class="btn-playtest-access" id="btn-side-playtest">
+                    <span>JOIN PLAYTEST QUEUE</span>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
 
         <!-- Bottom Card: JOIN THE COMMUNITY -->
         <div class="specs-community-card">
@@ -1419,6 +1379,24 @@
       </div>
 
       <!-- Spacing block showing artwork in middle -->
+            <!-- HIGH-SIZE CREATOR SIGNATURE SHOWCASE -->
+      <div class="footer-creator-showcase" id="footer-creator-showcase">
+        <div class="creator-eyebrow">
+          <span class="creator-accent-line"></span>
+          <span class="creator-role-tag">EXPERIENCE ARCHITECT // LEAD DIRECTION</span>
+          <span class="creator-accent-line"></span>
+        </div>
+        <h2 class="creator-high-title" data-text="Created By iuXoa">Created By iuXoa</h2>
+        <div class="creator-meta-pills">
+          <span class="pill-item">FORMACT PROTOCOL</span>
+          <span class="dot">•</span>
+          <span class="pill-item">HUMAN INTELLIGENCE</span>
+          <span class="dot">•</span>
+          <span class="pill-item">MACHINE POTENTIAL</span>
+        </div>
+      </div>
+
+
       <div class="footer-artwork-spacer"></div>
 
       <!-- Bottom Bar: Copyright on Left, Tagline on Right -->

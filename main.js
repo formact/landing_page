@@ -1397,237 +1397,206 @@ function initTacticalRadarWidget() {
 }
 
 // ==========================================================================
-// 9. SYSTEM REQUIREMENTS INTERACTIVE HARDWARE PRESETS SHOWCASE
+// 9. SYSTEM REQUIREMENTS MATRIX & RIG BENCHMARK (Matching section6.png)
 // ==========================================================================
 function initRequirementsSection() {
   const reqCard = document.getElementById('specs-req-card');
   if (!reqCard) return;
 
-  const PRESETS_DATA = [
-    {
-      tag: "PRESET: POTATO-PC (720P)",
-      status: "TARGET: 30-45 FPS (INTEGRATED)",
-      fpsNum: 40,
-      gaugeWidth: "35%",
-      latency: "28 ms",
-      vram: "1.2 GB",
-      cpu: "Intel Core i3 / AMD Ryzen 3",
-      cpuSub: "4 Cores @ 2.40GHz or better",
-      gpu: "Intel UHD 620 / AMD Vega 8",
-      gpuSub: "DirectX 11 API / iGPU",
-      ram: "8 GB DDR4",
-      ramSub: "Single-Channel Playable",
-      storage: "8 GB (HDD / SSD)",
-      storageSub: "HDD Supported",
-      os: "Windows 10 / Linux 64-bit",
-      osSub: "64-bit OS Required",
-      fps: "30-45 FPS @ 720p Low",
-      fpsSub: "Dynamic Resolution Scaling"
-    },
-    {
-      tag: "PRESET: MINIMUM (1080P)",
-      status: "TARGET: 60 FPS STABLE",
-      fpsNum: 60,
-      gaugeWidth: "60%",
-      latency: "12 ms",
-      vram: "3.4 GB",
-      cpu: "Intel Core i5-8400 / AMD Ryzen 5 2600",
-      cpuSub: "6 Cores @ 2.80GHz or better",
-      gpu: "GTX 1050 Ti / RX 570 (4GB)",
-      gpuSub: "DirectX 12 API / Vulkan 1.3",
-      ram: "16 GB DDR4",
-      ramSub: "Dual-Channel Recommended",
-      storage: "20 GB SSD",
-      storageSub: "SSD Recommended for fast loading",
-      os: "Windows 10 / Linux 64-bit",
-      osSub: "Requires 64-bit architecture",
-      fps: "60 FPS @ 1080p Medium",
-      fpsSub: "V-Sync Supported / Low Latency"
-    },
-    {
-      tag: "PRESET: RECOMMENDED (1440P)",
-      status: "TARGET: 120 FPS HIGH",
-      fpsNum: 120,
-      gaugeWidth: "85%",
-      latency: "6 ms",
-      vram: "6.8 GB",
-      cpu: "Intel Core i7-10700 / AMD Ryzen 7 5700X",
-      cpuSub: "8 Cores / 16 Threads @ 3.80GHz",
-      gpu: "RTX 3060 / RX 6700 XT (8GB)",
-      gpuSub: "DirectX 12 Ultimate / Ray Tracing",
-      ram: "16 GB - 32 GB DDR4/DDR5",
-      ramSub: "High-Speed Dual Channel",
-      storage: "20 GB NVMe SSD",
-      storageSub: "High-Speed NVMe M.2 SSD",
-      os: "Windows 11 / Linux 64-bit",
-      osSub: "Optimized for Win 11 DirectStorage",
-      fps: "120 FPS @ 1440p High",
-      fpsSub: "Reflex Low Latency Enabled"
-    },
-    {
-      tag: "PRESET: CYBER ULTRA (4K 144Hz)",
-      status: "TARGET: 144+ FPS EXTREME",
-      fpsNum: 144,
-      gaugeWidth: "100%",
-      latency: "3 ms",
-      vram: "11.2 GB",
-      cpu: "Intel Core i9-13900K / AMD Ryzen 9 7900X",
-      cpuSub: "16+ Cores @ 5.0GHz+ Unlocked",
-      gpu: "RTX 4080 / RX 7900 XTX (16GB)",
-      gpuSub: "Path Tracing / DLSS 3.5 Frame Gen",
-      ram: "32 GB DDR5 6000MHz",
-      ramSub: "Ultra Low Latency RAM",
-      storage: "20 GB Gen4 NVMe SSD",
-      storageSub: "7000 MB/s Read Speed",
-      os: "Windows 11 (64-bit)",
-      osSub: "Unrestricted Cyber Pipeline",
-      fps: "144+ FPS @ 4K Ultra",
-      fpsSub: "Uncapped Frame Rate / Reflex Boost"
-    }
-  ];
+  const tierPills     = document.querySelectorAll('.tier-pill');
+  const matrixHeaders = document.querySelectorAll('.specs-matrix-table th[data-col]');
+  const btnRigScanner = document.getElementById('btn-rig-scanner');
+  const rigScanBanner = document.getElementById('rig-scan-banner');
+  const scanTitle     = document.getElementById('scan-rig-title');
+  const scanDetail    = document.getElementById('scan-rig-detail');
+  const scanBadge     = document.getElementById('scan-rig-badge');
+  const sideCard      = document.getElementById('req-side-card');
 
-  const presetTabs    = document.querySelectorAll('.req-preset-tab');
-  const presetTag     = document.getElementById('req-active-preset-tag');
-  const gaugeStatus   = document.getElementById('gauge-target-txt');
-  const gaugeFillBar  = document.getElementById('gauge-fill-bar');
-  const fpsNumEl      = document.getElementById('gauge-fps-num');
-  const latencyVal    = document.getElementById('gauge-latency-val');
-  const vramVal       = document.getElementById('gauge-vram-val');
-  const tierSegments  = document.querySelectorAll('.tier-segment');
-  const specCardItems = document.querySelectorAll('.spec-card-item');
+  // Insert interactive laser table scan line
+  const tableWrapper = document.querySelector('.req-table-wrapper');
+  let tableScanLine = document.querySelector('.table-scan-line');
+  if (tableWrapper && !tableScanLine) {
+    tableScanLine = document.createElement('div');
+    tableScanLine.className = 'table-scan-line';
+    tableWrapper.appendChild(tableScanLine);
+  }
 
-  // Update tier power bar (light up segments 0..idx)
-  function updateTierBar(idx) {
-    tierSegments.forEach((seg, i) => {
-      seg.classList.toggle('active', i <= idx);
+  // Focus a specific hardware tier column ('all', 'potato', 'min', 'rec')
+  function setFocusedColumn(colName, playAudio = false) {
+    if (playAudio && window.sfx) window.sfx.play('hover');
+    reqCard.setAttribute('data-focused-col', colName);
+
+    tierPills.forEach(pill => {
+      const match = pill.getAttribute('data-col') === colName;
+      pill.classList.toggle('active', match);
+      pill.setAttribute('aria-selected', match ? 'true' : 'false');
     });
   }
 
-  // Animate a spec value swap using CSS animation classes
-  function swapSpecValue(valEl, wrapEl, newText, delay) {
-    setTimeout(() => {
-      wrapEl.classList.remove('loaded');
-      wrapEl.classList.add('swapping');
-      setTimeout(() => {
-        valEl.textContent = newText;
-        wrapEl.classList.remove('swapping');
-        wrapEl.classList.add('loaded');
-      }, 160);
-    }, delay);
-  }
+  // Tier pill click & hover handlers
+  tierPills.forEach(pill => {
+    const col = pill.getAttribute('data-col');
+    pill.addEventListener('click', () => setFocusedColumn(col, true));
+    pill.addEventListener('mouseenter', () => {
+      if (window.sfx) window.sfx.play('hover');
+    });
+  });
 
-  // Apply a preset: update colours, tier bar, values, gauge
-  function applyPreset(idx, animate) {
-    const data = PRESETS_DATA[idx];
-    if (!data) return;
+  // Clicking table headers directly also focuses that column
+  matrixHeaders.forEach(th => {
+    const col = th.getAttribute('data-col');
+    if (!col) return;
+    th.addEventListener('click', () => setFocusedColumn(col, true));
+  });
 
-    // CSS colour theme via data attribute
-    reqCard.setAttribute('data-active-preset', String(idx));
-
-    updateTierBar(idx);
-
-    if (presetTag)  presetTag.textContent  = data.tag;
-    if (gaugeStatus) gaugeStatus.textContent = data.status;
-    if (latencyVal)  latencyVal.textContent  = data.latency;
-    if (vramVal)     vramVal.textContent     = data.vram;
-
-    // Gauge bar width
-    if (gaugeFillBar) {
-      gaugeFillBar.style.width = data.gaugeWidth;
+  // Real Hardware Detection via WebGL Debug Renderer Info
+  function detectHardware() {
+    let gpu = 'DirectX 12 / Vulkan Compatible GPU';
+    let isHighEnd = false;
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (gl) {
+        const ext = gl.getExtension('WEBGL_debug_renderer_info');
+        if (ext) {
+          const raw = gl.getParameter(ext.UNMASKED_RENDERER_WEBGL);
+          if (raw) {
+            // Clean up verbose driver strings
+            gpu = raw.replace(/ANGLE \((.*?), (.*?), (.*?)\)/, '$2')
+                     .replace(/vs_\d+_\d+ ps_\d+_\d+/, '')
+                     .trim();
+            if (/RTX|GTX|Radeon RX|Apple M|Radeon Pro/i.test(gpu)) {
+              isHighEnd = true;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Fallback to default
     }
 
-    // FPS counter roll-up
-    if (fpsNumEl) {
-      const from = parseInt(fpsNumEl.textContent) || 60;
-      gsap.to({ val: from }, {
-        val: data.fpsNum,
-        duration: 0.65,
-        ease: 'power2.out',
-        onUpdate: function () {
-          fpsNumEl.textContent = Math.round(this.targets()[0].val);
+    const cores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Logical Cores` : '6+ Cores';
+    const ram = navigator.deviceMemory ? `${navigator.deviceMemory} GB+ Detected` : '16 GB Dual-Channel';
+
+    return { gpu, cores, ram, isHighEnd };
+  }
+
+  // Interactive Rig Scanner Click
+  let isScanning = false;
+  if (btnRigScanner) {
+    btnRigScanner.addEventListener('click', () => {
+      if (isScanning) return;
+      isScanning = true;
+
+      if (window.sfx) window.sfx.play('compile');
+
+      // Expand scanner output banner
+      if (rigScanBanner) rigScanBanner.classList.add('active');
+      if (tableScanLine) tableScanLine.classList.add('scanning');
+
+      if (scanTitle) scanTitle.textContent = 'SCANNING HARDWARE ARCHITECTURE...';
+      if (scanDetail) scanDetail.textContent = 'Probing WebGL graphics pipeline, shader cores, and system memory...';
+      if (scanBadge) {
+        scanBadge.textContent = 'BENCHMARKING';
+        scanBadge.style.color = '#00e5ff';
+        scanBadge.style.borderColor = '#00e5ff';
+      }
+
+      // Step 1: Laser sweep across table
+      setTimeout(() => {
+        const info = detectHardware();
+
+        if (scanTitle) scanTitle.textContent = `HARDWARE VERIFIED: ${info.gpu}`;
+        if (scanDetail) scanDetail.textContent = `${info.cores} • ${info.ram} • Architecture optimal for high-refresh cyber warfare.`;
+        if (scanBadge) {
+          scanBadge.textContent = info.isHighEnd ? 'RECOMMENDED SPEC' : 'MINIMUM 1080P SPEC';
+          scanBadge.style.color = info.isHighEnd ? '#34d399' : '#00e5ff';
+          scanBadge.style.borderColor = info.isHighEnd ? '#34d399' : '#00e5ff';
+        }
+
+        // Highlight matching tier column
+        setFocusedColumn(info.isHighEnd ? 'rec' : 'min', false);
+
+        if (tableScanLine) tableScanLine.classList.remove('scanning');
+        isScanning = false;
+      }, 1400);
+    });
+  }
+
+  // Subtle 3D Perspective Tilt on Operative Helmet Card
+  if (sideCard) {
+    sideCard.addEventListener('mousemove', (e) => {
+      const rect = sideCard.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+      sideCard.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    sideCard.addEventListener('mouseleave', () => {
+      sideCard.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+      sideCard.style.transition = 'transform 0.5s ease';
+    });
+
+    sideCard.addEventListener('mouseenter', () => {
+      sideCard.style.transition = 'none';
+    });
+  }
+
+  // GSAP ScrollTrigger Animation for Requirements Card and Table Rows
+  if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
+    ScrollTrigger.create({
+      trigger: reqCard,
+      start: 'top 82%',
+      once: true,
+      onEnter: () => {
+        // Table rows cascade reveal
+        gsap.fromTo('.specs-matrix-table tbody tr',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.55, stagger: 0.08, ease: 'power2.out' }
+        );
+
+        // Right side card slide-in
+        if (sideCard) {
+          gsap.fromTo(sideCard,
+            { opacity: 0, x: 28 },
+            { opacity: 1, x: 0, duration: 0.65, ease: 'power2.out', delay: 0.25 }
+          );
+        }
+
+        // Community cards stagger reveal
+        gsap.fromTo('.comm-item-btn',
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.5, stagger: 0.07, ease: 'power2.out', delay: 0.4 }
+        );
+      }
+    });
+
+    // Footer Creator Showcase Scroll Reveal ("Created By iuXoa")
+    const creatorShowcase = document.getElementById('footer-creator-showcase');
+    if (creatorShowcase) {
+      ScrollTrigger.create({
+        trigger: creatorShowcase,
+        start: 'top 88%',
+        once: true,
+        onEnter: () => {
+          gsap.fromTo(creatorShowcase,
+            { opacity: 0, scale: 0.95, y: 30 },
+            { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+          );
+          gsap.fromTo('.creator-high-title',
+            { letterSpacing: '0.25em', filter: 'blur(8px)' },
+            { letterSpacing: '0.12em', filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }
+          );
         }
       });
     }
-
-    if (!animate) return;
-
-    // Staggered spec value swaps
-    const keys = ['cpu', 'gpu', 'ram', 'storage', 'os', 'fps'];
-    keys.forEach((key, i) => {
-      const valEl  = document.getElementById('spec-val-' + key);
-      const subEl  = document.getElementById('spec-sub-' + key);
-      const wrapEl = valEl && valEl.closest('.spec-value-wrap');
-      if (valEl && wrapEl) swapSpecValue(valEl, wrapEl, data[key], i * 45);
-      if (subEl) setTimeout(() => { subEl.textContent = data[key + 'Sub']; }, i * 45 + 80);
-    });
-
-    // Border flash on each spec card (staggered ripple)
-    specCardItems.forEach((card, i) => {
-      setTimeout(() => {
-        card.style.transition = 'border-color 0.3s ease';
-        card.style.borderColor = 'var(--preset-color)';
-        setTimeout(() => { card.style.borderColor = ''; }, 400);
-      }, i * 35);
-    });
   }
 
-  // ScrollTrigger: reveal the whole card + stagger spec cards
-  ScrollTrigger.create({
-    trigger: reqCard,
-    start: 'top 82%',
-    once: true,
-    onEnter: () => {
-      // Card slide-up reveal
-      reqCard.classList.add('is-revealed');
-
-      // Tier bar lights up segment by segment
-      tierSegments.forEach((seg, i) => {
-        setTimeout(() => {
-          if (i <= 1) seg.classList.add('active');
-        }, 300 + i * 90);
-      });
-
-      // Spec cards stagger pop in
-      specCardItems.forEach((card, i) => {
-        setTimeout(() => { card.classList.add('is-visible'); }, 420 + i * 75);
-      });
-
-      // Gauge wrapper
-      gsap.fromTo('.req-gauge-wrapper',
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out', delay: 0.58 }
-      );
-
-      // Preset tabs
-      gsap.fromTo('.req-preset-tab',
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.07, ease: 'power2.out', delay: 0.18 }
-      );
-
-      // Side card slides in from right
-      gsap.fromTo('.req-side-card',
-        { opacity: 0, x: 32 },
-        { opacity: 1, x: 0, duration: 0.65, ease: 'power2.out', delay: 0.48 }
-      );
-    }
-  });
-
-  // Tab click handler
-  presetTabs.forEach((tab, idx) => {
-    tab.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
-    tab.addEventListener('click', () => {
-      if (window.sfx) window.sfx.play('compile');
-      presetTabs.forEach(t => {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
-      applyPreset(idx, true);
-    });
-  });
-
-  // Boot state: preset 1 active
-  updateTierBar(1);
+  // Default focus: Minimum tier (1080P) matching section6.png
+  setFocusedColumn('min', false);
 }
 
