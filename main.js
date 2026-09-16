@@ -865,7 +865,7 @@ function initSmoothScrollAndGSAP() {
   });
 
   // --- Section 5 (Sanctuary / System Specs) Animations ---
-  const sanctuaryItems = document.querySelectorAll('.sanctuary-card, .sanctuary-thumb-item');
+  const sanctuaryItems = document.querySelectorAll('.sanctuary-card, .sanctuary-thumb-item, .world-card-item');
   if (sanctuaryItems.length) {
     gsap.from(sanctuaryItems, {
       y: 30,
@@ -1186,6 +1186,7 @@ function initSanctuaryScrollJacking() {
   const WORLDS_DATA = [
     {
       index: "WORLD 01 / 04",
+      name: "ORBITAL PLATFORM",
       eyebrow: "WORLD DISCOVERY // ORBITAL ARENA",
       titleHtml: `<span>HIGHER</span><span>BIGGER</span><span>CLEANER</span><span class="dim">NO LIMITS.</span>`,
       desc: "A low-orbit arena where minds and machines collide. The Sanctuary is more than a battleground - it's a test of evolution.",
@@ -1200,6 +1201,7 @@ function initSanctuaryScrollJacking() {
     },
     {
       index: "WORLD 02 / 04",
+      name: "CYBER GRID",
       eyebrow: "WORLD DISCOVERY // CYBERNETIC GRID",
       titleHtml: `<span>NEON</span><span>MATRIX</span><span>GRID</span><span class="dim">DUEL COLOSSEUM.</span>`,
       desc: "Dense vertical skyscrapers interwoven with tactical hardpoints. Code the grid in real-time to alter combat sightlines.",
@@ -1214,6 +1216,7 @@ function initSanctuaryScrollJacking() {
     },
     {
       index: "WORLD 03 / 04",
+      name: "STRATO-DOME",
       eyebrow: "WORLD DISCOVERY // STRATO-DOME",
       titleHtml: `<span>STRATO-DOME</span><span>MESOSPHERE</span><span>OUTLOOK</span><span class="dim">ZERO GRAVITY.</span>`,
       desc: "High-altitude combat in dynamic zero-G pockets. Adapt weapon kinetics on the fly as wind vectors and gravity fields shift.",
@@ -1228,6 +1231,7 @@ function initSanctuaryScrollJacking() {
     },
     {
       index: "WORLD 04 / 04",
+      name: "VOID CITADEL",
       eyebrow: "WORLD DISCOVERY // VOID CITADEL",
       titleHtml: `<span>VOID</span><span>CITADEL</span><span>CORE</span><span class="dim">FINAL DUEL.</span>`,
       desc: "The ultimate arena. Unrestricted operative abilities and raw neural bandwidth. Only synchronized units claim dominance.",
@@ -1244,6 +1248,7 @@ function initSanctuaryScrollJacking() {
 
   const backdropLayers = document.querySelectorAll('.sanctuary-backdrop-layer');
   const indexEl = document.getElementById('sanctuary-world-index');
+  const worldNameEl = document.getElementById('sanctuary-world-name');
   const eyebrowEl = document.getElementById('sanctuary-eyebrow');
   const titleEl = document.getElementById('sanctuary-title');
   const descEl = document.getElementById('sanctuary-desc');
@@ -1257,7 +1262,7 @@ function initSanctuaryScrollJacking() {
   const statusEl = document.getElementById('sanctuary-footer-status');
   const progressFill = document.getElementById('world-progress-fill');
   const stepDots = document.querySelectorAll('.step-dot');
-  const thumbItems = document.querySelectorAll('.sanctuary-thumb-item');
+  const thumbItems = document.querySelectorAll('.sanctuary-thumb-item, .world-card-item');
 
   let currentWorld = -1;
   const portalGate = document.getElementById('sanctuary-portal-gate');
@@ -1342,6 +1347,7 @@ function initSanctuaryScrollJacking() {
 
     // Text & Stats Update with Stagger HUD reveal
     if (indexEl) indexEl.textContent = data.index;
+    if (worldNameEl) worldNameEl.textContent = data.name;
     if (eyebrowEl) eyebrowEl.textContent = data.eyebrow;
     if (descEl) descEl.textContent = data.desc;
     if (coordsTitleEl) coordsTitleEl.textContent = data.coordsTitle;
