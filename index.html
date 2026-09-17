@@ -247,82 +247,73 @@
           </div>
         </div>
 
-        <!-- ================= RIGHT COLUMN: HOLOGRAPHIC TACTICAL RADAR & TELEMETRY HUB ================= -->
-        <div class="duality-tactical-col">
+        <!-- ================= RIGHT COLUMN: 3D ANIMATED ROBOT POLICE UNIT SHOWCASE ================= -->
+        <div class="duality-tactical-col duality-robot-col">
           <!-- Top Right Headline / Status -->
-          <div class="tactical-top-copy">
+          <div class="tactical-top-copy robot-top-copy">
             <div class="tactical-eyebrow-row">
               <span class="pulse-indicator"></span>
-              <span class="section-eyebrow">LIVE COMBAT TELEMETRY</span>
+              <span class="section-eyebrow">TACTICAL COMBAT CHASSIS</span>
             </div>
-            <h3 class="tactical-heading">NEURAL LINK // ACTIVE</h3>
+            <h3 class="tactical-heading">ROBOT POLICE UNIT // MK-IV</h3>
+            <div class="robot-status-badges">
+              <span class="r-badge"><i class="badge-dot"></i> ANIMATED UNIT</span>
+              <span class="r-badge">SYNC: 99.8%</span>
+              <span class="r-badge">TITANIUM ENFORCER</span>
+            </div>
           </div>
 
-          <!-- Central Holographic Circular Radar Scanner -->
-          <div class="tactical-radar-wrapper">
-            <div class="tactical-radar-ring">
-              <!-- Animated Scanning Sweep Laser Line -->
-              <div class="radar-sweep-line"></div>
-              <!-- Outer Ticks & Crosshair SVG -->
-              <svg class="radar-hud-svg" viewBox="0 0 200 200">
-                <circle cx="100" cy="100" r="95" stroke="rgba(0, 229, 255, 0.25)" stroke-width="1" fill="none"
-                  stroke-dasharray="4 6" />
-                <circle cx="100" cy="100" r="70" stroke="rgba(0, 229, 255, 0.4)" stroke-width="1" fill="none" />
-                <circle cx="100" cy="100" r="40" stroke="rgba(0, 229, 255, 0.2)" stroke-width="1" fill="none"
-                  stroke-dasharray="2 4" />
-                <line x1="100" y1="5" x2="100" y2="195" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1" />
-                <line x1="5" y1="100" x2="195" y2="100" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1" />
-                <!-- Target Blips -->
-                <circle cx="128" cy="62" r="4" fill="#00e5ff" class="radar-blip blip-1" />
-                <circle cx="72" cy="138" r="4" fill="#ff7043" class="radar-blip blip-2" />
-              </svg>
-              <!-- Center Reticle Value -->
-              <div class="radar-center-info">
-                <span class="radar-stat-val" id="radar-sync-val">99.8%</span>
-                <span class="radar-stat-label">NEURAL SYNC</span>
-              </div>
+          <!-- Central 3D Animated Robot Viewport -->
+          <div class="robot-3d-viewport-wrapper" id="robot-viewport-container">
+            <!-- Loading Screen -->
+            <div class="robot-3d-loader" id="robot-3d-loader">
+              <div class="cyber-spinner"></div>
+              <span class="loader-text">INITIALIZING POLICE CHASSIS...</span>
             </div>
+            <canvas id="robot-3d-canvas" class="robot-3d-canvas"></canvas>
 
-            <!-- Radar Metrics Stack -->
-            <div class="tactical-metrics-row">
-              <div class="metric-card">
-                <span class="m-label">LATENCY</span>
-                <span class="m-val" id="metric-latency">12ms</span>
-              </div>
-              <div class="metric-card">
-                <span class="m-label">COMBAT FREQ</span>
-                <span class="m-val">144 Hz</span>
-              </div>
-              <div class="metric-card">
-                <span class="m-label">TARGET LOCK</span>
-                <span class="m-val" id="metric-blips">02 HOSTILES</span>
+            <!-- Holographic HUD Accents & Interaction Hint -->
+            <div class="robot-hud-overlay">
+              <div class="hud-corner top-left"></div>
+              <div class="hud-corner top-right"></div>
+              <div class="hud-corner bottom-left"></div>
+              <div class="hud-corner bottom-right"></div>
+              <div class="robot-drag-hint" id="robot-drag-hint">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 16l-4-4m0 0l4-4m-4 4h18m-4 4l4-4m0 0l-4-4" />
+                </svg>
+                <span>360° INTERACTIVE CHASSIS</span>
               </div>
             </div>
           </div>
 
-          <!-- Bottom Right Interactive Combat State Switcher -->
-          <div class="tactical-mode-box">
-            <span class="mode-box-title">TACTICAL OVERRIDE MODE</span>
-            <div class="mode-btn-group">
-              <button class="mode-btn active" data-mode="assault">
+          <!-- Bottom Tactical Override & Animation Controls -->
+          <div class="tactical-mode-box robot-controls-box">
+            <div class="robot-ctrl-header">
+              <span class="mode-box-title">TACTICAL OVERRIDE MODE</span>
+              <span class="robot-speed-indicator" id="robot-anim-status">ANIMATION: PLAYING</span>
+            </div>
+            <div class="mode-btn-group robot-btn-group">
+              <button class="mode-btn active" id="btn-robot-anim-toggle" type="button">
                 <span class="mode-dot"></span>
-                <span>ASSAULT</span>
+                <span id="btn-robot-anim-text">PAUSE MOTION</span>
               </button>
-              <button class="mode-btn" data-mode="defensive">
+              <button class="mode-btn" id="btn-robot-cam-reset" type="button">
                 <span class="mode-dot"></span>
-                <span>DEFENSE</span>
+                <span>RESET VIEW</span>
               </button>
-              <button class="mode-btn" data-mode="overdrive">
+              <button class="mode-btn" id="btn-robot-speed" type="button">
                 <span class="mode-dot"></span>
-                <span>OVERDRIVE</span>
+                <span id="btn-robot-speed-text">1.0x SPEED</span>
               </button>
             </div>
-            <div class="tactical-stream-feed" id="tactical-stream-feed">
+            <div class="tactical-stream-feed" id="robot-stream-feed">
               <span class="feed-prefix">></span>
-              <span class="feed-text">UPLINK STABLE // COMBAT ARENA 01 READY</span>
+              <span class="feed-text" id="robot-feed-text">UPLINK STABLE // ROBOT POLICE UNIT COMBAT-READY</span>
             </div>
           </div>
         </div>
+
 
       </div>
     </section>

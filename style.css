@@ -653,12 +653,12 @@ button {
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(300px, 420px);
-  gap: clamp(32px, 4vw, 80px);
+  grid-template-columns: minmax(320px, 1fr) minmax(320px, 460px);
+  gap: clamp(24px, 3.5vw, 64px);
   justify-content: space-between;
   align-items: stretch;
   width: 100%;
-  max-width: 1280px;
+  max-width: 1320px;
   margin: 0 auto;
   height: 100%;
   max-height: 100%;
@@ -725,136 +725,197 @@ button {
   text-transform: uppercase;
 }
 
-/* Radar Display Wrapper */
-.tactical-radar-wrapper {
+/* Robot Unit Top Header Badges */
+.robot-top-copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin: auto 0;
+  align-items: flex-end;
+  text-align: right;
+  gap: 4px;
 }
 
-.tactical-radar-ring {
-  position: relative;
-  width: clamp(170px, 14vw, 220px);
-  height: clamp(170px, 14vw, 220px);
-  border-radius: 50%;
-  background: rgba(3, 7, 14, 0.7);
-  border: 1px solid rgba(0, 229, 255, 0.35);
-  box-shadow: 0 0 30px rgba(0, 229, 255, 0.15), inset 0 0 25px rgba(0, 229, 255, 0.08);
+.robot-status-badges {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  backdrop-filter: blur(8px);
-}
-
-.radar-hud-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-
-.radar-sweep-line {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  height: 2px;
-  background: linear-gradient(90deg, rgba(0, 229, 255, 0.9) 0%, rgba(0, 229, 255, 0) 100%);
-  transform-origin: left center;
-  animation: radarSweep 3.5s linear infinite;
-  box-shadow: 0 0 12px var(--cyan-primary, #00e5ff);
-}
-
-@keyframes radarSweep {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.radar-blip {
-  animation: blipPulse 2s infinite ease-in-out;
-}
-
-.blip-2 {
-  animation-delay: 1s;
-}
-
-@keyframes blipPulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.4); }
-}
-
-.radar-center-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.radar-stat-val {
-  font-family: var(--font-display);
-  font-size: clamp(22px, 1.8vw, 32px);
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 0 14px rgba(0, 229, 255, 0.8);
-  line-height: 1;
-}
-
-.radar-stat-label {
-  font-family: var(--font-mono);
-  font-size: clamp(8.5px, 0.55vw, 10.5px);
-  letter-spacing: 0.2em;
-  color: #94a3b8;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   margin-top: 4px;
 }
 
-/* Radar Metrics Cards */
-.tactical-metrics-row {
-  display: flex;
-  gap: 8px;
+.r-badge {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--cyan-primary, #00e5ff);
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 3px;
+  padding: 2px 7px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(6px);
+}
+
+.badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cyan-primary, #00e5ff);
+  box-shadow: 0 0 6px var(--cyan-primary, #00e5ff);
+  animation: pulseGlow 1.5s infinite alternate ease-in-out;
+}
+
+/* 3D Animated Robot Viewport */
+.robot-3d-viewport-wrapper {
+  position: relative;
   width: 100%;
+  flex: 1;
+  min-height: 270px;
+  max-height: 440px;
+  margin: 10px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 65%, rgba(0, 229, 255, 0.12) 0%, transparent 60%),
+    radial-gradient(circle at 50% 50%, rgba(3, 7, 14, 0.5) 0%, rgba(2, 4, 8, 0.85) 100%);
+  border: 1px solid rgba(0, 229, 255, 0.28);
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 229, 255, 0.12),
+    inset 0 0 30px rgba(0, 229, 255, 0.06);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.metric-card {
-  flex: 1;
-  background: rgba(3, 7, 14, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  padding: 8px 10px;
+.robot-3d-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.robot-3d-canvas:active {
+  cursor: grabbing;
+}
+
+/* Loader */
+.robot-3d-loader {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(3, 7, 14, 0.88);
+  z-index: 10;
+  transition: opacity 0.35s ease;
   backdrop-filter: blur(8px);
-  transition: border-color 0.3s ease;
 }
 
-.metric-card:hover {
-  border-color: rgba(0, 229, 255, 0.4);
+.robot-3d-loader .cyber-spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(0, 229, 255, 0.18);
+  border-top-color: var(--cyan-primary, #00e5ff);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.m-label {
+.robot-3d-loader .loader-text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #94a3b8;
+}
+
+/* HUD Overlay & Corner Brackets */
+.robot-hud-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.hud-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(0, 229, 255, 0.45);
+  border-style: solid;
+}
+
+.hud-corner.top-left {
+  top: 8px;
+  left: 8px;
+  border-width: 2px 0 0 2px;
+}
+
+.hud-corner.top-right {
+  top: 8px;
+  right: 8px;
+  border-width: 2px 2px 0 0;
+}
+
+.hud-corner.bottom-left {
+  bottom: 8px;
+  left: 8px;
+  border-width: 0 0 2px 2px;
+}
+
+.hud-corner.bottom-right {
+  bottom: 8px;
+  right: 8px;
+  border-width: 0 2px 2px 0;
+}
+
+.robot-drag-hint {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(3, 7, 14, 0.72);
+  border: 1px solid rgba(0, 229, 255, 0.22);
+  border-radius: 12px;
   font-family: var(--font-mono);
   font-size: 8.5px;
-  letter-spacing: 0.15em;
-  color: #64748b;
-  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #94a3b8;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
-.m-val {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
+.robot-drag-hint svg {
+  color: var(--cyan-primary, #00e5ff);
 }
+
+.robot-ctrl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.robot-speed-indicator {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--cyan-primary, #00e5ff);
+}
+
 
 /* Tactical Mode Box */
 .tactical-mode-box {

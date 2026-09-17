@@ -487,6 +487,274 @@ function initModelGLBViewer() {
 }
 
 // ==========================================================================
+// 4B. THREE.JS 3D ANIMATED ROBOT POLICE UNIT VIEWER (Section 2 Showcase)
+// ==========================================================================
+function initRobotPoliceViewer() {
+  const canvas = document.getElementById('robot-3d-canvas');
+  const viewport = document.getElementById('robot-viewport-container');
+  const loaderEl = document.getElementById('robot-3d-loader');
+  const dragHint = document.getElementById('robot-drag-hint');
+  const btnToggle = document.getElementById('btn-robot-anim-toggle');
+  const btnToggleText = document.getElementById('btn-robot-anim-text');
+  const btnReset = document.getElementById('btn-robot-cam-reset');
+  const btnSpeed = document.getElementById('btn-robot-speed');
+  const btnSpeedText = document.getElementById('btn-robot-speed-text');
+  const animStatus = document.getElementById('robot-anim-status');
+  const feedText = document.getElementById('robot-feed-text');
+
+  if (!canvas || !viewport) return null;
+
+  let scene, camera, renderer, controls, modelWrapper, mixer, action;
+  let isPlaying = true;
+  let speedMultiplier = 1.0;
+  const clock = new THREE.Clock();
+
+  try {
+    scene = new THREE.Scene();
+
+    const getDims = () => {
+      const w = viewport.clientWidth || 380;
+      const h = viewport.clientHeight || 320;
+      return { w, h };
+    };
+
+    const { w, h } = getDims();
+
+    camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
+    camera.position.set(0, 0.35, 3.6);
+
+    renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setSize(w, h, false);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.3;
+
+    controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.0;
+    controls.enableZoom = true;
+    controls.minDistance = 1.4;
+    controls.maxDistance = 6.5;
+    controls.target.set(0, 0, 0);
+
+    // Hide drag hint on user interaction
+    controls.addEventListener('start', () => {
+      if (dragHint) {
+        dragHint.style.opacity = '0';
+        setTimeout(() => { dragHint.style.display = 'none'; }, 400);
+      }
+    });
+
+    // Studio Lighting for natural PBR textures and crisp cyber highlights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    scene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    keyLight.position.set(4, 7, 5);
+    scene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0x8bc34a, 0.5);
+    fillLight.position.set(-5, 2, -3);
+    scene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0x00e5ff, 2.0);
+    rimLight.position.set(0, 5, -5);
+    scene.add(rimLight);
+
+    const groundBounce = new THREE.DirectionalLight(0xffffff, 0.8);
+    groundBounce.position.set(0, -5, 3);
+    scene.add(groundBounce);
+
+    // Subtle holographic ground grid / circular platform beneath the robot
+    const ringGeo = new THREE.RingGeometry(1.0, 1.02, 64);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0x00e5ff,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.35
+    });
+    const groundRing = new THREE.Mesh(ringGeo, ringMat);
+    groundRing.rotation.x = Math.PI / 2;
+    groundRing.position.y = -1.15;
+    scene.add(groundRing);
+
+    const innerRingGeo = new THREE.RingGeometry(0.55, 0.56, 48);
+    const innerRingMat = new THREE.MeshBasicMaterial({
+      color: 0x00e5ff,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.2
+    });
+    const innerRing = new THREE.Mesh(innerRingGeo, innerRingMat);
+    innerRing.rotation.x = Math.PI / 2;
+    innerRing.position.y = -1.15;
+    scene.add(innerRing);
+
+    // Responsive resize handler
+    const resizeRenderer = () => {
+      const { w: curW, h: curH } = getDims();
+      if (curW > 0 && curH > 0) {
+        camera.aspect = curW / curH;
+        camera.updateProjectionMatrix();
+        renderer.setSize(curW, curH, false);
+      }
+    };
+
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => resizeRenderer());
+      ro.observe(viewport);
+    }
+    window.addEventListener('resize', resizeRenderer);
+
+    // Load Animated Robot Police Unit GLB
+    const loader = new GLTFLoader();
+    loader.load(
+      'robot_police_unit_animated.glb',
+      (gltf) => {
+        const root = gltf.scene;
+        root.updateMatrixWorld(true);
+
+        const box = new THREE.Box3().setFromObject(root);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
+
+        // Center horizontally and vertically
+        root.position.set(-center.x, -center.y, -center.z);
+
+        modelWrapper = new THREE.Group();
+        modelWrapper.add(root);
+
+        // Fit nicely into the viewport
+        const targetScale = 2.45 / maxDim;
+        modelWrapper.scale.set(targetScale, targetScale, targetScale);
+        modelWrapper.position.set(0, -0.05, 0);
+
+        // Preserve authentic PBR textures & materials
+        root.traverse((child) => {
+          if (child.isMesh && child.material) {
+            child.material.needsUpdate = true;
+            if (child.material.map) {
+              child.material.map.colorSpace = THREE.SRGBColorSpace;
+            }
+          }
+        });
+
+        scene.add(modelWrapper);
+
+        // Setup Animation
+        if (gltf.animations && gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(root);
+          action = mixer.clipAction(gltf.animations[0]);
+          action.play();
+        }
+
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        // Dismiss loader
+        if (loaderEl) {
+          loaderEl.style.opacity = '0';
+          setTimeout(() => { loaderEl.style.display = 'none'; }, 350);
+        }
+      },
+      (xhr) => {
+        if (xhr.lengthComputable && loaderEl) {
+          const percent = Math.round((xhr.loaded / xhr.total) * 100);
+          const txt = loaderEl.querySelector('.loader-text');
+          if (txt) txt.textContent = `LOADING CHASSIS (${percent}%)...`;
+        }
+      },
+      (err) => {
+        console.warn('Failed to load robot_police_unit_animated.glb:', err);
+        if (loaderEl) {
+          const txt = loaderEl.querySelector('.loader-text');
+          if (txt) txt.textContent = 'TELEMETRY OFFLINE // RETRYING...';
+        }
+      }
+    );
+
+    // Interactive Button Actions
+    if (btnToggle) {
+      btnToggle.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        btnToggle.classList.toggle('active', isPlaying);
+        if (action) {
+          action.paused = !isPlaying;
+        }
+        if (btnToggleText) {
+          btnToggleText.textContent = isPlaying ? 'PAUSE MOTION' : 'RESUME MOTION';
+        }
+        if (animStatus) {
+          animStatus.textContent = isPlaying ? 'ANIMATION: PLAYING' : 'ANIMATION: PAUSED';
+        }
+        if (feedText) {
+          feedText.textContent = isPlaying
+            ? 'UPLINK STABLE // REALTIME SKELETAL MOTION ACTIVE'
+            : 'MANUAL OVERRIDE // MOTION SEQUENCER PAUSED';
+        }
+      });
+    }
+
+    if (btnReset) {
+      btnReset.addEventListener('click', () => {
+        camera.position.set(0, 0.35, 3.6);
+        controls.target.set(0, 0, 0);
+        controls.update();
+        if (feedText) {
+          feedText.textContent = 'OPTICAL SENSORS RECALIBRATED // DEFAULT CAMERA RESTORED';
+        }
+      });
+    }
+
+    const speeds = [1.0, 1.5, 2.0, 0.5];
+    let speedIndex = 0;
+    if (btnSpeed) {
+      btnSpeed.addEventListener('click', () => {
+        speedIndex = (speedIndex + 1) % speeds.length;
+        speedMultiplier = speeds[speedIndex];
+        if (action) {
+          action.setEffectiveTimeScale(speedMultiplier);
+        }
+        if (btnSpeedText) {
+          btnSpeedText.textContent = `${speedMultiplier.toFixed(1)}x SPEED`;
+        }
+        if (feedText) {
+          feedText.textContent = `TELEMETRY CLOCK SET TO ${speedMultiplier.toFixed(1)}x SPEED MULTIPLIER`;
+        }
+      });
+    }
+
+    // Animation Render Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = clock.getDelta();
+
+      if (mixer && isPlaying) {
+        mixer.update(delta * speedMultiplier);
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    return { scene, camera, renderer };
+  } catch (err) {
+    console.error('Error initializing Robot Police 3D Viewer:', err);
+    if (loaderEl) loaderEl.style.display = 'none';
+    return null;
+  }
+}
+
+// ==========================================================================
 // 5. INTERACTIVE SECTION 4 CODE EDITOR & PLACEHOLDER CODE (Matching section4.png)
 // ==========================================================================
 const forgeFiles = {
@@ -1175,6 +1443,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupRolesShowcase();
 
   const model3dViewer = initModelGLBViewer();
+  const robotPoliceViewer = initRobotPoliceViewer();
 
   const weaponCards = document.querySelectorAll('.variant-item-card[data-weapon]');
   const forgeHammerImg = document.getElementById('forge-hammer-img');
