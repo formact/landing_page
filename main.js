@@ -1,4 +1,4 @@
-﻿/**
+/**
  * FORMACT — AAA Game Landing Page
  * Core JavaScript Logic: Web Audio Synthesizer, 3D Procedural Canvas Visualizers,
  * Three.js GLTF 3D Viewer (model.glb), Interactive Forge Code Editor, Telemetry Engine.
@@ -196,8 +196,55 @@ function initPhaseArmCanvas() {
 }
 
 // ==========================================================================
-// 4. THREE.JS 3D GLTF VIEWPORT FOR model.glb
+// 4. THREE.JS 3D GLTF VIEWPORT FOR WEAPON ARSENAL (Axe, Gun, Shield, Cannon)
 // ==========================================================================
+export const WEAPON_CONFIGS = {
+  axe: {
+    id: 'axe',
+    name: 'Arc Maul (Axe)',
+    type: 'axe_melee',
+    file: 'model.glb',
+    targetSize: 2.35,
+    rotation: [0.2, -Math.PI / 4, 0.35],
+    color: 0x00e5ff,
+    colorName: 'cyan',
+    stats: { damage: 85, range: 3.2, cooldown: 1.4, weight: 12.0 }
+  },
+  gun: {
+    id: 'gun',
+    name: 'Phase Carbine (Gun)',
+    type: 'plasma_rifle',
+    file: 'gun.glb',
+    targetSize: 2.5,
+    rotation: [0.08, -Math.PI / 2.6, 0.05],
+    color: 0xff7043,
+    colorName: 'orange',
+    stats: { damage: 72, range: 45.0, cooldown: 0.4, weight: 4.5 }
+  },
+  shield: {
+    id: 'shield',
+    name: 'Aegis Bulwark (Shield)',
+    type: 'kinetic_barrier',
+    file: 'shield.glb',
+    targetSize: 2.3,
+    rotation: [0.05, -Math.PI / 5, 0.1],
+    color: 0x5cd9ff,
+    colorName: 'frost',
+    stats: { damage: 40, range: 2.0, cooldown: 2.2, weight: 18.5 }
+  },
+  cannon: {
+    id: 'cannon',
+    name: 'Nova Cannon (Cannon)',
+    type: 'heavy_artillery',
+    file: 'canon.glb',
+    targetSize: 2.55,
+    rotation: [0.15, -Math.PI / 3.2, 0.08],
+    color: 0x33f266,
+    colorName: 'green',
+    stats: { damage: 98, range: 60.0, cooldown: 3.5, weight: 24.0 }
+  }
+};
+
 function initModelGLBViewer() {
   const canvas = document.getElementById('forge-3d-canvas');
   const loaderEl = document.getElementById('forge-3d-loader');
@@ -213,18 +260,24 @@ function initModelGLBViewer() {
     green: 0x33f266
   };
 
-  let scene, camera, renderer, controls, loadedModel;
+  let scene, camera, renderer, controls, modelWrapper;
   let keyLight, accentLight, pointLight;
+  let currentWeaponId = 'axe';
+  const modelCache = {};
 
   try {
     scene = new THREE.Scene();
 
-    const rect = viewport.getBoundingClientRect();
-    const width = rect.width || 400;
-    const height = rect.height || 350;
+    const getDimensions = () => {
+      const w = viewport.clientWidth || 400;
+      const h = viewport.clientHeight || 350;
+      return { w, h };
+    };
+
+    const { w: width, h: height } = getDimensions();
 
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    camera.position.set(0, 1.2, 3.8);
+    camera.position.set(0, 0.2, 3.8);
 
     renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -232,7 +285,7 @@ function initModelGLBViewer() {
       antialias: true,
       powerPreference: 'high-performance'
     });
-    renderer.setSize(width, height);
+    renderer.setSize(width, height, false);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
@@ -243,137 +296,194 @@ function initModelGLBViewer() {
     controls.autoRotate = true;
     controls.autoRotateSpeed = 1.2;
     controls.enableZoom = true;
-    controls.minDistance = 1.0;
+    controls.minDistance = 1.2;
     controls.maxDistance = 8.0;
+    controls.target.set(0, 0, 0);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
     scene.add(ambientLight);
 
-    keyLight = new THREE.DirectionalLight(colorHexMap.cyan, 2.8);
-    keyLight.position.set(4, 6, 4);
+    // Neutral studio key light for crisp, natural highlights
+    keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
+    keyLight.position.set(5, 7, 5);
     scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    fillLight.position.set(-4, -2, -4);
+    // Soft fill light to illuminate shadowed areas naturally
+    const fillLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    fillLight.position.set(-5, 2, -4);
     scene.add(fillLight);
 
-    accentLight = new THREE.DirectionalLight(colorHexMap.cyan, 2.0);
-    accentLight.position.set(0, -3, 3);
+    // Back / rim light to accentuate metallic edges and silhouettes
+    accentLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    accentLight.position.set(0, 5, -5);
     scene.add(accentLight);
 
-    pointLight = new THREE.PointLight(colorHexMap.cyan, 4.0, 6);
-    pointLight.position.set(0, 0, 0);
-    scene.add(pointLight);
+    // Subtle bottom bounce light for realistic ground reflection
+    const bounceLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    bounceLight.position.set(0, -5, 3);
+    scene.add(bounceLight);
+
+    const resizeRenderer = () => {
+      const { w, h } = getDimensions();
+      if (w > 0 && h > 0) {
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h, false);
+      }
+    };
+
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(() => {
+        resizeRenderer();
+      });
+      ro.observe(viewport);
+    }
+    window.addEventListener('resize', resizeRenderer);
 
     const loader = new GLTFLoader();
-    const modelPath = 'model.glb';
 
-    loader.load(
-      modelPath,
-      (gltf) => {
-        loadedModel = gltf.scene;
+    function setWeapon(weaponId) {
+      const config = WEAPON_CONFIGS[weaponId] || WEAPON_CONFIGS.axe;
+      currentWeaponId = weaponId;
 
-        // Wrapper group to guarantee 100% perfect geometric centering
-        const wrapper = new THREE.Group();
+      if (modelWrapper) {
+        scene.remove(modelWrapper);
+        modelWrapper = null;
+      }
 
-        // Compute bounding box of GLTF mesh
-        const box = new THREE.Box3().setFromObject(loadedModel);
+      const mountModel = (sourceModel) => {
+        const cloned = sourceModel.clone(true);
+        cloned.updateMatrixWorld(true);
+
+        const box = new THREE.Box3().setFromObject(cloned);
         const center = box.getCenter(new THREE.Vector3());
         const size = box.getSize(new THREE.Vector3());
-        const maxDim = Math.max(size.x, size.y, size.z);
+        const maxDim = Math.max(size.x, size.y, size.z) || 1;
 
-        // Center loadedModel inside wrapper
-        loadedModel.position.set(-center.x, -center.y, -center.z);
-        wrapper.add(loadedModel);
+        cloned.position.set(-center.x, -center.y, -center.z);
 
-        // Scale wrapper intelligently to fit viewport
-        const targetSize = 2.4;
-        const scale = targetSize / (maxDim || 1);
-        wrapper.scale.set(scale, scale, scale);
+        modelWrapper = new THREE.Group();
+        modelWrapper.add(cloned);
 
-        // Position wrapper at scene origin
-        wrapper.position.set(0, 0, 0);
+        const scale = (config.targetSize || 2.4) / maxDim;
+        modelWrapper.scale.set(scale, scale, scale);
+        modelWrapper.position.set(0, 0, 0);
 
-        // Angle rotation to match the cinematic Arc Maul pose
-        wrapper.rotation.set(0.2, -Math.PI / 4, 0.35);
+        const rot = config.rotation || [0.2, -Math.PI / 4, 0.35];
+        modelWrapper.rotation.set(rot[0], rot[1], rot[2]);
 
-        scene.add(wrapper);
+        // Preserve all authentic textures, normal maps, roughness & metallic materials from the GLB
+        cloned.traverse((child) => {
+          if (child.isMesh && child.material) {
+            child.material.needsUpdate = true;
+            if (child.material.map) {
+              child.material.map.colorSpace = THREE.SRGBColorSpace;
+            }
+          }
+        });
 
-        // Ensure controls target is centered at (0,0,0)
-        if (controls) {
-          controls.target.set(0, 0, 0);
-          controls.update();
-        }
+        scene.add(modelWrapper);
 
-        if (camera) {
-          camera.position.set(0, 0.2, 3.8);
-          camera.lookAt(0, 0, 0);
-          camera.updateProjectionMatrix();
-        }
+        controls.target.set(0, 0, 0);
+        controls.update();
+
+        camera.position.set(0, 0.2, 3.8);
+        camera.lookAt(0, 0, 0);
+        camera.updateProjectionMatrix();
 
         if (loaderEl) {
           loaderEl.style.opacity = '0';
-          setTimeout(() => { loaderEl.style.display = 'none'; }, 400);
+          setTimeout(() => { loaderEl.style.display = 'none'; }, 300);
         }
-        if (fallbackImg) fallbackImg.style.opacity = '0';
-      },
-      (xhr) => {
-        if (xhr.lengthComputable && loaderEl) {
-          const percent = Math.round((xhr.loaded / xhr.total) * 100);
+        if (fallbackImg) {
+          fallbackImg.style.opacity = '0';
+          fallbackImg.style.display = 'none';
+        }
+      };
+
+      if (modelCache[weaponId]) {
+        mountModel(modelCache[weaponId]);
+      } else {
+        if (loaderEl) {
+          loaderEl.style.display = 'flex';
+          loaderEl.style.opacity = '1';
           const txt = loaderEl.querySelector('.loader-text');
-          if (txt) txt.textContent = `LOADING 3D MODEL (${percent}%)`;
+          if (txt) txt.textContent = `LOADING ${weaponId.toUpperCase()}...`;
         }
-      },
-      (err) => {
-        console.warn('GLTF loading fallback:', err);
-        if (loaderEl) loaderEl.style.display = 'none';
-        if (fallbackImg) fallbackImg.style.opacity = '1';
+
+        loader.load(
+          config.file,
+          (gltf) => {
+            modelCache[weaponId] = gltf.scene;
+            mountModel(gltf.scene);
+            preloadOtherModels();
+          },
+          (xhr) => {
+            if (xhr.lengthComputable && loaderEl) {
+              const percent = Math.round((xhr.loaded / xhr.total) * 100);
+              const txt = loaderEl.querySelector('.loader-text');
+              if (txt) txt.textContent = `LOADING ${weaponId.toUpperCase()} (${percent}%)`;
+            }
+          },
+          (err) => {
+            console.warn(`Failed to load ${config.file}:`, err);
+            if (loaderEl) loaderEl.style.display = 'none';
+            if (fallbackImg) {
+              fallbackImg.style.opacity = '1';
+              fallbackImg.style.display = 'block';
+            }
+          }
+        );
       }
-    );
+    }
+
+    let preloadingStarted = false;
+    function preloadOtherModels() {
+      if (preloadingStarted) return;
+      preloadingStarted = true;
+      Object.keys(WEAPON_CONFIGS).forEach(key => {
+        if (!modelCache[key]) {
+          loader.load(
+            WEAPON_CONFIGS[key].file,
+            (gltf) => {
+              modelCache[key] = gltf.scene;
+            },
+            undefined,
+            (err) => console.warn(`Preload error for ${key}:`, err)
+          );
+        }
+      });
+    }
+
+    // Initial load: Axe
+    setWeapon('axe');
 
     function animate() {
       requestAnimationFrame(animate);
       controls.update();
-      if (loadedModel) {
-        loadedModel.position.y = Math.sin(Date.now() * 0.0015) * 0.05;
+      if (modelWrapper) {
+        modelWrapper.position.y = Math.sin(Date.now() * 0.0015) * 0.06;
       }
       renderer.render(scene, camera);
     }
     animate();
 
-    window.addEventListener('resize', () => {
-      const r = viewport.getBoundingClientRect();
-      if (r.width && r.height) {
-        camera.aspect = r.width / r.height;
-        camera.updateProjectionMatrix();
-        renderer.setSize(r.width, r.height);
-      }
-    });
+    return {
+      setWeapon,
+      setColor: () => {
+        // Preserves authentic PBR textures without artificial color tinting
+      },
+      getCurrentWeapon: () => currentWeaponId
+    };
   } catch (e) {
     console.warn('Three.js failed:', e);
-    if (fallbackImg) fallbackImg.style.opacity = '1';
-    if (loaderEl) loaderEl.style.display = 'none';
-  }
-
-  return {
-    setColor: (color) => {
-      const hex = colorHexMap[color] || colorHexMap.cyan;
-      if (keyLight) keyLight.color.setHex(hex);
-      if (accentLight) accentLight.color.setHex(hex);
-      if (pointLight) pointLight.color.setHex(hex);
-
-      if (loadedModel) {
-        loadedModel.traverse((child) => {
-          if (child.isMesh && child.material) {
-            if (child.material.emissive) {
-              child.material.emissive.setHex(hex);
-              child.material.emissiveIntensity = 0.5;
-            }
-          }
-        });
-      }
+    if (fallbackImg) {
+      fallbackImg.style.opacity = '1';
+      fallbackImg.style.display = 'block';
     }
-  };
+    if (loaderEl) loaderEl.style.display = 'none';
+    return null;
+  }
 }
 
 // ==========================================================================
@@ -540,6 +650,37 @@ function setupInteractiveForgeEditor(onColorChange, onStatsChange) {
   updateEditor();
 
   return {
+    updateWeaponInCode: (weaponKey) => {
+      const cfg = WEAPON_CONFIGS[weaponKey];
+      if (!cfg) return;
+      forgeFiles.weapon = `// FORMACT WEAPON CONFIGURATION
+// Calibrate weapon parameters in real-time
+
+const weapon = {
+  name: "${cfg.name}",
+  type: "${cfg.type}",
+  damage: ${cfg.stats.damage},       // base damage
+  range: ${cfg.stats.range.toFixed(1)},       // meters
+  cooldown: ${cfg.stats.cooldown.toFixed(1)},    // seconds
+  weight: ${cfg.stats.weight.toFixed(1)},     // kg
+  element: "${weaponKey === 'gun' ? 'plasma' : weaponKey === 'shield' ? 'kinetic_barrier' : weaponKey === 'cannon' ? 'explosive' : 'energy'}",
+  color: "${cfg.colorName}",
+  special: {
+    overclock: true,
+    empBurst: ${weaponKey === 'shield' ? 'true' : 'false'}
+  }
+};
+
+// Advanced telemetry calibration
+weapon.trailIntensity = 0.85;
+weapon.glow = true;
+weapon.particles = "${weaponKey === 'gun' ? 'plasma_tracer' : weaponKey === 'shield' ? 'hex_field' : weaponKey === 'cannon' ? 'shockwave' : 'arc'}";`;
+
+      if (activeFile === 'weapon') {
+        textarea.value = forgeFiles.weapon;
+        updateEditor();
+      }
+    },
     updateColorInCode: (color) => {
       let code = textarea.value;
       if (code.includes('color:')) {
@@ -865,7 +1006,7 @@ function initSmoothScrollAndGSAP() {
   });
 
   // --- Section 5 (Sanctuary / System Specs) Animations ---
-  const sanctuaryItems = document.querySelectorAll('.sanctuary-card, .sanctuary-thumb-item, .world-card-item');
+  const sanctuaryItems = document.querySelectorAll('.sanctuary-card, .sanctuary-thumb-item');
   if (sanctuaryItems.length) {
     gsap.from(sanctuaryItems, {
       y: 30,
@@ -1035,7 +1176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const model3dViewer = initModelGLBViewer();
 
-  const variantCards = document.querySelectorAll('.variant-item-card');
+  const weaponCards = document.querySelectorAll('.variant-item-card[data-weapon]');
   const forgeHammerImg = document.getElementById('forge-hammer-img');
 
   const numD = document.getElementById('forge-num-damage');
@@ -1048,54 +1189,53 @@ document.addEventListener('DOMContentLoaded', () => {
   const barC = document.getElementById('forge-bar-cooldown');
   const barW = document.getElementById('forge-bar-weight');
 
+  function updateStatsDisplay(stats) {
+    if (stats.damage !== undefined && numD) {
+      gsap.to(numD, { innerText: stats.damage, roundProps: 'innerText', duration: 0.45 });
+      if (barD) gsap.to(barD, { width: Math.min(stats.damage, 100) + '%', duration: 0.45 });
+    }
+    if (stats.range !== undefined && numR) {
+      numR.textContent = stats.range.toFixed(1);
+      if (barR) gsap.to(barR, { width: Math.min((stats.range / 60) * 100, 100) + '%', duration: 0.45 });
+    }
+    if (stats.cooldown !== undefined && numC) {
+      numC.textContent = stats.cooldown.toFixed(1);
+      if (barC) gsap.to(barC, { width: Math.min((stats.cooldown / 4) * 100, 100) + '%', duration: 0.45 });
+    }
+    if (stats.weight !== undefined && numW) {
+      numW.textContent = stats.weight.toFixed(1);
+      if (barW) gsap.to(barW, { width: Math.min((stats.weight / 30) * 100, 100) + '%', duration: 0.45 });
+    }
+  }
+
   const editor = setupInteractiveForgeEditor(
     (color, updateCode = true) => {
-      variantCards.forEach(c => {
-        c.classList.toggle('active', c.getAttribute('data-color') === color);
-      });
-      if (forgeHammerImg) {
-        forgeHammerImg.className = 'forge-hammer-img ' + color;
-      }
       if (model3dViewer) {
         model3dViewer.setColor(color);
       }
     },
     (stats) => {
-      if (stats.damage !== undefined && numD) {
-        numD.textContent = stats.damage;
-        if (barD) barD.style.width = Math.min(stats.damage, 100) + '%';
-      }
-      if (stats.range !== undefined && numR) {
-        numR.textContent = stats.range.toFixed(1);
-        if (barR) barR.style.width = Math.min((stats.range / 5) * 100, 100) + '%';
-      }
-      if (stats.cooldown !== undefined && numC) {
-        numC.textContent = stats.cooldown.toFixed(1);
-        if (barC) barC.style.width = Math.min((stats.cooldown / 3) * 100, 100) + '%';
-      }
-      if (stats.weight !== undefined && numW) {
-        numW.textContent = stats.weight.toFixed(1);
-        if (barW) barW.style.width = Math.min((stats.weight / 25) * 100, 100) + '%';
-      }
+      updateStatsDisplay(stats);
     }
   );
 
-  variantCards.forEach(card => {
+  weaponCards.forEach(card => {
     card.addEventListener('mouseenter', () => sfx.play('hover'));
     card.addEventListener('click', () => {
       sfx.play('click');
-      const color = card.getAttribute('data-color');
-      variantCards.forEach(c => c.classList.remove('active'));
+      const weaponKey = card.getAttribute('data-weapon');
+      weaponCards.forEach(c => c.classList.remove('active'));
       card.classList.add('active');
 
-      if (forgeHammerImg) {
-        forgeHammerImg.className = 'forge-hammer-img ' + color;
-      }
       if (model3dViewer) {
-        model3dViewer.setColor(color);
+        model3dViewer.setWeapon(weaponKey);
       }
       if (editor) {
-        editor.updateColorInCode(color);
+        editor.updateWeaponInCode(weaponKey);
+      }
+      const cfg = WEAPON_CONFIGS[weaponKey];
+      if (cfg && cfg.stats) {
+        updateStatsDisplay(cfg.stats);
       }
     });
   });
@@ -1181,220 +1321,126 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================================================
 function initSanctuaryScrollJacking() {
   const sanctuarySec = document.getElementById('sanctuary');
-  if (!sanctuarySec) return;
+  const track = document.getElementById('sanctuary-horizontal-track');
+  if (!sanctuarySec || !track) return;
 
-  const WORLDS_DATA = [
+  const panels = gsap.utils.toArray('.world-slide-card');
+  if (!panels.length) return;
+
+  const progressFill = document.getElementById('sanctuary-scroll-fill');
+  const indexEl = document.getElementById('sanctuary-world-index');
+  const worldNameEl = document.getElementById('sanctuary-world-name');
+  const coordsEl = document.getElementById('sanctuary-hud-coords');
+  const sideNavItems = document.querySelectorAll('.side-nav-item');
+  const cardItems = document.querySelectorAll('.world-card-item');
+
+  const worldMeta = [
     {
       index: "WORLD 01 / 04",
       name: "ORBITAL PLATFORM",
-      eyebrow: "WORLD DISCOVERY // ORBITAL ARENA",
-      titleHtml: `<span>HIGHER</span><span>BIGGER</span><span>CLEANER</span><span class="dim">NO LIMITS.</span>`,
-      desc: "A low-orbit arena where minds and machines collide. The Sanctuary is more than a battleground - it's a test of evolution.",
-      coordsTitle: "ORBITAL PLATFORM",
-      coordsVal: "0.00° N   0.00° E",
-      coordsSub: "LOW EARTH ORBIT // ALTITUDE: 420 KM",
-      env: "ZERO-G VACUUM",
-      hardpoints: "08 ACTIVE NODES",
-      sync: "99.8% STABLE",
-      sloganHtml: `<span>MACHINES</span><span>BUILD</span><span>FASTER.</span><span class="spacer"></span><span>HUMANS</span><span>AIM HIGHER.</span>`,
-      status: "WORLD 01 OF 04 — ORBITAL PLATFORM ARENA"
+      coords: "LOW EARTH ORBIT // ALT: 420 KM"
     },
     {
       index: "WORLD 02 / 04",
       name: "CYBER GRID",
-      eyebrow: "WORLD DISCOVERY // CYBERNETIC GRID",
-      titleHtml: `<span>NEON</span><span>MATRIX</span><span>GRID</span><span class="dim">DUEL COLOSSEUM.</span>`,
-      desc: "Dense vertical skyscrapers interwoven with tactical hardpoints. Code the grid in real-time to alter combat sightlines.",
-      coordsTitle: "SUB-LEVEL GRID 04",
-      coordsVal: "34.12° N   118.24° W",
-      coordsSub: "NEON CORE // ALTITUDE: 12 M",
-      env: "GRID ATMOSPHERE",
-      hardpoints: "12 ACTIVE NODES",
-      sync: "98.4% STABLE",
-      sloganHtml: `<span>REWRITE</span><span>THE CITY.</span><span class="spacer"></span><span>OVERRIDE</span><span>THE GRID.</span>`,
-      status: "WORLD 02 OF 04 — CYBERNETIC CORE GRID"
+      coords: "NEON CORE GRID // ALT: 12 M"
     },
     {
       index: "WORLD 03 / 04",
       name: "STRATO-DOME",
-      eyebrow: "WORLD DISCOVERY // STRATO-DOME",
-      titleHtml: `<span>STRATO-DOME</span><span>MESOSPHERE</span><span>OUTLOOK</span><span class="dim">ZERO GRAVITY.</span>`,
-      desc: "High-altitude combat in dynamic zero-G pockets. Adapt weapon kinetics on the fly as wind vectors and gravity fields shift.",
-      coordsTitle: "MESOSPHERE APEX",
-      coordsVal: "78.45° N   15.68° E",
-      coordsSub: "APEX DOME // ALTITUDE: 85 KM",
-      env: "SYNTHETIC AIR",
-      hardpoints: "06 DYNAMIC ZONES",
-      sync: "99.2% STABLE",
-      sloganHtml: `<span>NO GRAVITY</span><span>LIMITS.</span><span class="spacer"></span><span>ADAPT</span><span>OR FALL.</span>`,
-      status: "WORLD 03 OF 04 — STRATO-DOME MESOSPHERE"
+      coords: "MESOSPHERE APEX // ALT: 85 KM"
     },
     {
       index: "WORLD 04 / 04",
       name: "VOID CITADEL",
-      eyebrow: "WORLD DISCOVERY // VOID CITADEL",
-      titleHtml: `<span>VOID</span><span>CITADEL</span><span>CORE</span><span class="dim">FINAL DUEL.</span>`,
-      desc: "The ultimate arena. Unrestricted operative abilities and raw neural bandwidth. Only synchronized units claim dominance.",
-      coordsTitle: "UNCHARTERED SECTOR",
-      coordsVal: "99.99° N   99.99° E",
-      coordsSub: "DEEP SPACE // ALTITUDE: UNBOUND",
-      env: "DEEP SPACE VOID",
-      hardpoints: "UNRESTRICTED",
-      sync: "100.0% OVERDRIVE",
-      sloganHtml: `<span>ONE TRUTH.</span><span class="spacer"></span><span>NO MERCY.</span><span>VICTORY.</span>`,
-      status: "WORLD 04 OF 04 — VOID CITADEL FINAL DUEL"
+      coords: "DEEP SPACE VOID // ALT: UNBOUND"
     }
   ];
 
-  const backdropLayers = document.querySelectorAll('.sanctuary-backdrop-layer');
-  const indexEl = document.getElementById('sanctuary-world-index');
-  const worldNameEl = document.getElementById('sanctuary-world-name');
-  const eyebrowEl = document.getElementById('sanctuary-eyebrow');
-  const titleEl = document.getElementById('sanctuary-title');
-  const descEl = document.getElementById('sanctuary-desc');
-  const coordsTitleEl = document.getElementById('coords-title');
-  const coordsValEl = document.getElementById('coords-val');
-  const coordsSubEl = document.getElementById('coords-sub');
-  const envEl = document.getElementById('telem-env');
-  const hardpointsEl = document.getElementById('telem-hardpoints');
-  const syncEl = document.getElementById('telem-sync');
-  const sloganEl = document.getElementById('sanctuary-slogan');
-  const statusEl = document.getElementById('sanctuary-footer-status');
-  const progressFill = document.getElementById('world-progress-fill');
-  const stepDots = document.querySelectorAll('.step-dot');
-  const thumbItems = document.querySelectorAll('.sanctuary-thumb-item, .world-card-item');
+  let currentActive = 0;
 
-  let currentWorld = -1;
-  const portalGate = document.getElementById('sanctuary-portal-gate');
-  const portalCoordsDisplay = document.getElementById('portal-coords-display');
+  function updateActiveWorld(idx) {
+    if (idx === currentActive && panels[idx] && panels[idx].classList.contains('active')) return;
+    currentActive = idx;
 
-  function updateWorldContent(worldIdx) {
-    if (currentWorld === worldIdx) return;
-    const prevWorld = currentWorld;
-    currentWorld = worldIdx;
-
-    const data = WORLDS_DATA[worldIdx];
-    if (!data) return;
-
-    // Trigger Portal Effect Gateway Warp
-    if (portalGate) {
-      portalGate.classList.remove('warping');
-      void portalGate.offsetWidth; // Force reflow to retrigger animation
-      portalGate.classList.add('warping');
-      setTimeout(() => portalGate.classList.remove('warping'), 1000);
-    }
-
-    if (portalCoordsDisplay) {
-      portalCoordsDisplay.textContent = data.coordsTitle + ' • ' + data.coordsSub;
-    }
-
-    // Portal Zoom & Reveal for Backdrop Layers (Slider Revolution Portal Effect)
-    backdropLayers.forEach((layer, i) => {
-      if (i === worldIdx) {
-        layer.style.zIndex = '3';
-        layer.classList.add('active');
-
-        // Circular Portal Reveal Zoom from Center
-        gsap.fromTo(layer, 
-          { 
-            clipPath: 'circle(0% at 50% 50%)',
-            scale: 1.42,
-            filter: 'brightness(1.6) contrast(1.15)',
-            opacity: 1
-          },
-          { 
-            clipPath: 'circle(150% at 50% 50%)',
-            scale: 1.0,
-            filter: 'brightness(1.0) contrast(1.0)',
-            duration: 1.05,
-            ease: 'power3.out',
-            onComplete: () => {
-              layer.style.clipPath = '';
-            }
-          }
-        );
-      } else if (i === prevWorld) {
-        layer.style.zIndex = '2';
-        gsap.to(layer, {
-          scale: 0.9,
-          opacity: 0,
-          filter: 'blur(8px)',
-          duration: 0.85,
-          ease: 'power2.inOut',
-          onComplete: () => {
-            layer.classList.remove('active');
-            layer.style.zIndex = '1';
-            layer.style.filter = '';
-            layer.style.scale = '1';
-          }
-        });
-      } else {
-        layer.style.zIndex = '1';
-        layer.classList.remove('active');
-        layer.style.opacity = '0';
-      }
+    panels.forEach((panel, i) => {
+      panel.classList.toggle('active', i === idx);
     });
 
-    // Audio SFX on portal warp
-    if (prevWorld !== -1 && window.sfx) {
-      window.sfx.play('compile');
-    }
+    sideNavItems.forEach((item, i) => {
+      item.classList.toggle('active', i === idx);
+    });
 
-    // Active Indicators
-    stepDots.forEach((dot, i) => dot.classList.toggle('active', i === worldIdx));
-    thumbItems.forEach((thumb, i) => thumb.classList.toggle('active', i === worldIdx));
-    if (progressFill) progressFill.style.height = `${((worldIdx + 1) / 4) * 100}%`;
+    cardItems.forEach((card, i) => {
+      card.classList.toggle('active', i === idx);
+    });
 
-    // Text & Stats Update with Stagger HUD reveal
-    if (indexEl) indexEl.textContent = data.index;
-    if (worldNameEl) worldNameEl.textContent = data.name;
-    if (eyebrowEl) eyebrowEl.textContent = data.eyebrow;
-    if (descEl) descEl.textContent = data.desc;
-    if (coordsTitleEl) coordsTitleEl.textContent = data.coordsTitle;
-    if (coordsValEl) coordsValEl.textContent = data.coordsVal;
-    if (coordsSubEl) coordsSubEl.textContent = data.coordsSub;
-    if (envEl) envEl.textContent = data.env;
-    if (hardpointsEl) hardpointsEl.textContent = data.hardpoints;
-    if (syncEl) syncEl.textContent = data.sync;
-    if (sloganEl) sloganEl.innerHTML = data.sloganHtml;
-    if (statusEl) statusEl.textContent = data.status;
-
-    if (titleEl) {
-      titleEl.innerHTML = data.titleHtml;
-      gsap.fromTo(titleEl.children, 
-        { opacity: 0, y: 14, filter: 'blur(4px)' }, 
-        { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.45, stagger: 0.06, ease: 'power2.out' }
-      );
+    const data = worldMeta[idx];
+    if (data) {
+      if (indexEl) indexEl.textContent = data.index;
+      if (worldNameEl) worldNameEl.textContent = data.name;
+      if (coordsEl) coordsEl.textContent = data.coords;
     }
   }
 
-  // GSAP ScrollTrigger Pinned Timeline
-  const st = ScrollTrigger.create({
-    trigger: sanctuarySec,
-    start: 'top top',
-    end: '+=300%',
-    pin: true,
-    pinSpacing: true,
-    scrub: 0.5,
-    onUpdate: (self) => {
-      const progress = self.progress;
-      const activeIdx = Math.min(3, Math.floor(progress * 4));
-      updateWorldContent(activeIdx);
+  // Calculate horizontal travel distance
+  const getScrollDistance = () => track.scrollWidth - window.innerWidth;
+
+  // Ultra-smooth pinned GSAP scrub timeline
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: sanctuarySec,
+      start: 'top top',
+      end: () => `+=${Math.round(window.innerHeight * 2.4)}`,
+      pin: true,
+      pinSpacing: true,
+      scrub: 0.45, // Silky smooth response synchronized with Lenis
+      invalidateOnRefresh: true,
+      anticipatePin: 1,
+      fastScrollEnd: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        if (progressFill) {
+          const pct = Math.min(100, Math.max(25, 25 + progress * 75));
+          progressFill.style.width = `${pct}%`;
+        }
+
+        const activeIdx = Math.min(panels.length - 1, Math.round(progress * (panels.length - 1)));
+        updateActiveWorld(activeIdx);
+      }
     }
   });
 
-  // Initial update
-  updateWorldContent(0);
+  // Slide track horizontally
+  tl.to(track, {
+    x: () => -getScrollDistance(),
+    ease: 'none'
+  });
 
-  // Click handlers on Step Dots & Thumbnails for direct navigation
-  const navigateToWorld = (worldIdx) => {
+  // Parallax on card background images
+  panels.forEach((panel) => {
+    const bg = panel.querySelector('.world-card-bg');
+    if (bg) {
+      tl.to(bg, {
+        xPercent: 8,
+        ease: 'none'
+      }, 0);
+    }
+  });
+
+  // Initial state setup
+  updateActiveWorld(0);
+  if (progressFill) progressFill.style.width = '25%';
+
+  // Smooth scroll handler for both side nav and bottom thumbnail cards
+  const scrollToWorld = (idx) => {
     if (window.sfx) window.sfx.play('click');
-    const start = st.start;
-    const end = st.end;
-    const targetScroll = start + (worldIdx / 3) * (end - start);
+    const st = tl.scrollTrigger;
+    if (!st) return;
 
+    const targetScroll = st.start + (idx / (panels.length - 1)) * (st.end - st.start);
     if (window.lenis) {
-      window.lenis.scrollTo(targetScroll, { duration: 1.1 });
+      window.lenis.scrollTo(targetScroll, { duration: 1.0 });
     } else {
       window.scrollTo({
         top: targetScroll,
@@ -1403,14 +1449,14 @@ function initSanctuaryScrollJacking() {
     }
   };
 
-  stepDots.forEach((dot, i) => {
-    dot.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
-    dot.addEventListener('click', () => navigateToWorld(i));
+  sideNavItems.forEach((item, i) => {
+    item.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
+    item.addEventListener('click', () => scrollToWorld(i));
   });
 
-  thumbItems.forEach((thumb, i) => {
-    thumb.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
-    thumb.addEventListener('click', () => navigateToWorld(i));
+  cardItems.forEach((card, i) => {
+    card.addEventListener('mouseenter', () => window.sfx && window.sfx.play('hover'));
+    card.addEventListener('click', () => scrollToWorld(i));
   });
 }
 
@@ -1642,24 +1688,84 @@ function initRequirementsSection() {
       }
     });
 
-    // Footer Creator Showcase Scroll Reveal ("Created By iuXoa")
+    // Footer Minimal Showcase Scroll Reveal ("AFTER 3 AM STUDIOS.")
     const creatorShowcase = document.getElementById('footer-creator-showcase');
     if (creatorShowcase) {
       ScrollTrigger.create({
         trigger: creatorShowcase,
-        start: 'top 88%',
+        start: 'top 92%',
         once: true,
         onEnter: () => {
           gsap.fromTo(creatorShowcase,
-            { opacity: 0, scale: 0.95, y: 30 },
-            { opacity: 1, scale: 1, y: 0, duration: 0.9, ease: 'power3.out' }
+            { opacity: 0, y: 35 },
+            { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }
           );
-          gsap.fromTo('.creator-high-title',
-            { letterSpacing: '0.25em', filter: 'blur(8px)' },
-            { letterSpacing: '0.12em', filter: 'blur(0px)', duration: 1.1, ease: 'power2.out' }
+          gsap.fromTo('.showcase-giant-text',
+            { opacity: 0, scale: 0.96, y: 20 },
+            { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: 'power3.out', delay: 0.15 }
+          );
+          gsap.fromTo('.floating-back-to-top',
+            { opacity: 0, scale: 0.7 },
+            { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)', delay: 0.35 }
           );
         }
       });
+    }
+
+    // Back to Top smooth scroll handlers
+    const scrollToTopAction = (e) => {
+      if (e) e.preventDefault();
+      if (window.sfx) window.sfx.play('click');
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.3 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    const footerBackToTopBtn = document.getElementById('footer-back-to-top-btn');
+    if (footerBackToTopBtn) {
+      footerBackToTopBtn.addEventListener('click', scrollToTopAction);
+    }
+
+    const floatingBackToTopBtn = document.getElementById('floating-back-to-top-btn');
+    if (floatingBackToTopBtn) {
+      floatingBackToTopBtn.addEventListener('click', scrollToTopAction);
+    }
+
+    // Auto-fit Giant Showcase Typography to container width
+    const fitGiantShowcaseText = () => {
+      const textEl = document.querySelector('.showcase-giant-text');
+      const wrapEl = document.querySelector('.showcase-giant-wrap');
+      if (!textEl || !wrapEl) return;
+
+      const availableWidth = wrapEl.clientWidth;
+      if (availableWidth <= 0) return;
+
+      // On narrow mobile devices (< 540px), let CSS handle multi-line sizing
+      if (window.innerWidth <= 540) {
+        textEl.style.fontSize = '';
+        return;
+      }
+
+      // Safe target width: 88% of container width for breathing room on both sides
+      const targetWidth = availableWidth * 0.88;
+
+      // Set temporary fixed test size to measure actual glyph metrics
+      textEl.style.fontSize = '100px';
+      const naturalWidth = textEl.scrollWidth;
+      if (naturalWidth <= 0) return;
+
+      const calculatedSize = Math.floor((targetWidth / naturalWidth) * 100);
+      // Safe clamp between 24px and 125px
+      const finalSize = Math.max(24, Math.min(125, calculatedSize));
+      textEl.style.fontSize = `${finalSize}px`;
+    };
+
+    fitGiantShowcaseText();
+    window.addEventListener('resize', fitGiantShowcaseText, { passive: true });
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitGiantShowcaseText);
     }
   }
 

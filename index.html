@@ -608,32 +608,60 @@
                     </div>
                   </div>
 
-                  <!-- Right Variants Column -->
+                  <!-- Right Weapons / Arsenal Column -->
                   <div class="render-variants-col">
-                    <span class="variants-heading">VARIANTS</span>
-                    <div class="variant-item-card active" data-color="cyan">
+                    <span class="variants-heading">ARSENAL</span>
+
+                    <!-- Weapon 1: AXE (model.glb) -->
+                    <div class="variant-item-card active" data-weapon="axe" title="Arc Maul (Axe)">
                       <div class="variant-img-wrap">
-                        <img src="assets/variant_cyan.png" alt="Cyan Variant">
+                        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" class="weapon-svg-icon axe">
+                          <path d="M7 29L27 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                          <path d="M23 5L31 13L26 18L21 16L18 21L13 16L16 11L14 6L23 5Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                          <line x1="22" y1="8" x2="28" y2="14" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round"/>
+                          <circle cx="24.5" cy="11.5" r="1.8" fill="var(--cyan-primary, #00e5ff)"/>
+                        </svg>
                       </div>
-                      <span class="variant-name">CYAN</span>
+                      <span class="variant-name">AXE</span>
                     </div>
-                    <div class="variant-item-card" data-color="orange">
+
+                    <!-- Weapon 2: GUN (gun.glb) -->
+                    <div class="variant-item-card" data-weapon="gun" title="Phase Carbine (Gun)">
                       <div class="variant-img-wrap">
-                        <img src="assets/variant_orange.png" alt="Orange Variant">
+                        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" class="weapon-svg-icon gun">
+                          <path d="M5 20H12L15 15H28L31 17V20L28 21H18L15 25H11L12 21H7L5 20Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                          <rect x="17" y="12" width="8" height="2.5" rx="1" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                          <line x1="28" y1="18.5" x2="33" y2="18.5" stroke="var(--thermal-orange, #ff7043)" stroke-width="2" stroke-linecap="round"/>
+                          <rect x="15" y="21" width="3" height="6" rx="0.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                        </svg>
                       </div>
-                      <span class="variant-name">ORANGE</span>
+                      <span class="variant-name">GUN</span>
                     </div>
-                    <div class="variant-item-card" data-color="frost">
+
+                    <!-- Weapon 3: SHIELD (shield.glb) -->
+                    <div class="variant-item-card" data-weapon="shield" title="Aegis Bulwark (Shield)">
                       <div class="variant-img-wrap">
-                        <img src="assets/variant_frost.png" alt="Frost Variant">
+                        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" class="weapon-svg-icon shield">
+                          <path d="M18 4L30 8V18C30 25.5 18 31 18 31C18 31 6 25.5 6 18V8L18 4Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                          <path d="M18 10L25 12.5V18C25 22.5 18 26 18 26C18 26 11 22.5 11 18V12.5L18 10Z" stroke="var(--cryo-blue, #5cd9ff)" stroke-width="1.2"/>
+                          <circle cx="18" cy="18" r="2.2" fill="var(--cryo-blue, #5cd9ff)"/>
+                        </svg>
                       </div>
-                      <span class="variant-name">FROST</span>
+                      <span class="variant-name">SHIELD</span>
                     </div>
-                    <div class="variant-item-card" data-color="green">
+
+                    <!-- Weapon 4: CANNON (canon.glb) -->
+                    <div class="variant-item-card" data-weapon="cannon" title="Nova Cannon (Cannon)">
                       <div class="variant-img-wrap">
-                        <img src="assets/variant_green.png" alt="Green Variant">
+                        <svg viewBox="0 0 36 36" width="28" height="28" fill="none" class="weapon-svg-icon cannon">
+                          <path d="M6 24L10 16L27 10L29 14L15 20L13 25L6 24Z" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                          <rect x="25" y="8" width="5" height="7" rx="1" transform="rotate(-18 25 8)" fill="currentColor" stroke="currentColor" stroke-width="1.2"/>
+                          <circle cx="12" cy="24" r="5" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.8"/>
+                          <circle cx="12" cy="24" r="2" fill="var(--corrosive-green, #33f266)"/>
+                          <line x1="28" y1="9" x2="33" y2="7.5" stroke="var(--corrosive-green, #33f266)" stroke-width="2.2" stroke-linecap="round"/>
+                        </svg>
                       </div>
-                      <span class="variant-name">GREEN</span>
+                      <span class="variant-name">CANNON</span>
                     </div>
                   </div>
 
@@ -698,60 +726,105 @@
     </section>
 
     <!-- ==========================================
-         SECTION 5: THE SANCTUARY CORE ARENA (Matching section5.png)
+         SECTION 5: THE WORLDS — HORIZONTAL EXPEDITION SHOWCASE
          ========================================== -->
-    <!-- ==========================================
-         SECTION 5: THE SANCTUARY CORE ARENA — PINNED SCROLL-JACKING WORLDS
-         ========================================== -->
-    <section class="section-sanctuary" id="sanctuary">
-      <!-- Multi-World Backdrop Layers for Crossfading -->
-      <div class="sanctuary-backdrop-container">
-        <div class="sanctuary-backdrop-layer active" data-world="0"
-          style="background-image: url('section5_background.png');"></div>
-        <div class="sanctuary-backdrop-layer" data-world="1" style="background-image: url('section2_background.png');">
+    <section class="section-sanctuary-horizontal" id="sanctuary">
+      <!-- Fixed Section Ambient Atmosphere -->
+      <div class="sanctuary-ambient-glow"></div>
+
+      <!-- Top Pinned HUD Bar -->
+      <div class="sanctuary-pinned-hud">
+        <div class="sanctuary-hud-left">
+          <span class="hud-status-pulse"></span>
+          <span class="hud-tag-num" id="sanctuary-world-index">WORLD 01 / 04</span>
+          <span class="hud-tag-sep">//</span>
+          <span class="hud-tag-name" id="sanctuary-world-name">ORBITAL PLATFORM</span>
         </div>
-        <div class="sanctuary-backdrop-layer" data-world="2" style="background-image: url('section3_background.png');">
+
+        <div class="sanctuary-hud-progress">
+          <span class="progress-label">HORIZONTAL TRAVERSE TRACK</span>
+          <div class="progress-track-line">
+            <div class="progress-track-fill" id="sanctuary-scroll-fill"></div>
+          </div>
         </div>
-        <div class="sanctuary-backdrop-layer" data-world="3" style="background-image: url('section6_background.png');">
+
+        <div class="sanctuary-hud-right">
+          <span class="hud-coords-txt" id="sanctuary-hud-coords">LOW EARTH ORBIT // ALT: 420 KM</span>
+          <span class="hud-scroll-arrow">SCROLL HORIZONTALLY →</span>
         </div>
       </div>
-      <div class="sanctuary-overlay"></div>
 
-      <!-- Dimensional Portal Gateway (Slider Revolution Portal Effect) -->
-      <div class="sanctuary-portal-gate" id="sanctuary-portal-gate" aria-hidden="true">
-        <div class="portal-shockwave"></div>
-        <div class="portal-hyperspace-rays"></div>
-        <div class="portal-ring-outer">
-          <svg class="portal-ring-svg" viewBox="0 0 400 400">
-            <circle cx="200" cy="200" r="190" stroke="rgba(0, 229, 255, 0.4)" stroke-width="1.5" fill="none" stroke-dasharray="4 8" />
-            <circle cx="200" cy="200" r="172" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1" fill="none" />
-            <circle cx="200" cy="200" r="150" stroke="rgba(0, 229, 255, 0.6)" stroke-width="2" fill="none" stroke-dasharray="32 16 8 16" />
-            <circle cx="200" cy="200" r="120" stroke="rgba(251, 191, 36, 0.5)" stroke-width="1" fill="none" stroke-dasharray="12 24" />
-          </svg>
+      <!-- Vertical Side Nav (Matching Reference Showcase) -->
+      <div class="sanctuary-side-nav" id="sanctuary-side-nav">
+        <div class="side-nav-item active" data-world="0" role="button" tabindex="0">
+          <span class="side-nav-label">Orbital Platform</span>
+          <span class="side-nav-bar"></span>
         </div>
-        <div class="portal-ring-mid"></div>
-        <div class="portal-ring-inner"></div>
-        <div class="portal-vortex-glow"></div>
+        <div class="side-nav-item" data-world="1" role="button" tabindex="0">
+          <span class="side-nav-label">Cybernetic Core</span>
+          <span class="side-nav-bar"></span>
+        </div>
+        <div class="side-nav-item" data-world="2" role="button" tabindex="0">
+          <span class="side-nav-label">Strato-Dome</span>
+          <span class="side-nav-bar"></span>
+        </div>
+        <div class="side-nav-item" data-world="3" role="button" tabindex="0">
+          <span class="side-nav-label">Void Citadel</span>
+          <span class="side-nav-bar"></span>
+        </div>
       </div>
 
-      <!-- Minimalist Non-Intrusive Top HUD Bar -->
-      <div class="sanctuary-top-hud">
-        <div class="sanctuary-hud-tag">
-          <span class="hud-pulse-dot"></span>
-          <span class="hud-world-num" id="sanctuary-world-index">WORLD 01 / 04</span>
-          <span class="hud-sep">—</span>
-          <span class="hud-world-name" id="sanctuary-world-name">ORBITAL PLATFORM</span>
+      <!-- Horizontal Scrolling Track Container -->
+      <div class="sanctuary-track-viewport">
+        <div class="sanctuary-horizontal-track" id="sanctuary-horizontal-track">
+
+          <!-- World Card 01: Orbital Platform -->
+          <div class="world-slide-card active" data-world="0" id="world-card-0">
+            <div class="world-card-bg" style="background-image: url('section5_background.png');"></div>
+            <div class="world-card-overlay"></div>
+            <div class="world-card-content">
+              <h3 class="world-card-title">Orbital Platform</h3>
+              <p class="world-card-tagline">Low-gravity vacuum arena hovering 420 km above Earth</p>
+            </div>
+          </div>
+
+          <!-- World Card 02: Cyber Grid -->
+          <div class="world-slide-card" data-world="1" id="world-card-1">
+            <div class="world-card-bg" style="background-image: url('section2_background.png');"></div>
+            <div class="world-card-overlay"></div>
+            <div class="world-card-content">
+              <h3 class="world-card-title">Cybernetic Core</h3>
+              <p class="world-card-tagline">Vertical concrete canyons laced with real-time neon combat grids</p>
+            </div>
+          </div>
+
+          <!-- World Card 03: Strato-Dome -->
+          <div class="world-slide-card" data-world="2" id="world-card-2">
+            <div class="world-card-bg" style="background-image: url('section3_background.png');"></div>
+            <div class="world-card-overlay"></div>
+            <div class="world-card-content">
+              <h3 class="world-card-title">Strato-Dome</h3>
+              <p class="world-card-tagline">Atmospheric mesosphere battleground with dynamic grav-pockets</p>
+            </div>
+          </div>
+
+          <!-- World Card 04: Void Citadel -->
+          <div class="world-slide-card" data-world="3" id="world-card-3">
+            <div class="world-card-bg" style="background-image: url('section6_background.png');"></div>
+            <div class="world-card-overlay"></div>
+            <div class="world-card-content">
+              <h3 class="world-card-title">Void Citadel</h3>
+              <p class="world-card-tagline">Unrestricted deep space colosseum for endgame neural overdrive</p>
+            </div>
+          </div>
+
         </div>
-        <div class="sanctuary-hud-coords" id="coords-sub">LOW EARTH ORBIT // ALTITUDE: 420 KM</div>
       </div>
 
-      <!-- Center Viewport Area (100% Unobstructed World Visuals) -->
-      <div class="sanctuary-viewport-spacer"></div>
-
-      <!-- Bottom World Showcase Cards (Matching section7.png) -->
-      <div class="sanctuary-bottom-showcase">
+      <!-- Bottom Pinned Navigation Cards (Matching section7.png) -->
+      <div class="sanctuary-pinned-bottom">
         <div class="sanctuary-cards-row" id="sanctuary-thumbs">
-          <div class="world-card-item active" data-world="0" role="button" tabindex="0" title="World 01: Orbital Platform">
+          <div class="world-card-item active" data-world="0" role="button" tabindex="0" title="Navigate to World 01: Orbital Platform">
             <div class="world-card-thumb">
               <img src="section5_background.png" alt="Orbital Platform">
               <div class="card-thumb-border"></div>
@@ -762,7 +835,7 @@
             </div>
           </div>
 
-          <div class="world-card-item" data-world="1" role="button" tabindex="0" title="World 02: Cyber Grid">
+          <div class="world-card-item" data-world="1" role="button" tabindex="0" title="Navigate to World 02: Cyber Grid">
             <div class="world-card-thumb">
               <img src="section2_background.png" alt="Cyber Grid">
               <div class="card-thumb-border"></div>
@@ -773,7 +846,7 @@
             </div>
           </div>
 
-          <div class="world-card-item" data-world="2" role="button" tabindex="0" title="World 03: Strato-Dome">
+          <div class="world-card-item" data-world="2" role="button" tabindex="0" title="Navigate to World 03: Strato-Dome">
             <div class="world-card-thumb">
               <img src="section3_background.png" alt="Strato-Dome">
               <div class="card-thumb-border"></div>
@@ -784,7 +857,7 @@
             </div>
           </div>
 
-          <div class="world-card-item" data-world="3" role="button" tabindex="0" title="World 04: Void Citadel">
+          <div class="world-card-item" data-world="3" role="button" tabindex="0" title="Navigate to World 04: Void Citadel">
             <div class="world-card-thumb">
               <img src="section6_background.png" alt="Void Citadel">
               <div class="card-thumb-border"></div>
@@ -800,21 +873,6 @@
           <span class="quote-line-1">SOME WORLDS END IN CHAOS.</span>
           <span class="quote-line-2">THIS ONE ENDS IN A DUEL.</span>
           <span class="quote-dash">—</span>
-        </div>
-      </div>
-
-      <!-- Footer Bar -->
-      <div class="sanctuary-footer-bar">
-        <div class="sanctuary-footer-left">
-          <span class="brand-logo-txt">FORM<span class="logo-caret">∧</span>CT</span>
-          <span class="brand-sub-txt">HUMAN INTELLIGENCE. MACHINE POTENTIAL.</span>
-        </div>
-        <div class="sanctuary-footer-center">
-          <span id="sanctuary-footer-status">WORLD 01 OF 04 — SCROLL TO DISCOVER ARENAS</span>
-        </div>
-        <div class="sanctuary-footer-right">
-          <span class="dash">—</span>
-          <span>PLAY A BRIGHTER TOMORROW.</span>
         </div>
       </div>
     </section>
@@ -1423,47 +1481,44 @@
 
       </div>
 
-      <!-- Spacing block showing artwork in middle -->
-      <!-- HIGH-SIZE CREATOR SIGNATURE SHOWCASE -->
-      <div class="footer-creator-showcase" id="footer-creator-showcase">
-        <div class="studio-badge-pill">
-          <span class="studio-pulse-dot"></span>
-          <span class="studio-role-tag">DESIGN &amp; TECHNOLOGY ARCHITECTURE</span>
-          <span class="studio-ops-id">// 03:00 PROTOCOL</span>
-        </div>
-
-        <div class="studio-main-lockup">
-          <span class="studio-created-by">CREATED BY</span>
-          <h2 class="creator-high-title" data-text="AFTER 3 AM STUDIOS">AFTER 3 AM STUDIOS</h2>
-          <div class="studio-crest-accent">
-            <span class="crest-line"></span>
-            <span class="crest-glyph">◈ 03:00 AM OPS ◈</span>
-            <span class="crest-line"></span>
-          </div>
-        </div>
-
-        <p class="studio-tagline">
-          WHERE CODE EMPOWERS COMBAT &bull; A HIGHER REALM OF COMPETITIVE EVOLUTION
-        </p>
-
-        <div class="creator-meta-pills">
-          <span class="pill-item">FORMACT ENGINE v1.4</span>
-          <span class="dot">•</span>
-          <span class="pill-item">AFTER 3 AM STUDIOS</span>
-          <span class="dot">•</span>
-          <span class="pill-item">ALL RIGHTS RESERVED</span>
-        </div>
-      </div>
-
-      <div class="footer-artwork-spacer"></div>
-
-      <!-- Bottom Bar: Copyright on Left, Tagline on Right -->
-      <div class="footer-bottom-bar">
-        <span class="copyright-txt">© 2025 FORMACT. ALL RIGHTS RESERVED.</span>
-        <span class="bottom-tagline">A BRIGHTER TOMORROW. // TOGETHER.</span>
-      </div>
-
     </div>
+
+    <!-- FULL-WIDTH MINIMAL DISPLAY FOOTER SHOWCASE (Matching Reference Design) -->
+    <div class="footer-minimal-showcase" id="footer-creator-showcase">
+      <!-- Top Bar: Copyright, Socials, and Back to Top -->
+      <div class="showcase-top-bar">
+        <span class="showcase-copy">© 2026 FORMACT by AFTER 3 AM. All rights reserved.</span>
+        <div class="showcase-right-group">
+          <div class="showcase-social-links">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="showcase-link">GitHub</a>
+            <span class="showcase-sep">•</span>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="showcase-link">X</a>
+            <span class="showcase-sep">•</span>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="showcase-link">Linkedin</a>
+            <span class="showcase-sep">•</span>
+            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="showcase-link">Discord</a>
+          </div>
+          <button class="showcase-top-btn" id="footer-back-to-top-btn" aria-label="Back to top">
+            <span class="arrow-up">↑</span>
+            <span>Back to top</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Giant Massive Typography Wordmark -->
+      <div class="showcase-giant-wrap">
+        <h2 class="showcase-giant-text">AFTER 3 AM STUDIOS.</h2>
+      </div>
+
+      <!-- Floating Circular Back To Top Button (Matching Reference) -->
+      <button class="floating-back-to-top" id="floating-back-to-top-btn" aria-label="Scroll to top" title="Back to top">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"></line>
+          <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+      </button>
+    </div>
+
   </footer>
 
   <!-- ==========================================
